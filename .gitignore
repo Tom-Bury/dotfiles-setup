@@ -1,2 +1,3 @@
 Brewfile.lock.json
 .env
+.DS_Store
