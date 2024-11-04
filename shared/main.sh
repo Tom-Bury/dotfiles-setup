@@ -2,6 +2,7 @@
 
 main() {
   local SCRIPT_DIR=$1
+  local ROOT_DIR="$1/.."
   source "$SCRIPT_DIR/../utils.sh"
 
   zsh "$SCRIPT_DIR/../setup-preferences.sh"
@@ -19,7 +20,7 @@ main() {
 
   print_header "Setting up ZSH shell 🐚"
   source "$SCRIPT_DIR/zsh/setup-shell.sh"
-  setup_shell
+  setup_shell $ROOT_DIR
   print_footer "Shell set up"
 
   if [ "$NODE" = true ]; then

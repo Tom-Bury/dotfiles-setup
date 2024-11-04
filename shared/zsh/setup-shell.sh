@@ -4,8 +4,10 @@ SETUP_SHELL_SCRIPT_DIR="$(dirname "$0")"
 source "$SETUP_SHELL_SCRIPT_DIR/../../utils.sh"
 
 setup_shell() {
+  local ROOT_DIR=$1
+  source "$ROOT_DIR/utils.sh"
   install_oh_my_zsh
-  setup_starship_prompt
+  setup_starship_prompt $ROOT_DIR
   setup_zshrc
 
   # Set up autocomplete and syntax highlighting plugins
@@ -14,7 +16,7 @@ setup_shell() {
   setup_syntax_highlighting
   setup_zsh_autocomplete
 
-  setup_extra_source_scripts "$SETUP_SHELL_SCRIPT_DIR"
+  setup_extra_source_scripts $ROOT_DIR
 
   source $HOME/.zshrc 
 }
@@ -31,13 +33,13 @@ setup_starship_prompt() {
   # https://starship.rs/
   # Installed through homebrew
   create_backup "$HOME/.config/starship.toml"
-  cp "$SETUP_SHELL_SCRIPT_DIR/../starship/starship.toml" "$HOME/.config/starship.toml"
+  cp "$ROOT_DIR/shared/starship/starship.toml" "$HOME/.config/starship.toml"
 }
 
 setup_zshrc() {
   # Add ZSH config
   create_backup "$HOME/.zshrc"
-  cp "$SETUP_SHELL_SCRIPT_DIR/.zshrc" "$HOME/.zshrc"
+  cp "$ROOT_DIR/shared/zsh/.zshrc" "$HOME/.zshrc"
   source $HOME/.zshrc
 }
 

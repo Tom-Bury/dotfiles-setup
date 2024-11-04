@@ -13,9 +13,9 @@ install_homebrew() {
 }
 
 download_homebrew_apps() {
-  local SCRIPT_DIR="$(dirname "$0")"
+  local ROOT_DIR=$1
   # Install any Homebrew packages, Mac Apps or VSCode extensions using a Brewfile
   # https://docs.brew.sh/Manpage#bundle-subcommand
   # https://github.com/Homebrew/homebrew-bundle
-  brew bundle --file="$SCRIPT_DIR/Brewfile"
+  brew bundle --file="$ROOT_DIR/osx/homebrew/Brewfile"
 }
