@@ -4,7 +4,6 @@
 cask "raycast"
 cask "arc"
 cask "vlc"
-cask "tunnelblick"
 cask "android-file-transfer"
 cask "logi-options-plus"
 cask "stats"
@@ -23,16 +22,15 @@ cask "iterm2"
 brew "starship"
 cask "google-chrome"
 
+# Mobile app dev utilities
+# cask "provisionql"
+# cask "charles"
+# cask "http-toolkit"
+# cask "minisim"
+# brew "codes"
+
 # Utilities
-cask "provisionql"
-cask "charles"
-cask "http-toolkit"
-cask "minisim"
-brew "xcodes"
 cask "kdiff3"
-cask "vnc-viewer"
-cask "microsoft-remote-desktop"
-cask "azure-data-studio"
 brew "tlrc"
 brew "jq"
 brew "fzf"
@@ -41,34 +39,32 @@ tap "localsend/localsend"
 cask "localsend"
 
 # React-Native
-brew "rbenv"
-cask "zulu@17"
-brew "watchman"
-cask "zulu@11" # For RN v0.68
-cask "android-studio"
-cask "react-native-debugger"
-brew "scrcpy"
+# brew "rbenv"
+# cask "zulu@17"
+# brew "watchman"
+# cask "zulu@11" # For RN v0.68
+# cask "android-studio"
+# cask "react-native-debugger"
+# brew "scrcpy"
 
 # Infrastructure
-cask "google-cloud-sdk"
-tap "hashicorp/tap"
-brew "hashicorp/tap/terraform"
+# cask "google-cloud-sdk"
+# tap "hashicorp/tap"
+# brew "hashicorp/tap/terraform"
 
 # Python
-brew "pyenv"
-cask "pycharm-ce"
+# brew "pyenv"
+# cask "pycharm-ce"
 
 ###############################################
 # Personal
 ###############################################
 
 cask "spotify"
-cask "keepassxc"
 cask "whatsapp"
-cask "gimp"
-cask "discord"
+# cask "gimp"
 brew "onedrive"
-cask "messenger"
+# cask "messenger"
 
 tap "homebrew/cask-fonts"
 cask "font-fira-code-nerd-font"
