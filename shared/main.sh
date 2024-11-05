@@ -38,6 +38,13 @@ main() {
     setup_python
     print_footer "Python set up"
   fi
+
+  if [ "$GO" = true ]; then
+    print_header = "Setting up Go"
+    source "$ROOT_DIR/shared/go/setup-go.sh"
+    setup_go $ROOT_DIR
+    print_footer "Go set up"
+  fi
 }
 
 main $(dirname "$0")

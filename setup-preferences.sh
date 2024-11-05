@@ -2,7 +2,7 @@
 
 ROOT_DIR="$(dirname "$0")"
 
-VARIABLES=("NODE" "REACT_NATIVE" "PYTHON")
+VARIABLES=("NODE" "REACT_NATIVE" "PYTHON" "GO")
 
 load_or_create_env() {
   ENV_FILE="$ROOT_DIR/.env"
