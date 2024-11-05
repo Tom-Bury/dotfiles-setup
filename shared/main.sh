@@ -5,7 +5,9 @@ main() {
   local ROOT_DIR="$1/.."
   source "$SCRIPT_DIR/../utils.sh"
 
-  zsh "$SCRIPT_DIR/../setup-preferences.sh"
+  zsh "$ROOT_DIR/setup-preferences.sh"
+
+  set -a; source "$ROOT_DIR/.env"; set +a
 
   sudo -v # Ask for the administrator password upfront
 
@@ -26,7 +28,7 @@ main() {
   if [ "$NODE" = true ]; then
     print_header "Setting up Node.js with NVM 📦"
     source "$SCRIPT_DIR/node/setup-nvm.sh"
-    setup_nvm
+    setup_nvm $ROOT_DIR
     print_footer "Node.js with NVM set up"
   fi
 
