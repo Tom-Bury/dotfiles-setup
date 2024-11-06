@@ -34,8 +34,6 @@ alias cdwc="cd $HOME/work/code"
 
 alias cdd="cd $HOME/Desktop"
 
-alias cdm="cd $HOME/work/code/mono"
-
 alias pbc='pbcopy'
 alias pbc-branch='git rev-parse --abbrev-ref HEAD | pbcopy'
 alias pbcd='pwd | pbcopy'
