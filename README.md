@@ -1,40 +1,29 @@
-# mac-setup
+# dotfiles-setup
 
-Repository to to kickstart a Mac, according to personal preferences focused on React Native and frontend development, including:
+Repository to to kickstart a Mac or Linux machine, according to personal preferences.
+Some of the setup is optional, depending on the values provided in the prompt.
+These options are kept in a `.env` such that they don't need to be asked again for reruns.
 
-- Installation of HomeBrew
-- Installation of a variety of packages and applications via HomeBrew
-- ZSH setup, including aliases, Oh My ZSH and Starship
-- Setup of custom shell scripts, by sourcing any of the `.zshrc_*.sh` files
-- MacOS system settings changes
-- Installation of NVM
-- Scaffolding of main folders in home directory
-- VSCode settings and keybindings
+## Script structure and usage
 
-The script can be run multiple times, it should be idempotent.
-The script will create backups before overwriting the following files:
+The setup scripts are split in a common and os specific part:
 
-- `~/.gitconfig`
-- `~/.zshrc`
-- `~/.config/starship.toml`
-- VSCode `~/Library/Application Support/Code/User/settings.json`
-- VSCode `~/Library/Application Support/Code/User/keybindings.json`
+### Shared
 
-Backups are created in `~/.mac-setup-backup`
+- ZSH setup, including aliases, custom functions and Oh My ZSH + Starship
+- Git configs and aliases
+- [optional] Go setup, currently just installing GVM (Go Version Manager)
+- [optional] NodeJS setup, currently just installing NVM (NodeJS Version Manager)
 
-## How to use
+### OSX specific
 
-### Using the script
+- Run `osx/main.sh` which installs the shared bits, as well as:
+  - MacOS system settings changes
+  - Installing Homebrew
+  - Installing apps and VSCode extensions defined in `osx/homebrew/Brewfile`
+  - Syncs VSCode settings and keybindings
 
-- Install Apple command line tools (open terminal, try to some git commands which should prompt to install command line tools)
-- Clone this repo `git clone https://github.com/Tom-Bury/mac-setup.git`
-- Execute `./setup-mac.sh`, keeping an eye to provide password and input when required
-  - e.g: initial HomeBrew installation will require an ENTER
-  - e.g: certain applications will require changes to System Settings to access certain features or folders
-- Input whether to overwrite the current VSCode settings and keybindings, or merge them with the repo ones
-  - Either way, the result will be visible in `vscode-settings.json` and `vscode-keybindings.json` in the repo
-
-### Manual extras
+#### Manual extras
 
 - Manually set up iTerm2 to use the preferences stored in this repo at `iterm2/com.googlecode.iterm2.plist`:
   - Open iTerm2 preferences
@@ -43,3 +32,27 @@ Backups are created in `~/.mac-setup-backup`
 - In Git Fork GUI, manually add the custom commands from `/git-fork-custom-commands`
 - In Raycast, manually import the settings from `raycast/settings-export.rayconfig`
 - Call `setup_ssh` to add your SSH keys to your SSH agent using the keychain
+
+### Linux specific
+
+- Firstly, `linux/install-zsh.sh` needs to be run to update & upgrade, and install ZSH
+- Afterwards `linux/main.sh` can be run which installs the shared bits, as well as:
+  - A limited set of packages using `apt`
+  - VSCode extensions defined in `osx/homebrew/Brewfile`
+  
+#### Manual extras
+
+- Manually sync the VSCode settings and keybindings
+
+## Extra info
+
+The script can be run multiple times, it should be idempotent.
+The script will create backups before overwriting the following files:
+
+- `~/.gitconfig`
+- `~/.zshrc`
+- `~/.config/starship.toml`
+- [OSX] VSCode `~/Library/Application Support/Code/User/settings.json`
+- [OSX] VSCode `~/Library/Application Support/Code/User/keybindings.json`
+
+Backups are created in `~/.mac-setup-backup`
