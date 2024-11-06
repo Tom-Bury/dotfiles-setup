@@ -2,7 +2,6 @@
 
 main() {
   local SCRIPT_DIR=$1
-  rm -rf "$HOME/zshrc-scripts"
   source "$SCRIPT_DIR/../utils.sh"
 
   print_header "Installing packages 📦"

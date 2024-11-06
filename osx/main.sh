@@ -14,8 +14,6 @@ main() {
 
   sudo -v # Ask for the administrator password upfront
   
-  rm -rf "$HOME/zshrc-scripts"
-  
   zsh "$SCRIPT_DIR/../shared/main.sh"
 
   print_header "Setting up OSX preferences 🖥"
