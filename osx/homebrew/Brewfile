@@ -1,8 +1,8 @@
 ###############################################
 # Utilities
 ###############################################
+
 cask "raycast"
-cask "arc"
 cask "vlc"
 cask "android-file-transfer"
 cask "logi-options-plus"
@@ -22,6 +22,7 @@ cask "visual-studio-code"
 cask "fork"
 cask "iterm2"
 brew "starship"
+cask "zen-browser"
 
 # Mobile app dev utilities
 # cask "provisionql"
