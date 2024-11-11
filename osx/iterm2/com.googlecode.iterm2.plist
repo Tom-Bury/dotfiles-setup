@@ -12,6 +12,10 @@
 	<true/>
 	<key>HotkeyMigratedFromSingleToMulti</key>
 	<true/>
+	<key>NeverWarnAboutMeta</key>
+	<true/>
+	<key>NeverWarnAboutMeta_selection</key>
+	<integer>0</integer>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -879,6 +883,8 @@
 			</array>
 			<key>Keyboard Map</key>
 			<dict/>
+			<key>Left Option Key Changeable</key>
+			<false/>
 			<key>Link Color</key>
 			<dict>
 				<key>Alpha Component</key>
@@ -944,6 +950,8 @@
 				<key>Red Component</key>
 				<real>1</real>
 			</dict>
+			<key>Minimum Contrast (Light)</key>
+			<real>0.504985119047619</real>
 			<key>Mouse Reporting</key>
 			<true/>
 			<key>Name</key>
@@ -957,7 +965,7 @@
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Option Key Sends</key>
-			<integer>0</integer>
+			<integer>2</integer>
 			<key>Prompt Before Closing 2</key>
 			<false/>
 			<key>Right Option Key Sends</key>
@@ -1052,6 +1060,8 @@
 			<string>xterm-256color</string>
 			<key>Transparency</key>
 			<real>0.14935825892857144</real>
+			<key>Treat Option as Alt</key>
+			<true/>
 			<key>Unlimited Scrollback</key>
 			<false/>
 			<key>Use Bold Font</key>
