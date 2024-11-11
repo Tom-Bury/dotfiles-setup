@@ -5,7 +5,7 @@
 cask "raycast"
 cask "vlc"
 cask "android-file-transfer"
-cask "logi-options-plus"
+# cask "logi-options-plus"
 cask "stats"
 cask "bitwarden"
 cask "wifiman"
@@ -39,6 +39,7 @@ brew "fzf"
 brew "tree"
 tap "localsend/localsend"
 cask "localsend"
+brew "ffmpeg"
 
 # React-Native
 # brew "rbenv"
