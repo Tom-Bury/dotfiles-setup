@@ -37,8 +37,16 @@
     "command": "-workbench.view.extension.thunder-client"
   },
   {
+    "key": "alt+cmd+l",
+    "command": "continue.focusContinueSessionId"
+  },
+  {
     "key": "shift+cmd+[BracketLeft]",
     "command": "editor.unfoldAll"
+  },
+  {
+    "key": "alt+e",
+    "command": "workbench.action.focusActiveEditorGroup"
   },
   {
     "key": "ctrl+shift+=",
@@ -89,6 +97,16 @@
   {
     "key": "shift+cmd+r",
     "command": "-rerunSearchEditorSearch",
+    "when": "inSearchEditor"
+  },
+  {
+    "key": "alt+cmd+l",
+    "command": "-toggleFindInSelection",
+    "when": "editorFocus"
+  },
+  {
+    "key": "alt+cmd+l",
+    "command": "-toggleSearchEditorContextLines",
     "when": "inSearchEditor"
   },
   {

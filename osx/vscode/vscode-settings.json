@@ -139,5 +139,8 @@
   "terminal.integrated.experimentalInlineChat": true,
   "terminal.integrated.enableImages": true,
   "debug.openExplorerOnEnd": true,
-  "debug.terminal.clearBeforeReusing": true
+  "debug.terminal.clearBeforeReusing": true,
+  "continue.pauseCodebaseIndexOnStart": true,
+  "continue.telemetryEnabled": false,
+  "continue.showInlineTip": false
 }

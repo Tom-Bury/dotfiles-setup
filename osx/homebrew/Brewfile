@@ -40,6 +40,7 @@ brew "tree"
 tap "localsend/localsend"
 cask "localsend"
 brew "ffmpeg"
+brew "ollama"
 
 # React-Native
 # brew "rbenv"
@@ -115,9 +116,10 @@ vscode "ms-vsliveshare.vsliveshare"
 vscode "YevhenCherkes.object-dumper"
 vscode "sleistner.vscode-fileutils"
 
-# Copilot
-vscode "GitHub.copilot"
-vscode "GitHub.copilot-chat"
+# AI / Copilot
+# vscode "GitHub.copilot"
+# vscode "GitHub.copilot-chat"
+vscode "Continue.continue"
 
 # Git
 vscode "waderyan.gitblame"
