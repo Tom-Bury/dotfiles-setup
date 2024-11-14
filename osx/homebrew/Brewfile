@@ -102,6 +102,10 @@ vscode "golang.Go"
 vscode "hashicorp.terraform"
 vscode "redhat.vscode-yaml"
 
+# DB
+vscode "mtxr.sqltools"
+vscode "mtxr.sqltools-driver-pg"
+
 # Tools
 vscode "adpyke.codesnap"
 vscode "pomdtr.excalidraw-editor"
