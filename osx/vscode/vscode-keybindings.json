@@ -29,6 +29,10 @@
     "when": "editorFocus"
   },
   {
+    "key": "cmd+k r",
+    "command": "-workbench.action.files.revealActiveFileInWindows"
+  },
+  {
     "key": "ctrl+cmd+left",
     "command": "-workbench.action.moveEditorToPreviousGroup"
   },
@@ -43,6 +47,18 @@
   {
     "key": "shift+cmd+[BracketLeft]",
     "command": "editor.unfoldAll"
+  },
+  {
+    "key": "shift+alt+p r",
+    "command": "sqltools.executeCurrentQuery"
+  },
+  {
+    "key": "shift+alt+p a",
+    "command": "sqltools.executeQueryFromFile"
+  },
+  {
+    "key": "cmd+k r",
+    "command": "workbench.action.files.revert"
   },
   {
     "key": "alt+e",
@@ -63,6 +79,10 @@
   {
     "key": "shift+cmd+c",
     "command": "workbench.panel.chat.view.copilot.focus"
+  },
+  {
+    "key": "alt+p",
+    "command": "workbench.view.extension.sqltoolsActivityBarContainer"
   },
   {
     "key": "alt+cmd+backspace",

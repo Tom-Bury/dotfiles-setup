@@ -105,6 +105,7 @@ vscode "redhat.vscode-yaml"
 # DB
 vscode "mtxr.sqltools"
 vscode "mtxr.sqltools-driver-pg"
+vscode "mongodb.mongodb-vscode"
 
 # Tools
 vscode "adpyke.codesnap"

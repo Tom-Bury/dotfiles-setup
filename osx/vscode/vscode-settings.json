@@ -142,5 +142,35 @@
   "debug.terminal.clearBeforeReusing": true,
   "continue.pauseCodebaseIndexOnStart": true,
   "continue.telemetryEnabled": false,
-  "continue.showInlineTip": false
+  "continue.showInlineTip": false,
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "local",
+      "username": "tombury",
+      "database": "tombury"
+    },
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "pg-crash-course",
+      "database": "pg_crash_course",
+      "username": "tombury"
+    },
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "amigo-local",
+      "database": "amigo_local",
+      "username": "tombury"
+    }
+  ],
+  "sqltools.results.reuseTabs": "connection"
 }
