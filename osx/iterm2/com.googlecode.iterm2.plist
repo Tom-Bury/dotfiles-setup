@@ -950,6 +950,8 @@
 				<key>Red Component</key>
 				<real>1</real>
 			</dict>
+			<key>Minimum Contrast (Dark)</key>
+			<real>0.29661458333333335</real>
 			<key>Minimum Contrast (Light)</key>
 			<real>0.504985119047619</real>
 			<key>Mouse Reporting</key>
