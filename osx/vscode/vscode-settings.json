@@ -172,5 +172,8 @@
       "username": "tombury"
     }
   ],
-  "sqltools.results.reuseTabs": "connection"
+  "sqltools.results.reuseTabs": "connection",
+  "sqltools.format": {
+    "linesBetweenQueries": 3
+  }
 }
