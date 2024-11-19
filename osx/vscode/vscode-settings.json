@@ -175,5 +175,6 @@
   "sqltools.results.reuseTabs": "connection",
   "sqltools.format": {
     "linesBetweenQueries": 3
-  }
+  },
+  "cSpell.language": "en-GB"
 }

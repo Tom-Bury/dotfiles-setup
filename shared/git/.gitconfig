@@ -3,7 +3,7 @@
 	useConfigOnly = true
 
 [core]
-    editor = code --wait
+    editor = nano
 
 [push]
 	autoSetupRemote = true
