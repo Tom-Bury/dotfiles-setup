@@ -45,6 +45,10 @@
     "command": "continue.focusContinueSessionId"
   },
   {
+    "key": "cmd+k l",
+    "command": "editor.action.openLink"
+  },
+  {
     "key": "shift+cmd+[BracketLeft]",
     "command": "editor.unfoldAll"
   },

@@ -176,5 +176,9 @@
   "sqltools.format": {
     "linesBetweenQueries": 3
   },
-  "cSpell.language": "en-GB"
+  "cSpell.language": "en-GB",
+  "go.lintTool": "golangci-lint",
+  "go.lintFlags": [
+    "--fast"
+  ]
 }
