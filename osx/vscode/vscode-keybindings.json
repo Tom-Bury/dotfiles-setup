@@ -29,8 +29,20 @@
     "when": "editorFocus"
   },
   {
+    "key": "cmd+i",
+    "command": "-continue.edit"
+  },
+  {
+    "key": "shift+cmd+i",
+    "command": "-continue.quickEdit"
+  },
+  {
     "key": "cmd+k r",
     "command": "-workbench.action.files.revealActiveFileInWindows"
+  },
+  {
+    "key": "ctrl+g",
+    "command": "-workbench.action.gotoLine"
   },
   {
     "key": "ctrl+cmd+left",
@@ -67,6 +79,10 @@
   {
     "key": "alt+e",
     "command": "workbench.action.focusActiveEditorGroup"
+  },
+  {
+    "key": "cmd+k j",
+    "command": "workbench.action.gotoLine"
   },
   {
     "key": "ctrl+shift+=",
