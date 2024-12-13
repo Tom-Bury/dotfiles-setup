@@ -143,35 +143,7 @@
   "continue.pauseCodebaseIndexOnStart": true,
   "continue.telemetryEnabled": false,
   "continue.showInlineTip": false,
-  "sqltools.connections": [
-    {
-      "previewLimit": 50,
-      "server": "localhost",
-      "port": 5432,
-      "driver": "PostgreSQL",
-      "name": "local",
-      "username": "tombury",
-      "database": "tombury"
-    },
-    {
-      "previewLimit": 50,
-      "server": "localhost",
-      "port": 5432,
-      "driver": "PostgreSQL",
-      "name": "pg-crash-course",
-      "database": "pg_crash_course",
-      "username": "tombury"
-    },
-    {
-      "previewLimit": 50,
-      "server": "localhost",
-      "port": 5432,
-      "driver": "PostgreSQL",
-      "name": "amigo-local",
-      "database": "amigo_local",
-      "username": "tombury"
-    }
-  ],
+  "sqltools.connections": [],
   "sqltools.results.reuseTabs": "connection",
   "sqltools.format": {
     "linesBetweenQueries": 3
@@ -180,5 +152,16 @@
   "go.lintTool": "golangci-lint",
   "go.lintFlags": [
     "--fast"
-  ]
+  ],
+  "diffEditor.ignoreTrimWhitespace": true,
+  "githubPullRequests.experimental.notificationsView": true,
+  "githubPullRequests.notifications": "pullRequests",
+  "diffEditor.renderSideBySide": false,
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "testing.automaticallyOpenTestResults": "neverOpen",
+  "git.blame.editorDecoration.template": "${subject}, ${authorName} (${authorDate})",
+  "git.blame.statusBarItem.enabled": true,
+  "git.blame.statusBarItem.template": "${authorName} - ${authorDate} (${authorDateAgo})"
 }

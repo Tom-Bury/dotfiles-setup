@@ -120,14 +120,12 @@ vscode "rangav.vscode-thunder-client"
 vscode "ms-vsliveshare.vsliveshare"
 vscode "YevhenCherkes.object-dumper"
 vscode "sleistner.vscode-fileutils"
+vscode "GitHub.vscode-pull-request-github"
 
 # AI / Copilot
 # vscode "GitHub.copilot"
 # vscode "GitHub.copilot-chat"
 vscode "Continue.continue"
-
-# Git
-vscode "waderyan.gitblame"
 
 # Markdown
 vscode "yzhang.markdown-all-in-one"
