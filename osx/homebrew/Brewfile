@@ -53,8 +53,8 @@ brew "ollama"
 
 # Infrastructure
 # cask "google-cloud-sdk"
-# tap "hashicorp/tap"
-# brew "hashicorp/tap/terraform"
+tap "hashicorp/tap"
+brew "hashicorp/tap/terraform"
 
 # Python
 # brew "pyenv"
