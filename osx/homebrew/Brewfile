@@ -20,7 +20,7 @@ brew "git"
 cask "docker"
 cask "visual-studio-code"
 cask "fork"
-cask "iterm2"
+cask "ghostty"
 brew "starship"
 cask "zen-browser"
 
