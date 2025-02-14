@@ -163,5 +163,7 @@
   "testing.automaticallyOpenTestResults": "neverOpen",
   "git.blame.editorDecoration.template": "${subject}, ${authorName} (${authorDate})",
   "git.blame.statusBarItem.enabled": true,
-  "git.blame.statusBarItem.template": "${authorName} - ${authorDate} (${authorDateAgo})"
+  "git.blame.statusBarItem.template": "${authorName} - ${authorDate} (${authorDateAgo})",
+  "continue.enableTabAutocomplete": false,
+  "chat.commandCenter.enabled": false
 }
