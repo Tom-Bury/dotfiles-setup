@@ -45,6 +45,12 @@ main() {
     setup_go $ROOT_DIR
     print_footer "Go set up"
   fi
+
+  print_header = "Setting up K8s"
+  source "$ROOT_DIR/shared/k8s/setup-k8s.sh"
+  setup_go $ROOT_DIR
+  setup_k8s
+  print_footer "K8s set up"
 }
 
 main $(dirname "$0")
