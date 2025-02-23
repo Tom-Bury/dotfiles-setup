@@ -20,17 +20,17 @@ function git_add() {
 	local -r preview_diff="git diff --color=always {} | sed "1,4d""
 	local -r preview_blame_label="[ 🔍 Blame ]"
 	local -r header=$(cat <<-EOF
-		| CTRL-S: Switch Stage/Unstage
+		| OPT-S: Switch Stage/Unstage
 		| Preview: CTRL-T: Status | CTRL-F: Diff | CTRL-B: Blame
-		| ALT-E: Open in editor
-		| Commit: ALT-C: Commit | ALT-A: Amend
+		| OPT-E: Open in editor
+		| Commit: OPT-C: Commit | OPT-A: Amend
 	EOF
 	)
 	local -r add_header=$(cat <<-EOF
 		$header
 		| TAB: Select files
 		| ENTER: Stage selected
-		| ALT-P: Add patch
+		| OPT-P: Add patch
 	EOF
 	)
 
@@ -38,7 +38,7 @@ function git_add() {
 		$header
 		| TAB: Select files
 		| ENTER: Unstage selected
-		| ALT-D: Discard file
+		| OPT-D: Discard file
 	EOF
 	)
 
@@ -64,7 +64,7 @@ function git_add() {
 	--bind="ctrl-f:+change-preview($preview_diff)" \
 	--bind="ctrl-b:change-preview-label($preview_blame_label)" \
 	--bind='ctrl-b:+change-preview(git blame --color-by-age {})' \
-	--bind="ctrl-s:transform:[[ \$FZF_PROMPT =~ '$prompt_add' ]] && echo '$mode_reset' || echo '$mode_add'" \
+	--bind="alt-s:transform:[[ \$FZF_PROMPT =~ '$prompt_add' ]] && echo '$mode_reset' || echo '$mode_add'" \
 	--bind="enter:execute($enter_cmd)" \
 	--bind="enter:+reload([[ \$FZF_PROMPT =~ '$prompt_add' ]] && $git_unstaged_files || $git_staged_files)" \
 	--bind="enter:+refresh-preview" \
