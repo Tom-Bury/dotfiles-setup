@@ -43,6 +43,7 @@ alias t2='tree -L 2'
 alias t3='tree -L 3'
 alias t4='tree -L 4'
 
+alias bjot="$HOME/.gvm/pkgsets/go1.23.2/global/bin/jot"
 
 ###############################################
 # Starship prompt https://starship.rs/

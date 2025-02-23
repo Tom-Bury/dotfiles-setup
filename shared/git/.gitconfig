@@ -3,7 +3,7 @@
 	useConfigOnly = true
 
 [core]
-    editor = nano
+    editor = ~/.gvm/pkgsets/go1.23.2/global/bin/jot
 
 [push]
 	autoSetupRemote = true
