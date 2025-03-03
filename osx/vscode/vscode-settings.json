@@ -112,20 +112,6 @@
   "yaml.schemas": {
     "file:///Users/tom.bury/.vscode/extensions/atlassian.atlascode-3.0.10/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml"
   },
-  "atlascode.jira.lastCreateSiteAndProject": {
-    "siteId": "52c60977-cda9-405f-927f-f947c6f480ee",
-    "projectKey": "API"
-  },
-  "atlascode.jira.jqlList": [
-    {
-      "id": "7be17431-200c-4f50-b581-7e1a31f6d236",
-      "siteId": "52c60977-cda9-405f-927f-f947c6f480ee",
-      "name": "Assigned to me",
-      "query": "assignee in (5d1b197ab3e96d0d1b9a24be) AND status in (\"To do\", \"To Do old\") ORDER BY priority DESC, created DESC",
-      "enabled": true,
-      "monitor": true
-    }
-  ],
   "extensions.ignoreRecommendations": true,
   "workbench.activityBar.location": "hidden",
   "git.alwaysShowStagedChangesResourceGroup": true,
@@ -164,6 +150,31 @@
   "git.blame.editorDecoration.template": "${subject}, ${authorName} (${authorDate})",
   "git.blame.statusBarItem.enabled": true,
   "git.blame.statusBarItem.template": "${authorName} - ${authorDate} (${authorDateAgo})",
-  "continue.enableTabAutocomplete": false,
-  "chat.commandCenter.enabled": false
+  "chat.commandCenter.enabled": false,
+  
+  // https://yt.home.bury.dev/watch?v=9_I0bySQoCs
+  "breadcrumbs.enabled": false,
+  "scm.diffDecorations": "none",
+  "editor.hover.delay": 500,
+  "editor.hover.enabled": true,
+  "editor.matchBrackets": "never",
+  "workbench.tips.enabled": false,
+  "editor.colorDecorators": true,
+  "git.decorations.enabled": true,
+  "editor.lightbulb.enabled": "off",
+  "editor.selectionHighlight": false,
+  "editor.overviewRulerBorder": false,
+  "editor.renderLineHighlight": "none",
+  "editor.occurrencesHighlight": "off",
+  "problems.decorations.enabled": false,
+  "editor.renderControlCharacters": false,
+  "editor.hideCursorInOverviewRuler": true,
+  "editor.gotoLocation.multipleReferences": "goto",
+  "editor.gotoLocation.multipleDefinitions": "goto",
+  "editor.gotoLocation.multipleDeclarations": "goto",
+  "workbench.editor.enablePreviewFromQuickOpen": false,
+  "editor.gotoLocation.multipleImplementations": "goto",
+  "editor.gotoLocation.multipleTypeDefinitions": "goto",
+  "workbench.editor.enablePreview": false,
+  "workbench.sideBar.location": "right",
 }
