@@ -55,7 +55,6 @@
   "nxConsole.showNodeVersionOnStartup": false,
   "terminal.integrated.hideOnStartup": "always",
   "terminal.integrated.scrollback": 10000,
-  "window.zoomLevel": 1,
   "asciidoc.preview.refreshInterval": 500,
   "[css]": {
     "editor.defaultFormatter": "vscode.css-language-features"
@@ -152,7 +151,6 @@
   "git.blame.statusBarItem.template": "${authorName} - ${authorDate} (${authorDateAgo})",
   "chat.commandCenter.enabled": false,
   
-  // https://yt.home.bury.dev/watch?v=9_I0bySQoCs
   "breadcrumbs.enabled": false,
   "scm.diffDecorations": "all",
   "editor.hover.delay": 500,
@@ -177,4 +175,7 @@
   "editor.gotoLocation.multipleTypeDefinitions": "goto",
   "workbench.editor.enablePreview": false,
   "workbench.sideBar.location": "right",
+  
+  "window.zoomPerWindow": false,
+  "window.zoomLevel": 0.7,
 }
