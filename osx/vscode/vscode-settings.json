@@ -154,7 +154,7 @@
   
   // https://yt.home.bury.dev/watch?v=9_I0bySQoCs
   "breadcrumbs.enabled": false,
-  "scm.diffDecorations": "none",
+  "scm.diffDecorations": "all",
   "editor.hover.delay": 500,
   "editor.hover.enabled": true,
   "editor.matchBrackets": "never",
