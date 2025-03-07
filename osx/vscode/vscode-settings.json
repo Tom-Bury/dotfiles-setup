@@ -150,7 +150,6 @@
   "git.blame.statusBarItem.enabled": true,
   "git.blame.statusBarItem.template": "${authorName} - ${authorDate} (${authorDateAgo})",
   "chat.commandCenter.enabled": false,
-  
   "breadcrumbs.enabled": false,
   "scm.diffDecorations": "all",
   "editor.hover.delay": 500,
@@ -175,7 +174,6 @@
   "editor.gotoLocation.multipleTypeDefinitions": "goto",
   "workbench.editor.enablePreview": false,
   "workbench.sideBar.location": "right",
-  
   "window.zoomPerWindow": false,
-  "window.zoomLevel": 0.7,
+  "window.zoomLevel": 0.2
 }
