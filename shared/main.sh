@@ -48,9 +48,13 @@ main() {
 
   print_header = "Setting up K8s"
   source "$ROOT_DIR/shared/k8s/setup-k8s.sh"
-  setup_go $ROOT_DIR
-  setup_k8s
+  setup_k8s $ROOT_DIR
   print_footer "K8s set up"
+  
+  print_header = "Setting up gcloud"
+  source "$ROOT_DIR/shared/gcloud/setup-gcloud.sh"
+  setup_gcloud $ROOT_DIR
+  print_footer "gcloud set up"
 }
 
 main $(dirname "$0")
