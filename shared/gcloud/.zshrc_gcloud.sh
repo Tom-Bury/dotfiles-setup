@@ -14,16 +14,19 @@ gcpp() {
                 --query="$1"
     )
 
-    projectId=$(echo $selection| grep -oE '[0-9]+$')
 
     if [[ -n $selection ]]; then
-        gcloud auth application-default set-quota-project $projectId --quiet
-        gcloud config set project $projectId --quiet
+        newProject=$(echo $selection| grep -oE '[0-9]+$')
+        newProjectId=$(gcloud projects describe $newProject --format="value(projectId)")
+        newProjectName=$(gcloud projects describe $newProject --format="value(name)")
+        
+        gcloud auth application-default set-quota-project $newProjectId --quiet
+        gcloud config set project $newProjectId --quiet
+        
+        echo "\n\n✅ gcloud project switch done, now using: $newProjectName"
+    else
+        echo "\n\n❌ gcloud project not changed"
     fi
-
-    newProject=$(gcloud config get-value project)
-    newProjectName=$(gcloud projects describe $newProject --format="value(name)")
-    echo "\n\n✅ gcloud project switch done, now using: $newProjectName"
 }
 
 alias gcp='gcloud'

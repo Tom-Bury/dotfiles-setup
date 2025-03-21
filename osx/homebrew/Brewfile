@@ -121,6 +121,7 @@ vscode "ms-vsliveshare.vsliveshare"
 vscode "YevhenCherkes.object-dumper"
 vscode "sleistner.vscode-fileutils"
 vscode "GitHub.vscode-pull-request-github"
+vscode "cardinal90.multi-cursor-case-preserve"
 
 # AI / Copilot
 # vscode "GitHub.copilot"
