@@ -63,7 +63,7 @@
     "editor.defaultFormatter": "vscode.html-language-features"
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "gitlens.plusFeatures.enabled": false,
   "peacock.favoriteColors": [
@@ -109,7 +109,9 @@
   "editor.fontLigatures": true,
   "testing.openTesting": "neverOpen",
   "yaml.schemas": {
-    "file:///Users/tom.bury/.vscode/extensions/atlassian.atlascode-3.0.10/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml"
+    "/Users/tombury/.vscode/extensions/continue.continue-1.0.7-darwin-arm64/config-yaml-schema.json": [
+      ".continue/**/*.yaml"
+    ]
   },
   "extensions.ignoreRecommendations": true,
   "workbench.activityBar.location": "hidden",
@@ -141,7 +143,7 @@
   "diffEditor.ignoreTrimWhitespace": true,
   "githubPullRequests.experimental.notificationsView": true,
   "githubPullRequests.notifications": "pullRequests",
-  "diffEditor.renderSideBySide": false,
+  "diffEditor.renderSideBySide": true,
   "[javascript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
   },
@@ -175,5 +177,10 @@
   "workbench.editor.enablePreview": false,
   "workbench.sideBar.location": "right",
   "window.zoomPerWindow": false,
-  "window.zoomLevel": 0.2
+  "window.zoomLevel": 0.2,
+  "cSpell.userWords": [
+    "AABB",
+    "Collidable"
+  ],
+  "editor.formatOnSave": true
 }

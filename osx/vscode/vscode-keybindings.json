@@ -37,6 +37,14 @@
     "command": "-continue.quickEdit"
   },
   {
+    "key": "cmd+c",
+    "command": "-execCopy"
+  },
+  {
+    "key": "cmd+k p",
+    "command": "-workbench.action.files.copyPathOfActiveFile"
+  },
+  {
     "key": "cmd+k r",
     "command": "-workbench.action.files.revealActiveFileInWindows"
   },
@@ -63,6 +71,10 @@
   {
     "key": "cmd+k l",
     "command": "editor.action.openLink"
+  },
+  {
+    "key": "ctrl+shift+enter [",
+    "command": "editor.action.referenceSearch.trigger"
   },
   {
     "key": "shift+cmd+[BracketLeft]",
@@ -154,6 +166,11 @@
     "when": "inSearchEditor"
   },
   {
+    "key": "cmd+k shift+enter",
+    "command": "-workbench.action.pinEditor",
+    "when": "!activeEditorIsPinned"
+  },
+  {
     "key": "cmd+r",
     "command": "-workbench.action.reloadWindow",
     "when": "isDevelopment && !isAuxiliaryWindowFocusedContext"
@@ -214,6 +231,11 @@
     "when": "terminal.active"
   },
   {
+    "key": "cmd+k shift+enter",
+    "command": "-workbench.action.unpinEditor",
+    "when": "activeEditorIsPinned"
+  },
+  {
     "key": "ctrl+shift+g",
     "command": "-workbench.view.scm",
     "when": "workbench.scm.active"
@@ -245,6 +267,11 @@
   },
   {
     "key": "ctrl+shift+enter",
+    "command": "editor.action.revealDefinition",
+    "when": "editorHasDefinitionProvider && editorTextFocus && !isInEmbeddedEditor"
+  },
+  {
+    "key": "ctrl+shift+enter ]",
     "command": "editor.action.revealDefinition",
     "when": "editorHasDefinitionProvider && editorTextFocus && !isInEmbeddedEditor"
   },
@@ -284,6 +311,11 @@
     "when": "workbench.panel.chat.view.copilot.active"
   },
   {
+    "key": "cmd+k p",
+    "command": "workbench.action.pinEditor",
+    "when": "!activeEditorIsPinned"
+  },
+  {
     "key": "ctrl+cmd+right",
     "command": "workbench.action.terminal.focusNext",
     "when": "terminalFocus && terminalHasBeenCreated && !terminalEditorFocus || terminalFocus && terminalProcessSupported && !terminalEditorFocus"
@@ -307,6 +339,11 @@
     "key": "cmd+j",
     "command": "workbench.action.terminal.toggleTerminal",
     "when": "terminal.active"
+  },
+  {
+    "key": "cmd+k p",
+    "command": "workbench.action.unpinEditor",
+    "when": "activeEditorIsPinned"
   },
   {
     "key": "shift+cmd+g",
