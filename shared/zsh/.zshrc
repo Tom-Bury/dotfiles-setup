@@ -5,9 +5,19 @@
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME=""
 
-plugins=(zsh-autosuggestions fast-syntax-highlighting zsh-autocomplete)
-source $ZSH/oh-my-zsh.sh
+# https://github.com/zsh-users/zsh-completions#manual-installation
+fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
+autoload -U compinit && compinit
 
+# In case the compinit gets too slow: https://gist.github.com/ctechols/ca1035271ad134841284
+
+export NVM_LAZY_LOAD=true
+export NVM_AUTO_USE=true
+
+# fxf-tab does not interop with zsh-autocomplete
+plugins=(fzf-tab fast-syntax-highlighting zsh-nvm zsh-autosuggestions)
+
+source $ZSH/oh-my-zsh.sh
 
 # Fix slowness of pastes with zsh-syntax-highlighting.zsh: https://gist.github.com/magicdude4eva/2d4748f8ef3e6bf7b1591964c201c1ab
 pasteinit() {
@@ -62,5 +72,5 @@ export PATH="$HOME/bin:$PATH"
 ###############################################
 
 for file in $HOME/zshrc-scripts/.zshrc_*.sh; do
-  source $file
+  sched +1 source $file
 done

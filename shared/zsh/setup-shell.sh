@@ -16,6 +16,11 @@ setup_shell() {
   setup_syntax_highlighting
   setup_zsh_autocomplete
 
+  setup_fzf_tab
+  setup_zsh_completions
+  setup_nvm
+  setup_zsh_defer
+
   setup_extra_source_scripts $ROOT_DIR
 
   source $HOME/.zshrc 
@@ -68,4 +73,36 @@ setup_zsh_autocomplete() {
   zstyle -e ':autocomplete:list-choices:*' list-lines 'reply=( $(( LINES / 3 )) )'
   zstyle ':autocomplete:history-incremental-search-backward:*' list-lines 8
   zstyle ':autocomplete:history-search-backward:*' list-lines 8
+}
+
+setup_fzf_tab() {
+  # https://github.com/Aloxaf/fzf-tab
+  FZF_TAB_INSTALLATION_DIR=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fzf-tab
+  if [ ! -d $FZF_TAB_INSTALLATION_DIR ]; then
+    git clone --depth 1 -- https://github.com/Aloxaf/fzf-tab $FZF_TAB_INSTALLATION_DIR
+  fi
+}
+
+setup_zsh_completions() {
+  # https://github.com/zsh-users/zsh-completions#manual-installation
+  ZSH_COMPLETIONS_DIR=${ZSH_CUSTOM:-${ZSH:-$HOME/.oh-my-zsh}/custom}/plugins/zsh-completions
+  if [ ! -d $ZSH_COMPLETIONS_DIR ]; then
+    git clone --depth 1 -- https://github.com/zsh-users/zsh-completions.git $ZSH_COMPLETIONS_DIR
+  fi
+}
+
+setup_nvm() {
+  # https://github.com/lukechilds/zsh-nvm
+  NVM_ZSH_INSTALLATION_DIR=${ZSH_CUSTOM:-${ZSH:-$HOME/.oh-my-zsh}/custom}/plugins/zsh-nvm
+  if [ ! -d $NVM_ZSH_INSTALLATION_DIR ]; then
+    git clone --depth 1 -- https://github.com/lukechilds/zsh-nvm $NVM_ZSH_INSTALLATION_DIR
+  fi
+}
+
+setup_zsh_defer() {
+  # https://github.com/romkatv/zsh-defer
+  ZSH_DEFER_INSTALLATION_DIR=${ZSH_CUSTOM:-${ZSH:-$HOME/.oh-my-zsh}/custom}/plugins/zsh-defer
+  if [ ! -d $ZSH_DEFER_INSTALLATION_DIR ]; then
+    git clone --depth 1 -- https://github.com/romkatv/zsh-defer.git $ZSH_DEFER_INSTALLATION_DIR
+  fi
 }

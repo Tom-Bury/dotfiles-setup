@@ -25,13 +25,6 @@ main() {
   setup_shell $ROOT_DIR
   print_footer "Shell set up"
 
-  if [ "$NODE" = true ]; then
-    print_header "Setting up Node.js with NVM 📦"
-    source "$SCRIPT_DIR/node/setup-nvm.sh"
-    setup_nvm $ROOT_DIR
-    print_footer "Node.js with NVM set up"
-  fi
-
   if [ "$PYTHON" = true ]; then
     print_header "Setting up Python 🐍"
     source "$SCRIPT_DIR/python/setup-python.sh"
