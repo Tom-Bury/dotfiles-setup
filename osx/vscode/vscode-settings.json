@@ -182,5 +182,8 @@
     "AABB",
     "Collidable"
   ],
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "files.exclude": {
+    "**/.jj": true
+  }
 }

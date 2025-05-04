@@ -57,6 +57,10 @@
     "command": "-workbench.action.moveEditorToPreviousGroup"
   },
   {
+    "key": "ctrl+q",
+    "command": "-workbench.action.quickOpenView"
+  },
+  {
     "key": "cmd+j",
     "command": "-workbench.action.togglePanel"
   },
@@ -169,6 +173,11 @@
     "key": "cmd+k shift+enter",
     "command": "-workbench.action.pinEditor",
     "when": "!activeEditorIsPinned"
+  },
+  {
+    "key": "ctrl+q",
+    "command": "-workbench.action.quickOpenNavigateNextInViewPicker",
+    "when": "inQuickOpen && inViewsPicker"
   },
   {
     "key": "cmd+r",
