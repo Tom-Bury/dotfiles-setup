@@ -1,0 +1,72 @@
+[user]
+name = "Tom Bury"
+email = "tom.bury@hotmail.com"
+
+[ui]
+editor = "micro"
+default-command = "log"
+
+[colors]
+tags = "yellow"
+branches = "yellow"
+bookmarks = "black"
+description = "cyan"
+
+[revsets]
+log = "trunk()-..@ | mine()"
+
+[templates]
+log = "custom_log_short"
+
+[template-aliases]
+custom_log_long = '''
+if(root,
+  format_root_commit(self),
+  label(if(current_working_copy, "working_copy"),
+    concat(
+      separate(" ",
+        format_short_change_id_with_hidden_and_divergent_info(self),
+        if(empty, label("empty", "(empty)")),
+        if(conflict, label("conflict", "conflict")),
+        if(description,
+          description.first_line(),
+          label(if(empty, "empty"), description_placeholder),
+        ),
+        if(git_head, label("git_head", "git_head()")),
+      ) ++ "\n",
+      separate(" ",
+        format_short_signature_oneline(author),
+        tags,
+        bookmarks,
+        working_copies,
+        format_timestamp(commit_timestamp(self)),
+      ) ++ "\n",
+    ),
+  )
+)
+'''
+
+custom_log_short = '''
+if(root,
+  format_root_commit(self),
+  label(if(current_working_copy, "working_copy"),
+    concat(
+      separate(" ",
+        format_short_change_id_with_hidden_and_divergent_info(self),
+        if(empty, label("empty", "(empty)")),
+        if(conflict, label("conflict", "conflict")),
+        if(description,
+          description.first_line(),
+          label(if(empty, "empty"), description_placeholder),
+        ),
+        if(git_head, label("git_head", "git_head()")),
+      ) ++ "\n         ",
+      separate(" ",
+        tags,
+        bookmarks,
+        working_copies,
+      ) ++ "\n",
+    ),
+  )
+)
+'''
