@@ -4,6 +4,12 @@
 
 [core]
     editor = ~/.gvm/pkgsets/go1.23.2/global/bin/jot
+    whitespace = error
+    preloadindex = true
+    pager = diff-so-fancy | less --tabs=4 -RF
+
+[interactive]
+    diffFilter = diff-so-fancy --patch
 
 [push]
 	autoSetupRemote = true
@@ -12,7 +18,9 @@
     prune = true
 
 [status]
+    branch = true
     short = true
+    showStash = true
 
 [rebase]
 	updateRefs = false
@@ -22,8 +30,17 @@
     rebase = true
 
 [diff]
-  mnemonicPrefix = true
-  renames = true
+    context = 3
+    mnemonicPrefix = true
+    renames = copies
+    interHunkContext = 10
+
+[color "diff"]
+    meta = black bold
+    frag = magenta
+    context = white
+    whitespace = yellow reverse
+    old = red
 
 [pretty]
 	simple = format:%C(white)%s%C(reset)%C(auto)%(decorate:tag=,separator= )%C(reset)%n%C(white)⤷%C(reset) %C(240)%ad%C(reset) %C(italic 66)%an%C(reset) %C(130)%h%C(reset)%n

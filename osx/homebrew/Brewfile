@@ -18,6 +18,8 @@ cask "wifiman"
 # Core apps
 brew "git"
 brew "jj"
+brew "lazyjj"
+brew "diff-so-fancy"
 brew "micro"
 cask "docker"
 cask "visual-studio-code"

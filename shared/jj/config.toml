@@ -5,15 +5,21 @@ email = "tom.bury@hotmail.com"
 [ui]
 editor = "micro"
 default-command = "log"
+pager = ["sh", "-c", "diff-so-fancy | less --tabs=4 -RF"]
+
+[ui.diff]
+format = "git"
 
 [colors]
 tags = "yellow"
+author = "black"
+description = "white"
 branches = "yellow"
-bookmarks = "black"
-description = "cyan"
+bookmarks = "bright yellow"
+timestamp = "black"
 
 [revsets]
-log = "trunk()-..@ | mine()"
+log = "trunk()-..@ | mine() | all()"
 
 [templates]
 log = "custom_log_short"
@@ -70,3 +76,9 @@ if(root,
   )
 )
 '''
+
+[diff.git]
+context = 3
+mnemonicPrefix = true
+renames = "copies"
+interHunkContext = 10
