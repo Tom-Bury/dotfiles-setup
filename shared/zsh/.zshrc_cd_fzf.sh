@@ -8,6 +8,7 @@ IGNORE_DIRS=(
     .bundle
     Pods
     .gradle
+    .jj
 )
 
 fd() {
