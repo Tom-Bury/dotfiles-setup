@@ -3,7 +3,8 @@
 	useConfigOnly = true
 
 [core]
-    editor = ~/.gvm/pkgsets/go1.23.2/global/bin/jot
+    # editor = ~/.gvm/pkgsets/go1.23.2/global/bin/jot
+    editor = micro
     whitespace = error
     preloadindex = true
     pager = diff-so-fancy | less --tabs=4 -RF
