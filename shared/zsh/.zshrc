@@ -74,3 +74,9 @@ export PATH="$HOME/bin:$PATH"
 for file in $HOME/zshrc-scripts/.zshrc_*.sh; do
   sched +1 source $file
 done
+
+###############################################
+# Git-Spice
+###############################################
+
+eval "$(gs shell completion zsh)"
