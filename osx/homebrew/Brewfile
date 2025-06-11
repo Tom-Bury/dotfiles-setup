@@ -27,7 +27,6 @@ cask "visual-studio-code"
 cask "fork"
 cask "ghostty"
 brew "starship"
-cask "zen-browser"
 
 # Mobile app dev utilities
 # cask "provisionql"

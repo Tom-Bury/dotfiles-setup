@@ -55,6 +55,10 @@ alias t4='tree -L 4'
 
 alias bjot="$HOME/.gvm/pkgsets/go1.23.2/global/bin/jot"
 
+# https://stackoverflow.com/questions/19331497/set-environment-variables-from-file-of-key-value-pairs
+alias sourceenv="export $(grep -v '^#' .env | xargs)"
+alias unsourceenv="unset $(grep -v '^#' .env | sed -E 's/(.*)=.*/\1/' | xargs)"
+
 ###############################################
 # Starship prompt https://starship.rs/
 ###############################################

@@ -136,9 +136,16 @@
     "linesBetweenQueries": 3
   },
   "cSpell.language": "en-GB",
-  "go.lintTool": "golangci-lint",
-  "go.lintFlags": [
-    "--fast"
+  "go.buildTags": "integration_tests",
+  "go.lintTool": "golangci-lint-v2",
+  "go.lintFlags": [],
+  "go.formatTool": "custom",
+  "go.alternateTools": {
+    "customFormatter": "golangci-lint-v2"
+  },
+  "go.formatFlags": [
+    "fmt",
+    "--stdin"
   ],
   "diffEditor.ignoreTrimWhitespace": true,
   "githubPullRequests.experimental.notificationsView": true,
@@ -177,7 +184,6 @@
   "workbench.editor.enablePreview": false,
   "workbench.sideBar.location": "right",
   "window.zoomPerWindow": false,
-  "window.zoomLevel": 0.2,
   "cSpell.userWords": [
     "AABB",
     "Collidable"
@@ -185,5 +191,7 @@
   "editor.formatOnSave": true,
   "files.exclude": {
     "**/.jj": true
-  }
+  },
+  "sqltools.useNodeRuntime": false,
+  "sqltools.disableNodeDetectNotifications": true
 }
