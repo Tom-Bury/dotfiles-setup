@@ -9,7 +9,7 @@ cask "android-file-transfer"
 cask "stats"
 cask "bitwarden"
 cask "wifiman"
-
+brew "syncthing", restart_service: true
 
 ###############################################
 # Development
@@ -22,7 +22,7 @@ brew "lazyjj"
 brew "git-spice"
 brew "diff-so-fancy"
 brew "micro"
-cask "docker"
+# cask "docker"
 cask "visual-studio-code"
 cask "fork"
 cask "ghostty"
@@ -70,7 +70,7 @@ brew "hashicorp/tap/terraform"
 
 cask "spotify"
 cask "whatsapp"
-brew "onedrive"
+# brew "onedrive"
 # cask "gimp"
 # cask "messenger"
 

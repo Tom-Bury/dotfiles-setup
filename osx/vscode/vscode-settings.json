@@ -111,6 +111,12 @@
   "yaml.schemas": {
     "/Users/tombury/.vscode/extensions/continue.continue-1.0.7-darwin-arm64/config-yaml-schema.json": [
       ".continue/**/*.yaml"
+    ],
+    "/Users/tombury/.vscode/extensions/continue.continue-1.0.14-darwin-arm64/config-yaml-schema.json": [
+      ".continue/**/*.yaml"
+    ],
+    "/Users/tombury/.vscode/extensions/continue.continue-1.0.15-darwin-arm64/config-yaml-schema.json": [
+      ".continue/**/*.yaml"
     ]
   },
   "extensions.ignoreRecommendations": true,
@@ -193,5 +199,8 @@
     "**/.jj": true
   },
   "sqltools.useNodeRuntime": false,
-  "sqltools.disableNodeDetectNotifications": true
+  "sqltools.disableNodeDetectNotifications": true,
+  "zenMode.showTabs": "none",
+  "mdb.confirmRunCopilotCode": false,
+  "telemetry.feedback.enabled": false
 }

@@ -69,7 +69,8 @@ eval "$(starship init zsh)"
 # Adjust PATH
 ###############################################
 
-export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/bin:$HOME/.docker/bin:$PATH"
+
 
 ###############################################
 # Load extra scripts
