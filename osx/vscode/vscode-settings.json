@@ -109,13 +109,7 @@
   "editor.fontLigatures": true,
   "testing.openTesting": "neverOpen",
   "yaml.schemas": {
-    "/Users/tombury/.vscode/extensions/continue.continue-1.0.7-darwin-arm64/config-yaml-schema.json": [
-      ".continue/**/*.yaml"
-    ],
-    "/Users/tombury/.vscode/extensions/continue.continue-1.0.14-darwin-arm64/config-yaml-schema.json": [
-      ".continue/**/*.yaml"
-    ],
-    "/Users/tombury/.vscode/extensions/continue.continue-1.0.15-darwin-arm64/config-yaml-schema.json": [
+    "/Users/tombury/.vscode/extensions/continue.continue-1.0.21-darwin-arm64/config-yaml-schema.json": [
       ".continue/**/*.yaml"
     ]
   },

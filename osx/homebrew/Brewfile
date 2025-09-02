@@ -27,6 +27,7 @@ cask "visual-studio-code"
 cask "fork"
 cask "ghostty"
 brew "starship"
+brew "derailed/k9s/k9s"
 
 # Mobile app dev utilities
 # cask "provisionql"
