@@ -109,7 +109,7 @@
   "editor.fontLigatures": true,
   "testing.openTesting": "neverOpen",
   "yaml.schemas": {
-    "/Users/tombury/.vscode/extensions/continue.continue-1.0.21-darwin-arm64/config-yaml-schema.json": [
+    "file:///Users/tombury/.vscode/extensions/continue.continue-1.2.7-darwin-arm64/config-yaml-schema.json": [
       ".continue/**/*.yaml"
     ]
   },
@@ -196,5 +196,20 @@
   "sqltools.disableNodeDetectNotifications": true,
   "zenMode.showTabs": "none",
   "mdb.confirmRunCopilotCode": false,
-  "telemetry.feedback.enabled": false
+  "telemetry.feedback.enabled": false,
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "git.blame.editorDecoration.enabled": false,
+  "playwright.reuseBrowser": true,
+  "mdb.mcp.server": "prompt",
+  "[dockercompose]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.autoIndent": "advanced",
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[github-actions-workflow]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  }
 }

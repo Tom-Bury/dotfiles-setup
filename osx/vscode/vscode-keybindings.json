@@ -125,6 +125,11 @@
     "command": "workbench.view.extension.sqltoolsActivityBarContainer"
   },
   {
+    "key": "cmd+k shift+alt+cmd+c",
+    "command": "-copyRelativeFilePath",
+    "when": "editorFocus"
+  },
+  {
     "key": "alt+cmd+backspace",
     "command": "-deleteFile",
     "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceReadonly && !inputFocus"
@@ -253,6 +258,11 @@
     "key": "ctrl+shift+g",
     "command": "-workbench.view.scm",
     "when": "workbench.scm.active && !gitlens:disabled && config.gitlens.keymap == 'chorded'"
+  },
+  {
+    "key": "alt+k c",
+    "command": "copyRelativeFilePath",
+    "when": "editorFocus"
   },
   {
     "key": "cmd+backspace",

@@ -17,8 +17,8 @@ brew "syncthing", restart_service: true
 
 # Core apps
 brew "git"
-brew "jj"
-brew "lazyjj"
+# brew "jj"
+# brew "lazyjj"
 brew "git-spice"
 brew "diff-so-fancy"
 brew "micro"
@@ -45,7 +45,7 @@ brew "tree"
 tap "localsend/localsend"
 cask "localsend"
 brew "ffmpeg"
-brew "ollama"
+# brew "ollama"
 
 # React-Native
 # brew "rbenv"
