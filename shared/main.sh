@@ -15,9 +15,9 @@ main() {
   zsh "$SCRIPT_DIR/git/setup-git.sh"
   print_footer "Git set up"
   
-  print_header "Setting up JJ 🥋"
-  zsh "$SCRIPT_DIR/jj/setup-jj.sh"
-  print_footer "JJ set up"
+  # print_header "Setting up JJ 🥋"
+  # zsh "$SCRIPT_DIR/jj/setup-jj.sh"
+  # print_footer "JJ set up"
 
   print_header "Creating folders 📂"
   safe_create_folder $HOME/personal/code
