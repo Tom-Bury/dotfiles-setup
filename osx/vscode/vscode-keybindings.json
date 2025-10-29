@@ -61,6 +61,10 @@
     "command": "-workbench.action.quickOpenView"
   },
   {
+    "key": "alt+cmd+b",
+    "command": "-workbench.action.toggleAuxiliaryBar"
+  },
+  {
     "key": "cmd+j",
     "command": "-workbench.action.togglePanel"
   },
@@ -358,6 +362,11 @@
     "key": "cmd+j",
     "command": "workbench.action.terminal.toggleTerminal",
     "when": "terminal.active"
+  },
+  {
+    "key": "shift+cmd+c",
+    "command": "workbench.action.toggleAuxiliaryBar",
+    "when": "auxiliaryBarFocus"
   },
   {
     "key": "cmd+k p",

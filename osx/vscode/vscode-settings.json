@@ -211,5 +211,15 @@
   },
   "[github-actions-workflow]": {
     "editor.defaultFormatter": "redhat.vscode-yaml"
-  }
+  },
+  "search.defaultViewMode": "tree",
+  "workbench.editorAssociations": {
+    "*.svg": "default"
+  },
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+  "[templ]": {
+    "editor.defaultFormatter": "a-h.templ"
+  },
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "github.copilot.nextEditSuggestions.allowWhitespaceOnlyChanges": false
 }
