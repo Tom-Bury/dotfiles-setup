@@ -46,6 +46,7 @@ tap "localsend/localsend"
 cask "localsend"
 brew "ffmpeg"
 brew "tmux"
+brew "lazygit"
 # brew "ollama"
 
 # React-Native
