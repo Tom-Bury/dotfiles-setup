@@ -1,0 +1,32 @@
+#!/usr/bin/env zsh
+
+# --- Session Initialization ---
+# Start the session (nexus) and the first window (window index 1)
+# Note: The 'new -A' flag is recommended for robust session creation (Attach or New)
+new -A -s nexus -n nexus-api -c ~/work/code/nexus-api
+
+# --- Window 1: nexus-api (2 Panes, Horizontal 75%/25%) ---
+# Pane 1 (Left, 75%): Runs lazygit (from new command above)
+# Split the current pane (Pane 1) horizontally. New pane (Pane 2) is 25%.
+splitw -h -p 25 -c ~/work/code/nexus-api
+# Set focus to the right pane (Pane 2)
+selectp -t 1
+
+# --- Window 2: nexus-front-end (4 Panes, window index 2) ---
+# Create a new window (-n) and set its default directory (-c). Pane 1 is created.
+neww -n nexus-front-end -c ~/work/code/nexus-front-end
+# 1. Split Horizontally (Pane 1 left 75% / Pane 2 right 25%)
+splitw -h -p 25 -c ~/work/code/nexus-front-end
+# Focus automatically moves to the new pane (Pane 2, the 25% right column)
+# 2. Split Vertically (Target: Pane 2). New Pane (3) is created below Pane 2.
+# Splits the *current* pane (Pane 2).
+splitw -v -p 66 -c ~/work/code/nexus-front-end
+# Focus automatically moves to the new pane (Pane 3)
+# 3. Split Vertically (Target: Pane 3). New Pane (4) is created below Pane 3.
+# Splits the *current* pane (Pane 3).
+splitw -v -p 50 -c ~/work/code/nexus-front-end
+# Focus automatically moves to the new pane (Pane 4)
+# Set final focus to the main left pane (Pane 1) of this window
+selectp -t 1
+
+selectw -t nexus-api

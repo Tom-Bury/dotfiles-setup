@@ -5,9 +5,18 @@
 tmac () {
     tmux has-session -t "$1" 2>/dev/null
     if [ $? != 0 ]; then
-        tmux new-session -s "$1" -d
+        if [ -f "$HOME/.tmux/$1" ]; then
+            echo "Loading templated tmux session from $HOME/.tmux/$1"
+            tmux source "$HOME/.tmux/$1"
+        else
+            echo "Creating new tmux session $1"
+            tmux new-session -s "$1" -d
+        fi
+
+    else
+        echo "Attaching to existing tmux session $1"
+        tmux attach -t "$1"
     fi
-    tmux attach -t "$1"
 }
 
 _tmac_complete() {
