@@ -28,6 +28,7 @@
   "zenMode.fullScreen": false,
   "search.exclude": {
     "**/.idea/*": true,
+    "**/.next/*": true,
     "**/build/*": true,
     "**/coverage/*": true,
     "**/dist/*": true,

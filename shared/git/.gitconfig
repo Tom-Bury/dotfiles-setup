@@ -24,7 +24,7 @@
     showStash = true
 
 [rebase]
-	updateRefs = false
+	updateRefs = true
     autoStash = true
 
 [pull]

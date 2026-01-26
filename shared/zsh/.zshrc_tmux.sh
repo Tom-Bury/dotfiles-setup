@@ -15,6 +15,7 @@ tmac () {
 
     else
         echo "Attaching to existing tmux session $1"
+        tmux detach 2>/dev/null
         tmux attach -t "$1"
     fi
 }
