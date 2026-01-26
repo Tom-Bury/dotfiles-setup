@@ -5,6 +5,7 @@
 tmac () {
     tmux has-session -t "$1" 2>/dev/null
     if [ $? != 0 ]; then
+        # session does not exist, create it first
         if [ -f "$HOME/.tmux/$1" ]; then
             echo "Loading templated tmux session from $HOME/.tmux/$1"
             tmux source "$HOME/.tmux/$1"
@@ -12,17 +13,16 @@ tmac () {
             echo "Creating new tmux session $1"
             tmux new-session -s "$1" -d
         fi
+    fi
 
+    if [ -n "$TMUX" ]; then
+        # already in a tmux session
+        echo "Switching to tmux session $1 from within tmux"
+        tmux switch -t "$1"
+        return
     else
-        if [ -n "$TMUX" ]; then
-            # already in a tmux session
-            echo "Switching to tmux session $1 from within tmux"
-            tmux switch -t "$1"
-            return
-        else
-            echo "Attaching to existing tmux session $1"
-            tmux attach -t "$1"
-        fi
+        echo "Attaching to existing tmux session $1"
+        tmux attach -t "$1"
     fi
 }
 
