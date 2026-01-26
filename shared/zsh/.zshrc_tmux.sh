@@ -14,9 +14,15 @@ tmac () {
         fi
 
     else
-        echo "Attaching to existing tmux session $1"
-        tmux detach 2>/dev/null
-        tmux attach -t "$1"
+        if [ -n "$TMUX" ]; then
+            # already in a tmux session
+            echo "Switching to tmux session $1 from within tmux"
+            tmux switch -t "$1"
+            return
+        else
+            echo "Attaching to existing tmux session $1"
+            tmux attach -t "$1"
+        fi
     fi
 }
 
