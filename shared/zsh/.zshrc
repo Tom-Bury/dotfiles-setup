@@ -54,6 +54,7 @@ alias t3='tree -L 3'
 alias t4='tree -L 4'
 
 alias lg='lazygit'
+alias ld='lazydocker'
 
 alias bjot="$HOME/.gvm/pkgsets/go1.23.2/global/bin/jot"
 
