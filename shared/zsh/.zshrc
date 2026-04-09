@@ -32,6 +32,9 @@ zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish
 # Fix slowness of pastes
 
+# mise
+eval "$(mise activate zsh)"
+
 ###############################################
 # Aliases
 ###############################################
