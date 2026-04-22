@@ -1,19 +1,18 @@
 [user]
-	name = Tom Bury
-	useConfigOnly = true
+    name = Tom Bury
+    useConfigOnly = true
 
 [core]
-    # editor = ~/.gvm/pkgsets/go1.23.2/global/bin/jot
     editor = micro
     whitespace = error
     preloadindex = true
-    pager = diff-so-fancy | less --tabs=4 -RF
+    pager = diff-so-fancy | less --tabs=4 -RFX
 
 [interactive]
-    diffFilter = diff-so-fancy --patch
+    diffFilter = diff-so-fancy --patch --color
 
 [push]
-	autoSetupRemote = true
+    autoSetupRemote = true
 
 [fetch]
     prune = true
@@ -24,11 +23,15 @@
     showStash = true
 
 [rebase]
-	updateRefs = true
+    updateRefs = true
     autoStash = true
 
 [pull]
     rebase = true
+
+[merge]
+    # Provides more context in merge conflicts than standard diff3
+    conflictstyle = zdiff3
 
 [diff]
     context = 3
@@ -36,30 +39,43 @@
     renames = copies
     interHunkContext = 10
 
+[color]
+    ui = true
+
 [color "diff"]
-    meta = black bold
-    frag = magenta
+    meta = 11
+    frag = magenta bold
+    commit = yellow bold
+    old = red bold
+    new = green bold
+    whitespace = red reverse
     context = white
-    whitespace = yellow reverse
-    old = red
+
+[color "diff-highlight"]
+    oldNormal = red bold
+    oldHighlight = red bold 52
+    newNormal = green bold
+    newHighlight = green bold 22
 
 [pretty]
-	simple = format:%C(white)%s%C(reset)%C(auto)%(decorate:tag=,separator= )%C(reset)%n%C(white)⤷%C(reset) %C(240)%ad%C(reset) %C(italic 66)%an%C(reset) %C(130)%h%C(reset)%n
+    simple = format:%C(white)%s%C(reset)%C(auto)%(decorate:tag=,separator= )%C(reset)%n%C(white)⤷%C(reset) %C(240)%ad%C(reset) %C(italic 66)%an%C(reset) %C(130)%h%C(reset)%n
 
 [alias]
-	lg  = -c core.pager='less -SRF' log --pretty=simple --graph --date=format:'%Y-%m-%d %H:%M' --decorate @{u}
-	lga  = -c core.pager='less -SRF' log --pretty=simple --graph --date=format:'%Y-%m-%d %H:%M' --decorate @{u} --all
-	lgs  = -c core.pager='less -SRF' log --pretty=simple --graph --cc --stat --date=format:'%Y-%m-%d %H:%M' --decorate @{u}
-	lgd  = -c core.pager='less -SRF' log --pretty=simple --graph --cc --patch --date=format:'%Y-%m-%d %H:%M' --decorate @{u}
-	
-	lgg  = -c core.pager='less -SRF' log --pretty=simple --graph --date=format:'%Y-%m-%d %H:%M'
-	review-local = "!git lgg @{push}.."
+    # Log Aliases (Using less -SRF to keep graphs clean)
+    lg  = -c core.pager='less -SRF' log --pretty=simple --graph --date=format:'%Y-%m-%d %H:%M' --decorate @{u}
+    lga  = -c core.pager='less -SRF' log --pretty=simple --graph --date=format:'%Y-%m-%d %H:%M' --decorate @{u} --all
+    lgs  = -c core.pager='less -SRF' log --pretty=simple --graph --cc --stat --date=format:'%Y-%m-%d %H:%M' --decorate @{u}
+    lgd  = -c core.pager='less -SRF' log --pretty=simple --graph --cc --patch --date=format:'%Y-%m-%d %H:%M' --decorate @{u}
+    lgg  = -c core.pager='less -SRF' log --pretty=simple --graph --date=format:'%Y-%m-%d %H:%M'
+    
+    # Workflow Aliases
+    review-local = "!git lgg @{push}.."
     rl = "review-local"
-	diverge = ! "git lgg $(git merge-base $1 $2)^..$1 $(git merge-base $1 $2)^..$2"
-
-	email = config --local user.email
-	
+    diverge = ! "git lgg $(git merge-base $1 $2)^..$1 $(git merge-base $1 $2)^..$2"
+    email = config --local user.email
     find-tag = rev-list -n 1
+    
+    # Short Commands
     s = status
     c = commit -m
     ca = commit -am
@@ -75,14 +91,11 @@
     a = add -i
     rba = rebase --update-refs
     r = restore
+    
+    # Scripts
     swr = "!git fetch origin && git checkout $(git branch -r | sed 's/origin\\///' | fzf)"
-    rst = "!git clean -df && git checkout -- ."
-
+    rst = "!git clean -df && git restore ."
     rename-branch = branch -m
 
-# https://opensource.googleblog.com/2018/05/introducing-git-protocol-version-2.html
 [protocol]
-	version = 2
-
-
-
+    version = 2

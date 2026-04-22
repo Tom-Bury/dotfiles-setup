@@ -40,6 +40,11 @@ main() {
   download_homebrew_apps $ROOT_DIR
   print_footer "HomeBrew apps downloaded"
 
+  print_header "Setting up Lazygit 🖥"
+  source "$ROOT_DIR/osx/lazygit/setup-lazygit.sh"
+  setup_lazygit $ROOT_DIR
+  print_footer "Lazygit set up"
+
   print_header "Syncing VSCode settings ⚙️"
   source "$ROOT_DIR/osx/vscode/setup-vscode.sh"
   sync_vscode_settings

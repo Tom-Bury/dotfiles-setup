@@ -163,7 +163,7 @@
   "breadcrumbs.enabled": false,
   "scm.diffDecorations": "all",
   "editor.hover.delay": 500,
-  "editor.hover.enabled": true,
+  "editor.hover.enabled": "on",
   "editor.matchBrackets": "never",
   "workbench.tips.enabled": false,
   "editor.colorDecorators": true,
