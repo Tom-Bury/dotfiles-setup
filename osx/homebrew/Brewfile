@@ -38,7 +38,7 @@ brew "mise"
 # brew "codes"
 
 # Utilities
-cask "kdiff3"
+# cask "kdiff3"
 brew "tlrc"
 brew "jq"
 brew "fzf"

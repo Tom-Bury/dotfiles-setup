@@ -144,7 +144,10 @@
   "go.alternateTools": {
     "customFormatter": "golangci-lint-v2"
   },
-  "go.formatFlags": ["fmt", "--stdin"],
+  "go.formatFlags": [
+    "fmt",
+    "--stdin"
+  ],
   "diffEditor.ignoreTrimWhitespace": true,
   "githubPullRequests.experimental.notificationsView": true,
   "githubPullRequests.notifications": "pullRequests",
@@ -182,7 +185,10 @@
   "workbench.editor.enablePreview": false,
   "workbench.sideBar.location": "right",
   "window.zoomPerWindow": false,
-  "cSpell.userWords": ["AABB", "Collidable"],
+  "cSpell.userWords": [
+    "AABB",
+    "Collidable"
+  ],
   "editor.formatOnSave": true,
   "files.exclude": {
     "**/.jj": true

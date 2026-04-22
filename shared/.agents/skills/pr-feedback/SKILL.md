@@ -43,11 +43,18 @@ Input is a JSON object representing the open PR and its feedback, with the follo
 
 ## Instructions
 
-When this skill is invoked, follow these steps to process each item in `change_requests`.
-If no JSON is provided, respond with "No PR feedback found. Please provide the PR feedback JSON. (use `ghprdata` command to get it)".
+When this skill is invoked, follow these steps:
+
+### 0. Validate the input
+
+Ensure you have been provided with the necessary JSON input by the user.
+NEVER assume you have the PR feedback data or look for it in files or history.
+It must ALWAYS be provided in the message invoking the skill.
+If the input is missing or malformed, respond with "No PR feedback found. Please provide the PR feedback JSON. (use `ghprdata` command to get it)".
 
 ### 1. Evaluate the Feedback Type
 
+Process each item in `change_requests`.
 Analyze the `body` and metadata flags to determine the action:
 
 - **Code Change:** Required if `good_comment` is `true`, or if the comment contains 🛑 (Blocker) or 🔧 (Suggestion) that you deem valid.
