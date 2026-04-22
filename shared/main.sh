@@ -52,6 +52,11 @@ main() {
   source "$ROOT_DIR/shared/gcloud/setup-gcloud.sh"
   setup_gcloud $ROOT_DIR
   print_footer "gcloud set up"
+
+  print_header = "Setting up agent skills 🤖"
+  source "$ROOT_DIR/shared/.agents/setup-agents.sh"
+  setup_agent_skills $ROOT_DIR
+  print_footer "Agent skills set up"
 }
 
 main $(dirname "$0")

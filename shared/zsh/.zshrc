@@ -90,4 +90,4 @@ done
 # Git-Spice
 ###############################################
 
-eval "$(gs shell completion zsh)"
+eval "$(git-spice shell completion zsh)"
