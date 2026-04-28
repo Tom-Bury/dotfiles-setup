@@ -26,20 +26,43 @@ Input is a JSON object representing the open PR and its feedback, with the follo
     "title": "This is the PR title."
   },
   "change_requests": [
-    {
-      "path": "file/path/where/comment/is/made.txt",
-      "line": 123,
-      "body": "This is the comment left by the reviewer on a specific line of code.",
-      "author": "Alice",
-      "good_comment": true,
-      "bad_comment": false
-    }
+    [
+      {
+        "path": "file/path/where/comment/is/made.txt",
+        "line": 123,
+        "body": "This is the comment left by the reviewer on a specific line of code.",
+        "author": "Alice",
+        "good_comment": true,
+        "bad_comment": false
+      },
+      {
+        "path": "file/path/where/comment/is/made.txt",
+        "line": 123,
+        "body": "This comment is a response to Alice's comment; so it's in the same thread.",
+        "author": "Bob",
+        "good_comment": false,
+        "bad_comment": false
+      }
+    ],
+    [
+      {
+        "path": "file/path/where/comment/is/made.txt",
+        "line": 45,
+        "body": "This is another comment left by a different reviewer on a different line.",
+        "author": "Charlie",
+        "good_comment": false,
+        "bad_comment": true
+      }
+    ]
   ]
 }
 ```
 
 - `metadata`: contains information about the PR itself, including the author, body, and title.
-- `change_requests`: an array of comments left by reviewers on specific lines of code, along with the author of the comment and whether it has received positive or negative reactions.
+- `change_requests`: an array of comment threads left by reviewers on specific lines of code, along with the author of the comment and whether it has received positive or negative reactions.
+  When a thread has multiple comments, it means there was discussion.
+  Each comment in the thread should be evaluated to determine the appropriate action.
+  When the `line` is `null`, it means the comment was made on the file in general and not on a specific line of code.
 
 ## Instructions
 
@@ -54,8 +77,8 @@ If the input is missing or malformed, respond with "No PR feedback found. Please
 
 ### 1. Evaluate the Feedback Type
 
-Process each item in `change_requests`.
-Analyze the `body` and metadata flags to determine the action:
+Process each comment thread in `change_requests`.
+Analyze the `body` and metadata flags for each commentto determine the action:
 
 - **Code Change:** Required if `good_comment` is `true`, or if the comment contains 🛑 (Blocker) or 🔧 (Suggestion) that you deem valid.
 - **Code Comment (Response):** If a code change is not made, you **must** leave a justification, clarification, or counter-argument in the code at the relevant line as a placeholder for the user to sync back to the PR.
