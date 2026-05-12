@@ -1,9 +1,13 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
+set -euo pipefail
 
-ROOT_DIR=$(dirname "$0")
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+TARGET="${1:-}"
 
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    zsh "$ROOT_DIR/osx/main.sh"
+if [[ "$TARGET" == "docker" ]]; then
+  bash "$ROOT_DIR/docker/main.sh"
+elif [[ "${OSTYPE:-}" == darwin* ]]; then
+  zsh "$ROOT_DIR/osx/main.sh"
 else
-    zsh "$ROOT_DIR/osx/main.sh"
+  zsh "$ROOT_DIR/linux/main.sh"
 fi

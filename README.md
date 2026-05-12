@@ -1,6 +1,6 @@
 # dotfiles-setup
 
-Repository to to kickstart a Mac or Linux machine, according to personal preferences.
+Repository to to kickstart a Mac, Linux machine, or Docker sandbox, according to personal preferences.
 Some of the setup is optional, depending on the values provided in the prompt.
 These options are kept in a `.env` such that they don't need to be asked again for reruns.
 
@@ -12,6 +12,7 @@ The setup scripts are split in a common and os specific part:
 
 - ZSH setup, including aliases, custom functions and Oh My ZSH + Starship
 - Git configs and aliases
+- Pi agent configuration from `shared/.pi/agent` to `~/.pi/agent`
 - [optional] Go setup, currently just installing GVM (Go Version Manager)
 - [optional] NodeJS setup, currently just installing NVM (NodeJS Version Manager)
 
@@ -43,6 +44,16 @@ The setup scripts are split in a common and os specific part:
 #### Manual extras
 
 - Manually sync the VSCode settings and keybindings
+
+### Docker sandbox specific
+
+- Run `./main.sh docker` or `docker/main.sh` which performs a barebones setup:
+  - Runs `apt update` and `apt upgrade`
+  - Installs a limited set of apt tools, currently `ca-certificates`, `curl`, `git`, `micro`, and `yazi` when available
+  - Syncs `shared/.agents` to `/root/.agents`
+  - Syncs `shared/.pi/agent` to `/root/.pi/agent`
+  - Installs `nodejs` and `npm` through apt only when either command is missing
+  - Installs global npm packages, currently `@earendil-works/pi-coding-agent`
 
 ## Extra info
 
