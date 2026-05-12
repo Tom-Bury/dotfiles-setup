@@ -22,7 +22,8 @@ APT_PACKAGES=(
   "curl"
   "git"
   "micro"
-  "unzip"
+  "unzip",
+  "file"
 )
 
 NPM_PACKAGES=(
