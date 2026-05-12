@@ -22,7 +22,7 @@ APT_PACKAGES=(
   "curl"
   "git"
   "micro"
-  "yazi"
+  "unzip"
 )
 
 NPM_PACKAGES=(
@@ -55,6 +55,40 @@ install_apt_packages() {
     fi
   done
   print_footer "Barebones tools installed"
+}
+
+install_yazi_if_needed() {
+  if command -v yazi >/dev/null 2>&1 && command -v ya >/dev/null 2>&1; then
+    echo "yazi and ya are already installed"
+    return
+  fi
+
+  local arch target tmpdir zip_path
+  arch="$(uname -m)"
+  case "$arch" in
+    x86_64|amd64)
+      target="x86_64-unknown-linux-gnu"
+      ;;
+    aarch64|arm64)
+      target="aarch64-unknown-linux-gnu"
+      ;;
+    *)
+      echo "Error: unsupported architecture for yazi release: $arch" >&2
+      exit 1
+      ;;
+  esac
+
+  print_header "Installing yazi from GitHub release 📁"
+  tmpdir="$(mktemp -d)"
+  zip_path="$tmpdir/yazi.zip"
+
+  curl -fL "https://github.com/sxyazi/yazi/releases/latest/download/yazi-${target}.zip" -o "$zip_path"
+  unzip -q "$zip_path" -d "$tmpdir"
+  run_sudo install -m 0755 "$tmpdir/yazi-${target}/yazi" /usr/local/bin/yazi
+  run_sudo install -m 0755 "$tmpdir/yazi-${target}/ya" /usr/local/bin/ya
+  rm -rf "$tmpdir"
+
+  print_footer "yazi installed"
 }
 
 install_node_if_needed() {
@@ -105,6 +139,7 @@ sync_pi_to_root() {
 
 main() {
   install_apt_packages
+  install_yazi_if_needed
   sync_agents_to_root
   sync_pi_to_root
   install_node_if_needed
