@@ -13,6 +13,7 @@ The setup scripts are split in a common and os specific part:
 - ZSH setup, including aliases, custom functions and Oh My ZSH + Starship
 - Git configs and aliases
 - Pi agent configuration from `shared/.pi/agent` to `~/.pi/agent`
+- Yazi config from `shared/yazi/yazi.toml` to `~/.config/yazi/yazi.toml`, configured to show hidden files
 - [optional] Go setup, currently just installing GVM (Go Version Manager)
 - [optional] NodeJS setup, currently just installing NVM (NodeJS Version Manager)
 
@@ -52,6 +53,7 @@ The setup scripts are split in a common and os specific part:
   - Installs a limited set of apt tools, currently `ca-certificates`, `curl`, `git`, `micro`, and `yazi` when available
   - Syncs `shared/.agents` to `/root/.agents`
   - Syncs `shared/.pi/agent` to `/root/.pi/agent`
+  - Syncs `shared/yazi/yazi.toml` to `/root/.config/yazi/yazi.toml`, configured to show hidden files
   - Installs `nodejs` and `npm` through apt only when either command is missing
   - Installs global npm packages, currently `@earendil-works/pi-coding-agent`
 
@@ -63,6 +65,7 @@ The script will create backups before overwriting the following files:
 - `~/.gitconfig`
 - `~/.zshrc`
 - `~/.config/starship.toml`
+- `~/.config/yazi/yazi.toml`
 - [OSX] VSCode `~/Library/Application Support/Code/User/settings.json`
 - [OSX] VSCode `~/Library/Application Support/Code/User/keybindings.json`
 

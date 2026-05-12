@@ -29,6 +29,11 @@ main() {
   setup_shell $ROOT_DIR
   print_footer "Shell set up"
 
+  print_header "Setting up Yazi 📁"
+  source "$ROOT_DIR/shared/yazi/setup-yazi.sh"
+  setup_yazi $ROOT_DIR
+  print_footer "Yazi set up"
+
   if [ "$PYTHON" = true ]; then
     print_header "Setting up Python 🐍"
     source "$SCRIPT_DIR/python/setup-python.sh"

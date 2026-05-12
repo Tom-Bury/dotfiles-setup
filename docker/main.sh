@@ -123,25 +123,33 @@ install_global_npm_packages() {
   print_footer "Global npm packages installed"
 }
 
-sync_agents_to_root() {
-  print_header "Syncing .agents to root 🤖"
-  run_sudo mkdir -p /root/.agents
-  run_sudo cp -a "$ROOT_DIR/shared/.agents/." /root/.agents/
-  print_footer ".agents synced to /root/.agents"
+sync_agents() {
+  print_header "Syncing .agents 🤖"
+  run_sudo mkdir -p "$HOME/.agents"
+  run_sudo cp -a "$ROOT_DIR/shared/.agents/." "$HOME/.agents/"
+  print_footer ".agents synced to $HOME/.agents"
 }
 
-sync_pi_to_root() {
-  print_header "Syncing .pi to root 🥧"
-  run_sudo mkdir -p /root/.pi/agent
-  run_sudo cp -a "$ROOT_DIR/shared/.pi/agent/." /root/.pi/agent/
-  print_footer ".pi synced to /root/.pi"
+sync_pi() {
+  print_header "Syncing .pi 🥧"
+  run_sudo mkdir -p "$HOME/.pi/agent"
+  run_sudo cp -a "$ROOT_DIR/shared/.pi/agent/." "$HOME/.pi/agent/"
+  print_footer ".pi synced to $HOME/.pi"
+}
+
+sync_yazi() {
+  print_header "Syncing yazi config 📁"
+  run_sudo mkdir -p "$HOME/.config/yazi"
+  run_sudo cp "$ROOT_DIR/shared/yazi/yazi.toml" "$HOME/.config/yazi/yazi.toml"
+  print_footer "yazi config synced to $HOME/.config/yazi"
 }
 
 main() {
   install_apt_packages
   install_yazi_if_needed
-  sync_agents_to_root
-  sync_pi_to_root
+  sync_yazi
+  sync_agents
+  sync_pi
   install_node_if_needed
   install_global_npm_packages
 }
