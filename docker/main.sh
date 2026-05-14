@@ -145,10 +145,36 @@ sync_yazi() {
   print_footer "yazi config synced to $HOME/.config/yazi"
 }
 
+sync_yazi_shell_wrapper() {
+  local bashrc="$HOME/.bashrc"
+  local yazi_shell="$ROOT_DIR/shared/yazi/.zshrc_yazi.sh"
+  local marker_begin="# >>> dotfiles-setup yazi shell wrapper >>>"
+  local marker_end="# <<< dotfiles-setup yazi shell wrapper <<<"
+
+  print_header "Syncing yazi shell wrapper 📁"
+  touch "$bashrc"
+
+  if grep -Fq "$marker_begin" "$bashrc"; then
+    echo "yazi shell wrapper already managed in $bashrc"
+  elif grep -Eq '^[[:space:]]*(function[[:space:]]+y[[:space:]]*(\(\))?|y[[:space:]]*\(\))[[:space:]]*\{' "$bashrc"; then
+    echo "y() already exists in $bashrc; not adding duplicate"
+  else
+    {
+      printf '\n%s\n' "$marker_begin"
+      grep -v '^#!' "$yazi_shell"
+      printf '%s\n' "$marker_end"
+    } >> "$bashrc"
+    echo "yazi shell wrapper added to $bashrc"
+  fi
+
+  print_footer "yazi shell wrapper synced to $bashrc"
+}
+
 main() {
   install_apt_packages
   install_yazi_if_needed
   sync_yazi
+  sync_yazi_shell_wrapper
   sync_agents
   sync_pi
   install_node_if_needed
