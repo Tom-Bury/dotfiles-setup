@@ -10,6 +10,9 @@ setup_git() {
   cp "$SCRIPT_DIR/.gitconfig" $GIT_CONFIG
   
   setup_extra_source_scripts "$SCRIPT_DIR"
+
+  cp "$SCRIPT_DIR/gh_ci_status.sh" "$HOME/zshrc-scripts/gh_ci_status.sh"
+  chmod +x "$HOME/zshrc-scripts/gh_ci_status.sh"
 }
 
 setup_git $(dirname "$0")
