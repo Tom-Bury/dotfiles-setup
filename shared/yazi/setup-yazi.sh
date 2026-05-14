@@ -8,4 +8,6 @@ setup_yazi() {
   mkdir -p "$yazi_config_dir"
   create_backup "$yazi_config"
   cp "$ROOT_DIR/shared/yazi/yazi.toml" "$yazi_config"
+
+  setup_extra_source_scripts "$SCRIPT_DIR"
 }
