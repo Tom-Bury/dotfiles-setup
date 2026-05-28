@@ -125,6 +125,7 @@ install_nvm() {
 
 install_global_npm_packages() {
   print_header "Installing global npm packages 🤖"
+  nvm use --lts
   for package in "${NPM_PACKAGES[@]}"; do
     if npm list -g --depth=0 "$package" >/dev/null 2>&1; then
       echo "$package is already installed globally"
