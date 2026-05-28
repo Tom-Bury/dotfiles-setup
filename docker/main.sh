@@ -93,6 +93,8 @@ install_yazi_if_needed() {
 }
 
 install_nvm() {
+  unset NPM_CONFIG_PREFIX
+
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
 
   local bashrc="$HOME/.bashrc"
@@ -111,7 +113,6 @@ install_nvm() {
     } >> "$bashrc"
   fi
 
-  npm config delete prefix
   source "$bashrc"
 
   nvm install --lts
