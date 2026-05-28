@@ -111,8 +111,7 @@ install_nvm() {
     } >> "$bashrc"
   fi
 
-  export NVM_DIR="$HOME/.nvm"
-  source "$NVM_DIR/nvm.sh"
+  source "$bashrc"
 
   nvm install --lts
   nvm use --lts
@@ -126,7 +125,7 @@ install_global_npm_packages() {
       echo "$package is already installed globally"
     else
       echo "Installing $package globally"
-      npm install -g "$package"
+      run_sudo npm install -g "$package"
     fi
   done
   print_footer "Global npm packages installed"
@@ -190,8 +189,7 @@ main() {
   install_nvm
   install_global_npm_packages
 
-  export NVM_DIR="$HOME/.nvm"
-  source "$NVM_DIR/nvm.sh"
+  source "$HOME/.bashrc"
 }
 
 main
