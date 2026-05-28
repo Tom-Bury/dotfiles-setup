@@ -111,6 +111,7 @@ install_nvm() {
     } >> "$bashrc"
   fi
 
+  unset NPM_CONFIG_PREFIX
   source "$bashrc"
 
   nvm install --lts
