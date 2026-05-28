@@ -111,7 +111,7 @@ install_nvm() {
     } >> "$bashrc"
   fi
 
-  unset NPM_CONFIG_PREFIX
+  npm config delete prefix
   source "$bashrc"
 
   nvm install --lts
