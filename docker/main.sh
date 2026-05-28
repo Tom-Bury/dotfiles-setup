@@ -94,9 +94,7 @@ install_yazi_if_needed() {
 
 install_nvm() {
   unset NPM_CONFIG_PREFIX
-
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
-
+  
   local bashrc="$HOME/.bashrc"
   local marker_begin="# >>> dotfiles-setup nvm >>>"
   local marker_end="# <<< dotfiles-setup nvm <<<"
@@ -112,6 +110,9 @@ install_nvm() {
       printf '%s\n' "$marker_end"
     } >> "$bashrc"
   fi
+
+
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
 
   source "$bashrc"
 
