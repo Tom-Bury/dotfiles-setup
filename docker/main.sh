@@ -132,7 +132,7 @@ install_global_npm_packages() {
       echo "$package is already installed globally"
     else
       echo "Installing $package globally"
-      run_sudo npm install -g "$package"
+      npm install -g "$package"
     fi
   done
   set -u
