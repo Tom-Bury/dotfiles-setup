@@ -134,3 +134,9 @@ done
 ###############################################
 
 eval "$(git-spice shell completion zsh)"
+
+###############################################
+# FZF shell integration
+###############################################
+# https://github.com/junegunn/fzf#setting-up-shell-integration
+  source <(fzf --zsh)
