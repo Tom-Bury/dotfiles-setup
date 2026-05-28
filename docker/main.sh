@@ -125,6 +125,7 @@ install_nvm() {
 
 install_global_npm_packages() {
   print_header "Installing global npm packages 🤖"
+  set +u
   nvm use --lts
   for package in "${NPM_PACKAGES[@]}"; do
     if npm list -g --depth=0 "$package" >/dev/null 2>&1; then
@@ -134,6 +135,7 @@ install_global_npm_packages() {
       run_sudo npm install -g "$package"
     fi
   done
+  set -u
   print_footer "Global npm packages installed"
 }
 
