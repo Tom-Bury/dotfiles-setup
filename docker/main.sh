@@ -114,11 +114,13 @@ install_nvm() {
 
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
 
+  set +u
   source "$bashrc"
 
   nvm install --lts
   nvm use --lts
   nvm alias default node
+  set -u
 }
 
 install_global_npm_packages() {
@@ -192,7 +194,9 @@ main() {
   install_nvm
   install_global_npm_packages
 
+  set +u
   source "$HOME/.bashrc"
+  set -u
 }
 
 main
