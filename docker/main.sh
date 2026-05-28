@@ -92,23 +92,31 @@ install_yazi_if_needed() {
   print_footer "yazi installed"
 }
 
-install_node_if_needed() {
-  if command -v node >/dev/null 2>&1 && command -v npm >/dev/null 2>&1; then
-    echo "node and npm are already installed"
-    return
+install_nvm() {
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+
+  local bashrc="$HOME/.bashrc"
+  local marker_begin="# >>> dotfiles-setup nvm >>>"
+  local marker_end="# <<< dotfiles-setup nvm <<<"
+
+  touch "$bashrc"
+
+  if grep -Fq "$marker_begin" "$bashrc"; then
+    echo "nvm already managed in $bashrc"
+  else
+    {
+      printf '\n%s\n' "$marker_begin"
+      printf "%s\n" "unset NPM_CONFIG_PREFIX"
+      printf '%s\n' "$marker_end"
+    } >> "$bashrc"
   fi
 
-  print_header "Installing node and npm 🟩"
-  run_sudo apt update
+  export NVM_DIR="$HOME/.nvm"
+  source "$NVM_DIR/nvm.sh"
 
-  if ! command -v node >/dev/null 2>&1; then
-    run_sudo apt install -y nodejs
-  fi
-
-  if ! command -v npm >/dev/null 2>&1; then
-    run_sudo apt install -y npm
-  fi
-  print_footer "node and npm installed"
+  nvm install --lts
+  nvm use --lts
+  nvm alias default node
 }
 
 install_global_npm_packages() {
@@ -118,7 +126,7 @@ install_global_npm_packages() {
       echo "$package is already installed globally"
     else
       echo "Installing $package globally"
-      run_sudo npm install -g "$package"
+      npm install -g "$package"
     fi
   done
   print_footer "Global npm packages installed"
@@ -128,6 +136,7 @@ sync_agents() {
   print_header "Syncing .agents 🤖"
   run_sudo mkdir -p "$HOME/.agents"
   run_sudo cp -a "$ROOT_DIR/shared/.agents/." "$HOME/.agents/"
+  run_sudo chown -R "$(id -un):$(id -gn)" "$HOME/.agents"
   print_footer ".agents synced to $HOME/.agents"
 }
 
@@ -135,6 +144,7 @@ sync_pi() {
   print_header "Syncing .pi 🥧"
   run_sudo mkdir -p "$HOME/.pi/agent"
   run_sudo cp -a "$ROOT_DIR/shared/.pi/agent/." "$HOME/.pi/agent/"
+  run_sudo chown -R "$(id -un):$(id -gn)" "$HOME/.pi"
   print_footer ".pi synced to $HOME/.pi"
 }
 
@@ -177,8 +187,11 @@ main() {
   sync_yazi_shell_wrapper
   sync_agents
   sync_pi
-  install_node_if_needed
+  install_nvm
   install_global_npm_packages
+
+  export NVM_DIR="$HOME/.nvm"
+  source "$NVM_DIR/nvm.sh"
 }
 
 main
