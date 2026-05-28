@@ -59,7 +59,50 @@ alias t4='tree -L 4'
 alias lg='lazygit'
 alias ld='lazydocker'
 
-alias bjot="$HOME/.gvm/pkgsets/go1.23.2/global/bin/jot"
+# Starts a Docker Sandbox in the current directory, or if one already exists, opens it.
+sbx_here() {
+  local dir name matches count picked
+
+  if ! command -v sbx >/dev/null 2>&1; then
+    echo "sbx not found. Install sbx first." >&2
+    return 1
+  fi
+
+  dir="$(pwd -P)"
+  name="$(basename "$dir")"
+
+  matches="$(
+    sbx ls 2>/dev/null | awk -v dir="$dir" '
+      NR > 1 && $NF == dir { print $1 }
+    '
+  )"
+
+  count="$(printf '%s\n' "$matches" | sed '/^$/d' | wc -l | tr -d ' ')"
+
+  case "$count" in
+    0)
+      echo "No sandbox for $dir. Creating: $name"
+      sbx create shell . --name="$name"
+      sbx run "$name"
+      ;;
+    1)
+      sbx run "$matches"
+      ;;
+    *)
+      if ! command -v fzf >/dev/null 2>&1; then
+        echo "Multiple sandboxes found, but fzf not installed:" >&2
+        printf '%s\n' "$matches" >&2
+        return 1
+      fi
+
+      picked="$(printf '%s\n' "$matches" | fzf --prompt="Pick sandbox: ")"
+      [ -n "$picked" ] || return 1
+
+      sbx run "$picked"
+      ;;
+  esac
+}
+alias sb='sbx_here'
 
 # https://stackoverflow.com/questions/19331497/set-environment-variables-from-file-of-key-value-pairs
 # alias sourceenv="export $(grep -v '^#' .env | xargs)"
