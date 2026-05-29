@@ -42,26 +42,32 @@ main() {
   fi
 
   if [ "$GO" = true ]; then
-    print_header = "Setting up Go"
+    print_header "Setting up Go"
     source "$ROOT_DIR/shared/go/setup-go.sh"
     setup_go $ROOT_DIR
     print_footer "Go set up"
   fi
 
-  print_header = "Setting up K8s"
+  print_header "Setting up K8s"
   source "$ROOT_DIR/shared/k8s/setup-k8s.sh"
   setup_k8s $ROOT_DIR
   print_footer "K8s set up"
   
-  print_header = "Setting up gcloud"
+  print_header "Setting up gcloud"
   source "$ROOT_DIR/shared/gcloud/setup-gcloud.sh"
   setup_gcloud $ROOT_DIR
   print_footer "gcloud set up"
 
-  print_header = "Setting up agent skills 🤖"
+  print_header "Setting up agent skills 🤖"
   source "$ROOT_DIR/shared/.agents/setup-agents.sh"
   setup_agent_skills $ROOT_DIR
   print_footer "Agent skills set up"
+
+  print_header "Setting up neovim 📝"
+  ln -s "$ROOT_DIR/shared/nvim" "$HOME/.config/nvim"
+  print_footer "Neovim set up"
+
+
 }
 
 main $(dirname "$0")
