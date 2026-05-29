@@ -67,6 +67,9 @@ main() {
   ln -s "$ROOT_DIR/shared/nvim" "$HOME/.config/nvim"
   print_footer "Neovim set up"
 
+  print_header "Setting up tmux 💻"
+  ln -s "$ROOT_DIR/shared/tmux/.tmux.conf" "$HOME/.tmux.conf"
+  print_footer "Tmux set up"
 
 }
 
