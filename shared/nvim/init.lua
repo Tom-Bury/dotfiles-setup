@@ -425,6 +425,7 @@ do
   -- - sd'   - [S]urround [D]elete [']quotes
   -- - sr)'  - [S]urround [R]eplace [)] [']
   require('mini.surround').setup()
+  require('mini.pairs').setup()
 
   -- Simple and easy statusline.
   --  You could remove this setup call if you don't like it,
@@ -493,6 +494,12 @@ do
     --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
     --   },
     -- },
+    defaults = {
+      layout_config = {
+        prompt_position = 'top',
+      },
+      sorting_strategy = 'ascending',
+    },
     pickers = {
       find_files = {
         hidden = true,
@@ -586,6 +593,70 @@ do
 
   -- Shortcut for searching your Neovim configuration files
   vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end, { desc = '[S]earch [N]eovim files' })
+
+  -- OIL: file navigation and management
+  vim.pack.add { gh 'stevearc/oil.nvim' }
+
+  require('oil').setup {
+    view_options = {
+      show_hidden = true
+    }
+  }
+
+  vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+  
+  -- HARPOON: quick navigation between marked buffers
+  vim.pack.add {
+    { 
+      src = gh 'ThePrimeagen/harpoon',
+      version = 'harpoon2',
+      dependencies = { "nvim-lua/plenary.nvim" }
+    },
+
+  }
+
+  local harpoon = require('harpoon')
+  harpoon:setup {}
+
+  vim.keymap.set('n', '<leader>ha', function() harpoon:list():add() end, { desc =
+    '[H]arpoon [A]dd file' })
+  vim.keymap.set('n', '<leader>hmm', function()
+    harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = '[H]arpoon [M]enu' })
+
+  vim.keymap.set('n', '<leader>h1', function() harpoon:list():select(1) end, { desc =
+    '[H]arpoon file 1' })
+  vim.keymap.set('n', '<leader>h2', function() harpoon:list():select(2) end, { desc =
+    '[H]arpoon file 2' })
+  vim.keymap.set('n', '<leader>h3', function() harpoon:list():select(3) end, { desc =
+    '[H]arpoon file 3' })
+  vim.keymap.set('n', '<leader>h4', function() harpoon:list():select(4) end, { desc =
+    '[H]arpoon file 4' })
+
+  vim.keymap.set('n', '<leader>hp', function() harpoon:list():prev() end, { desc =
+    '[H]arpoon [P]rev' })
+  vim.keymap.set('n', '<leader>hn', function() harpoon:list():next() end, { desc =
+    '[H]arpoon [N]ext' })
+
+  -- basic telescope configuration
+  local telescopeConf = require("telescope.config").values
+  local function toggle_telescope(harpoon_files)
+    local file_paths = {}
+    for _, item in ipairs(harpoon_files.items) do
+      table.insert(file_paths, item.value)
+    end
+
+    require("telescope.pickers").new({}, {
+      prompt_title = "Harpoon",
+      finder = require("telescope.finders").new_table({
+        results = file_paths,
+      }),
+      previewer = telescopeConf.file_previewer({}),
+      sorter = telescopeConf.generic_sorter({}),
+    }):find()
+  end
+
+  vim.keymap.set("n", "<leader>hm", function() toggle_telescope(harpoon:list()) end,
+    { desc = "Open harpoon window" })
 end
 
 -- ============================================================
@@ -697,7 +768,7 @@ do
   ---@type table<string, vim.lsp.Config>
   local servers = {
     -- clangd = {},
-    -- gopls = {},
+    gopls = {},
     -- pyright = {},
     -- rust_analyzer = {},
     --
@@ -764,6 +835,9 @@ do
   local ensure_installed = vim.tbl_keys(servers or {})
   vim.list_extend(ensure_installed, {
     -- You can add other tools here that you want Mason to install
+    'goimports',
+    'gofumpt',
+    'staticcheck',
   })
 
   require('mason-tool-installer').setup { ensure_installed = ensure_installed }
@@ -788,9 +862,10 @@ do
       local enabled_filetypes = {
         -- lua = true,
         -- python = true,
+        go = true,
       }
       if enabled_filetypes[vim.bo[bufnr].filetype] then
-        return { timeout_ms = 500 }
+        return { timeout_ms = 3000 }
       else
         return nil
       end
@@ -806,6 +881,10 @@ do
       --
       -- You can use 'stop_after_first' to run the first available formatter from the list
       -- javascript = { "prettierd", "prettier", stop_after_first = true },
+      go = {
+        'goimports',
+        'gofmt',
+      }, 
     },
   }
 
@@ -856,7 +935,7 @@ do
       -- <c-k>: Toggle signature help
       --
       -- See `:help blink-cmp-config-keymap` for defining your own keymap
-      preset = 'default',
+      preset = 'super-tab',
 
       -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
       --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
