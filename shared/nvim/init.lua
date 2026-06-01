@@ -110,7 +110,7 @@ do
   vim.o.number = true
   -- You can also add relative line numbers, to help with jumping.
   --  Experiment for yourself to see if you like it!
-  -- vim.o.relativenumber = true
+  vim.o.relativenumber = true
 
   -- Enable mouse mode, can be useful for resizing splits for example!
   vim.o.mouse = 'a'
@@ -214,10 +214,10 @@ do
   vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
   -- TIP: Disable arrow keys in normal mode
-  -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
-  -- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
-  -- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
-  -- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+  vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
+  vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
+  vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
+  vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
   -- Keybinds to make split navigation easier.
   --  Use CTRL+<hjkl> to switch between windows
@@ -236,6 +236,11 @@ do
 
   -- [[ Basic Autocommands ]]
   --  See `:help lua-guide-autocommands`
+
+  -- Buffer manipulation
+  vim.keymap.set('n', '<leader>n', '<cmd>bnext<CR>', { desc = 'Move to [N]ext buffer'})
+  vim.keymap.set('n', '<leader>p', '<cmd>bprevious<CR>', { desc = 'Move to [P]revious buffer'})
+  vim.keymap.set('n', '<leader>x', '<cmd>bdelete<CR>', { desc = '[X] Close buffer'})
 
   -- Highlight when yanking (copying) text
   --  Try it with `yap` in normal mode
@@ -354,12 +359,22 @@ do
   vim.pack.add { gh 'lewis6991/gitsigns.nvim' }
   require('gitsigns').setup {
     signs = {
-      add = { text = '+' }, ---@diagnostic disable-line: missing-fields
-      change = { text = '~' }, ---@diagnostic disable-line: missing-fields
-      delete = { text = '_' }, ---@diagnostic disable-line: missing-fields
-      topdelete = { text = '‾' }, ---@diagnostic disable-line: missing-fields
-      changedelete = { text = '~' }, ---@diagnostic disable-line: missing-fields
+      add          = { text = '┃' },
+      change       = { text = '┃' },
+      delete       = { text = '_' },
+      topdelete    = { text = '‾' },
+      changedelete = { text = '~' },
+      untracked    = { text = '┆' },
     },
+    signs_staged = {
+      add          = { text = '┃' },
+      change       = { text = '┃' },
+      delete       = { text = '_' },
+      topdelete    = { text = '‾' },
+      changedelete = { text = '~' },
+      untracked    = { text = '┆' },
+    },
+    signs_staged_enable = true
   }
 
   -- Useful plugin to show you pending keybinds.
@@ -384,6 +399,7 @@ do
   --
   -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
   vim.pack.add { gh 'folke/tokyonight.nvim' }
+
   ---@diagnostic disable-next-line: missing-fields
   require('tokyonight').setup {
     styles = {
@@ -391,10 +407,20 @@ do
     },
   }
 
+  vim.pack.add { { src = "https://github.com/catppuccin/nvim", name = "catppuccin" } }
+
+  require("catppuccin").setup({
+    flavour = "mocha", -- latte, frappe, macchiato, mocha
+    transparent_background = true, -- disables setting the background color.
+    float = {
+        transparent = true, -- enable transparent floating windows
+        solid = true -- use solid styling for floating windows, see |winborder|
+    },
+  })
   -- Load the colorscheme here.
   -- Like many other themes, this one has different styles, and you could load
   -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-  vim.cmd.colorscheme 'tokyonight-night'
+  vim.cmd.colorscheme 'catppuccin-nvim'
 
   -- Highlight todo, notes, etc in comments
   vim.pack.add { gh 'folke/todo-comments.nvim' }
@@ -403,6 +429,16 @@ do
   -- [[ mini.nvim ]]
   --  A collection of various small independent plugins/modules
   vim.pack.add { gh 'nvim-mini/mini.nvim' }
+
+  local animate = require('mini.animate')
+  animate.setup({
+    cursor = {
+      enable = false
+    },
+    scroll = {
+       timing = animate.gen_timing.linear({ duration = 100, unit = "total" }),
+    }
+  })
 
   -- Better Around/Inside textobjects
   --
@@ -431,9 +467,35 @@ do
   --  You could remove this setup call if you don't like it,
   --  and try some other statusline plugin
   local statusline = require 'mini.statusline'
-  -- Set `use_icons` to true if you have a Nerd Font
-  statusline.setup { use_icons = vim.g.have_nerd_font }
 
+  require('mini.statusline').setup({
+    use_icons = vim.g.have_nerd_fonts,
+    content = {
+      active = function()
+        local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
+        local git           = MiniStatusline.section_git({ trunc_width = 75 })
+        local diagnostics   = MiniStatusline.section_diagnostics({
+          trunc_width = 75,
+          signs = { ERROR = '󰅚 ', WARN = '󰀪 ', INFO = '󰋽 ', HINT = '󰌶' }
+        })
+        local filename      = MiniStatusline.section_filename({ trunc_width = 140 })
+        local location      = MiniStatusline.section_location({ trunc_width = 90 })
+        local search        = MiniStatusline.section_searchcount({ trunc_width = 75 })
+
+        -- Stitch them together in whatever layout order you prefer!
+        return MiniStatusline.combine_groups({
+          { hl = mode_hl,                  strings = { mode } },
+          { hl = 'MiniStatuslineDevinfo',  strings = { git } },
+          '%<', -- Truncate here if everything doesn't fit
+          -- 2. Add the diagnostics section to the layout
+          { hl = 'MiniStatuslineFilename', strings = { filename } },
+          '%=', -- Push everything past this point to the right side
+          { hl = 'MiniStatuslineDevinfo',  strings = { diagnostics } },
+          { hl = mode_hl,                  strings = { location, search } },
+        })
+      end
+    }
+  })
   -- You can configure sections in the statusline by overriding their
   -- default behavior. For example, here we set the section for
   -- cursor location to LINE:COLUMN
@@ -604,10 +666,10 @@ do
   }
 
   vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
-  
+
   -- HARPOON: quick navigation between marked buffers
   vim.pack.add {
-    { 
+    {
       src = gh 'ThePrimeagen/harpoon',
       version = 'harpoon2',
       dependencies = { "nvim-lua/plenary.nvim" }
@@ -620,7 +682,7 @@ do
 
   vim.keymap.set('n', '<leader>ha', function() harpoon:list():add() end, { desc =
     '[H]arpoon [A]dd file' })
-  vim.keymap.set('n', '<leader>hmm', function()
+  vim.keymap.set('n', '<leader>hm', function()
     harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = '[H]arpoon [M]enu' })
 
   vim.keymap.set('n', '<leader>h1', function() harpoon:list():select(1) end, { desc =
@@ -655,8 +717,8 @@ do
     }):find()
   end
 
-  vim.keymap.set("n", "<leader>hm", function() toggle_telescope(harpoon:list()) end,
-    { desc = "Open harpoon window" })
+  vim.keymap.set("n", "<leader>ht", function() toggle_telescope(harpoon:list()) end,
+    { desc = "[H]arpoon [T]elescope menu" })
 end
 
 -- ============================================================
@@ -884,7 +946,7 @@ do
       go = {
         'goimports',
         'gofmt',
-      }, 
+      },
     },
   }
 
@@ -935,7 +997,7 @@ do
       -- <c-k>: Toggle signature help
       --
       -- See `:help blink-cmp-config-keymap` for defining your own keymap
-      preset = 'super-tab',
+      preset = 'default',
 
       -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
       --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
