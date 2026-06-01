@@ -469,7 +469,7 @@ do
   local statusline = require 'mini.statusline'
 
   require('mini.statusline').setup({
-    use_icons = vim.g.have_nerd_fonts,
+    use_icons = vim.g.have_nerd_font,
     content = {
       active = function()
         local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
