@@ -377,6 +377,9 @@ do
     signs_staged_enable = true
   }
 
+  vim.pack.add { gh 'kdheepak/lazygit.nvim' }
+  vim.keymap.set('n', '<leader>lg', "<cmd>LazyGit<cr>", { desc = 'Open [L]azy[G]it' })
+
   -- Useful plugin to show you pending keybinds.
   vim.pack.add { gh 'folke/which-key.nvim' }
   require('which-key').setup {
@@ -829,21 +832,24 @@ do
   --  See `:help lsp-config` for information about keys and how to configure
   ---@type table<string, vim.lsp.Config>
   local servers = {
-    -- clangd = {},
+    -- GO
     gopls = {},
-    -- pyright = {},
-    -- rust_analyzer = {},
-    --
-    -- Some languages (like typescript) have entire language plugins that can be useful:
+
+    -- JS/TS ecosystsem servers
+    -- NOTE: Some languages (like typescript) have entire language plugins that can be useful:
     --    https://github.com/pmizio/typescript-tools.nvim
-    --
-    -- But for many setups, the LSP (`ts_ls`) will work just fine
-    -- ts_ls = {},
+    --    But for many setups, the LSP (`ts_ls`) will work just fine
+    ts_ls = {},
+    eslint = {},
+    tailwindcss = {},
+    cssls = {},
+    html = {},
+    jsonls = {},
 
+    -- LUA
     stylua = {}, -- Used to format Lua code
-
-    -- Special Lua Config, as recommended by neovim help docs
     lua_ls = {
+      -- Special Lua Config, as recommended by neovim help docs
       on_init = function(client)
         client.server_capabilities.documentFormattingProvider = false -- Disable formatting (formatting is done by stylua)
 
@@ -896,10 +902,13 @@ do
   -- You can press `g?` for help in this menu.
   local ensure_installed = vim.tbl_keys(servers or {})
   vim.list_extend(ensure_installed, {
-    -- You can add other tools here that you want Mason to install
+    -- GO ecosystem
     'goimports',
     'gofumpt',
     'staticcheck',
+
+    -- JS ecosystem
+    'prettierd',
   })
 
   require('mason-tool-installer').setup { ensure_installed = ensure_installed }
@@ -922,9 +931,16 @@ do
     format_on_save = function(bufnr)
       -- You can specify filetypes to autoformat on save here:
       local enabled_filetypes = {
-        -- lua = true,
-        -- python = true,
         go = true,
+        javascript = true,
+        javascriptreact = true,
+        typescript = true,
+        typescriptreact = true,
+        css = true,
+        scss = true,
+        html = true,
+        json = true,
+        markdown = true,
       }
       if enabled_filetypes[vim.bo[bufnr].filetype] then
         return { timeout_ms = 3000 }
@@ -937,16 +953,20 @@ do
     },
     -- You can also specify external formatters in here.
     formatters_by_ft = {
-      -- rust = { 'rustfmt' },
-      -- Conform can also run multiple formatters sequentially
-      -- python = { "isort", "black" },
-      --
-      -- You can use 'stop_after_first' to run the first available formatter from the list
-      -- javascript = { "prettierd", "prettier", stop_after_first = true },
       go = {
         'goimports',
         'gofmt',
       },
+      -- JS ecosystem
+      javascript = { 'prettierd' },
+      javascriptreact = { 'prettierd' },
+      typescript = { 'prettierd' },
+      typescriptreact = { 'prettierd' },
+      css = { 'prettierd' },
+      scss = { 'prettierd' },
+      html = { 'prettierd' },
+      json = { 'prettierd' },
+      markdown = { 'prettierd' },
     },
   }
 
