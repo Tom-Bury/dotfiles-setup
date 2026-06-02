@@ -167,6 +167,10 @@ do
   -- Minimal number of screen lines to keep above and below the cursor.
   vim.o.scrolloff = 10
 
+  -- Set rounded borders to popups
+  vim.o.winborder = 'rounded'
+
+
   -- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
   -- instead raise a dialog asking if you wish to save the current file(s)
   -- See `:help 'confirm'`
@@ -226,14 +230,23 @@ do
   vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
   vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
-  -- Keybinds to make split navigation easier.
-  --  Use CTRL+<hjkl> to switch between windows
-  --
-  --  See `:help wincmd` for a list of all window commands
-  vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-  vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-  vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-  vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+  -- --  See `:help wincmd` for a list of all window commands
+  -- vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+  -- vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+  -- vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
+  -- vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+  -- Split management, tmux-like.
+  vim.keymap.set('n', '<M-|>', '<cmd>vsplit<CR>', { desc = 'Vertical split' })
+  vim.keymap.set('n', '<M-->', '<cmd>split<CR>', { desc = 'Horizontal split' })
+  vim.keymap.set('n', '<M-x>', '<cmd>close<CR>', { desc = 'Close split' })
+  vim.keymap.set('n', '<M-=>', '<C-w>=', { desc = 'Equalize splits' })
+
+  -- Resize splits with Alt+hjkl.
+  vim.keymap.set('n', '<M-h>', '<cmd>vertical resize -10<CR>', { desc = 'Split narrower' })
+  vim.keymap.set('n', '<M-l>', '<cmd>vertical resize +10<CR>', { desc = 'Split wider' })
+  vim.keymap.set('n', '<M-j>', '<cmd>resize -5<CR>', { desc = 'Split shorter' })
+  vim.keymap.set('n', '<M-k>', '<cmd>resize +5<CR>', { desc = 'Split taller' })
 
   -- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
   -- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
@@ -250,6 +263,8 @@ do
   vim.keymap.set('n', '<leader>x', '<cmd>bdelete<CR>', { desc = '[X] Close buffer' })
   vim.keymap.set('n', '<leader>w', '<cmd>write<CR>', { desc = '[W]rite buffer' })
   vim.keymap.set('n', '<leader>!', ':!', { desc = 'Run shell command' })
+  vim.keymap.set('n', '<leader>br', '<cmd>bufdo edit<CR>', { desc = '[B]uffer [R]eload all from disk' })
+  vim.keymap.set('n', '<leader>br!', '<cmd>bufdo edit!<CR>', { desc = '[B]uffer [R]eload all from disk [!] forcibly' })
 
   -- Highlight when yanking (copying) text
   --  Try it with `yap` in normal mode
@@ -422,7 +437,11 @@ do
   vim.pack.add { { src = 'https://github.com/catppuccin/nvim', name = 'catppuccin' } }
 
   require('catppuccin').setup {
-    flavour = 'mocha', -- latte, frappe, macchiato, mocha
+    flavour = 'auto', -- latte, frappe, macchiato, mocha
+    background = { -- :h background
+        light = "latte",
+        dark = "mocha",
+    },
     transparent_background = true, -- disables setting the background color.
     float = {
       transparent = true, -- enable transparent floating windows
@@ -450,6 +469,9 @@ do
     scroll = {
       timing = animate.gen_timing.linear { duration = 100, unit = 'total' },
     },
+    resize = {
+      enable = false,
+    },
   }
 
   -- Better Around/Inside textobjects
@@ -458,11 +480,18 @@ do
   --  - va)  - [V]isually select [A]round [)]paren
   --  - yiiq - [Y]ank [I]nside [I]+1 [Q]uote
   --  - ci'  - [C]hange [I]nside [']quote
-  require('mini.ai').setup {
+  local ai = require('mini.ai')
+  ai.setup {
     -- NOTE: Avoid conflicts with the built-in incremental selection mappings on Neovim>=0.12 (see `:help treesitter-incremental-selection`)
     mappings = {
       around_next = 'aa',
       inside_next = 'ii',
+    },
+    custom_textobjects = {
+      F = ai.gen_spec.treesitter {
+        a = '@function.outer',
+        i = '@function.inner',
+      }
     },
     n_lines = 500,
   }
@@ -523,13 +552,19 @@ end
 -- Telescope setup, keymaps, LSP picker mappings
 -- ============================================================
 do
+  vim.pack.add { gh 'christoomey/vim-tmux-navigator' }
+  vim.keymap.set({ 'n' }, "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>", { desc = '← [H] left pane' })
+  vim.keymap.set({ 'n' }, "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>", { desc = '↓ [J] down pane' })
+  vim.keymap.set({ 'n' }, "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>", { desc = '↑ [K] up pane' })
+  vim.keymap.set({ 'n' }, "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>", { desc = '→ [L] right pane' })
+
   -- FLASH: quick jump/search navigation
   vim.pack.add { gh 'folke/flash.nvim' }
   require('flash').setup {}
 
   vim.keymap.set({ 'n', 'x', 'o' }, 'fj', function() require('flash').jump() end, { desc = '[F]lash [J]ump to target' })
   vim.keymap.set({ 'n', 'x', 'o' }, 'ft', function() require('flash').treesitter() end, { desc = '[F]lash jump in [T]ree' })
-  vim.keymap.set('o', 'f', function() require('flash').remote() end, { desc = '[F]lash [J]ump (eg yfj to flash during yank)' })
+  vim.keymap.set('o', 'j', function() require('flash').remote() end, { desc = 'Flash [J]ump (eg yj to flash jump during yank)' })
   vim.keymap.set({ 'o', 't' }, 'R', function() require('flash').treesitter_search() end, { desc = '[F]lash jump in [T]ree' })
   vim.keymap.set('c', '<C-s>', function() require('flash').toggle() end, { desc = 'Toggle Flash Search' })
 
@@ -714,27 +749,27 @@ do
   vim.keymap.set('n', '<leader>hp', function() harpoon:list():prev() end, { desc = '[H]arpoon [P]rev' })
   vim.keymap.set('n', '<leader>hn', function() harpoon:list():next() end, { desc = '[H]arpoon [N]ext' })
 
-  -- basic telescope configuration
-  local telescopeConf = require('telescope.config').values
-  local function toggle_telescope(harpoon_files)
-    local file_paths = {}
-    for _, item in ipairs(harpoon_files.items) do
-      table.insert(file_paths, item.value)
-    end
-
-    require('telescope.pickers')
-      .new({}, {
-        prompt_title = 'Harpoon',
-        finder = require('telescope.finders').new_table {
-          results = file_paths,
-        },
-        previewer = telescopeConf.file_previewer {},
-        sorter = telescopeConf.generic_sorter {},
-      })
-      :find()
-  end
-
-  vim.keymap.set('n', '<leader>ht', function() toggle_telescope(harpoon:list()) end, { desc = '[H]arpoon [T]elescope menu' })
+  -- -- basic telescope configuration
+  -- local telescopeConf = require('telescope.config').values
+  -- local function toggle_telescope(harpoon_files)
+  --   local file_paths = {}
+  --   for _, item in ipairs(harpoon_files.items) do
+  --     table.insert(file_paths, item.value)
+  --   end
+  --
+  --   require('telescope.pickers')
+  --     .new({}, {
+  --       prompt_title = 'Harpoon',
+  --       finder = require('telescope.finders').new_table {
+  --         results = file_paths,
+  --       },
+  --       previewer = telescopeConf.file_previewer {},
+  --       sorter = telescopeConf.generic_sorter {},
+  --     })
+  --     :find()
+  -- end
+  --
+  -- vim.keymap.set('n', '<leader>ht', function() toggle_telescope(harpoon:list()) end, { desc = '[H]arpoon [T]elescope menu' })
 end
 
 -- ============================================================
@@ -772,6 +807,8 @@ do
   vim.pack.add { gh 'j-hui/fidget.nvim' }
   require('fidget').setup {}
 
+
+
   --  This function gets run when an LSP attaches to a particular buffer.
   --    That is to say, every time a new file is opened that is associated with
   --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
@@ -788,6 +825,9 @@ do
         mode = mode or 'n'
         vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
       end
+
+      map('K', vim.lsp.buf.hover, 'Docs')
+      map('<C-s>', vim.lsp.buf.signature_help, 'Signature Docs')
 
       -- Rename the variable under your cursor.
       --  Most Language Servers support renaming across files, etc.
@@ -1079,7 +1119,10 @@ do
   --  See `:help nvim-treesitter-intro`
 
   -- NOTE: You can also specify a branch or a specific commit
-  vim.pack.add { { src = gh 'nvim-treesitter/nvim-treesitter', version = 'main' } }
+  vim.pack.add {
+    { src = gh 'nvim-treesitter/nvim-treesitter', version = 'main' },
+    { src = gh 'nvim-treesitter/nvim-treesitter-textobjects', }
+  }
 
   -- Ensure basic parsers are installed
   local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
