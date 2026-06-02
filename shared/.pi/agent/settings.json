@@ -1,4 +1,8 @@
 {
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.5"
+  "defaultModel": "gpt-5.5",
+  "defaultThinkingLevel": "minimal",
+  "editorPadding": 1,
+  "enableInstallTelemetry": false,
+  "treeFilterMode": "no-tools"
 }
