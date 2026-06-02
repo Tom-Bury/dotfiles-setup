@@ -36,7 +36,7 @@ setup_extra_source_scripts() {
   # Define the source files
   local source_file_prefix=".zshrc_"
   local scan_dir=$1
-  local source_files=($(find $scan_dir -type f -name "$source_file_prefix*.sh"))
+  local source_files=($(find $scan_dir -type f -name "$source_file_prefix*"))
 
   # Loop over the source files
   for source_file in "${source_files[@]}"; do

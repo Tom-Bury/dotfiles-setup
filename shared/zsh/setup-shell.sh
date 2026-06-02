@@ -8,9 +8,8 @@ setup_shell() {
   source "$ROOT_DIR/utils.sh"
   install_oh_my_zsh
   setup_starship_prompt $ROOT_DIR
-  setup_zshrc
 
-  # Set up autocomplete and syntax highlighting plugins
+  # Set up autocomplete and syntax highlighting plugins before installing/sourcing .zshrc.
   # Inspiration: https://gist.github.com/n1snt/454b879b8f0b7995740ae04c5fb5b7df
   setup_autosuggestions
   setup_syntax_highlighting
@@ -22,8 +21,7 @@ setup_shell() {
   setup_zsh_defer
 
   setup_extra_source_scripts $ROOT_DIR
-
-  source $HOME/.zshrc 
+  setup_zshrc
 }
 
 install_oh_my_zsh() {

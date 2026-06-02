@@ -14,9 +14,8 @@ ZSH_THEME=""
 
 # https://github.com/zsh-users/zsh-completions#manual-installation
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
-autoload -U compinit && compinit
+# Oh My Zsh runs compinit. Do not run it here too: double compinit slows every new shell/tmux pane.
 
-# In case the compinit gets too slow: https://gist.github.com/ctechols/ca1035271ad134841284
 
 export NVM_LAZY_LOAD=true
 export NVM_AUTO_USE=true
@@ -41,6 +40,24 @@ zstyle :bracketed-paste-magic paste-finish pastefinish
 
 # mise
 eval "$(mise activate zsh)"
+
+###############################################
+# Deferred init helper
+###############################################
+
+_zsh_defer_plugin="${ZSH_CUSTOM:-${ZSH:-$HOME/.oh-my-zsh}/custom}/plugins/zsh-defer/zsh-defer.plugin.zsh"
+if [[ -r "$_zsh_defer_plugin" ]]; then
+  source "$_zsh_defer_plugin"
+fi
+unset _zsh_defer_plugin
+
+_defer_or_run() {
+  if command -v zsh-defer >/dev/null 2>&1; then
+    zsh-defer "$@"
+  else
+    "$@"
+  fi
+}
 
 ###############################################
 # Aliases
@@ -132,18 +149,25 @@ export PATH="$HOME/bin:$HOME/.docker/bin:$PATH"
 # Load extra scripts
 ###############################################
 
-for file in $HOME/zshrc-scripts/.zshrc_*.sh; do
-  sched +1 source $file
+for file in "$HOME"/zshrc-scripts/.zshrc_*(N); do
+  _defer_or_run source "$file"
 done
+unset file
 
 ###############################################
 # Git-Spice
 ###############################################
 
-eval "$(git-spice shell completion zsh)"
+_init_git_spice_completion() {
+  command -v git-spice >/dev/null 2>&1 && eval "$(git-spice shell completion zsh)"
+}
+_defer_or_run _init_git_spice_completion
 
 ###############################################
 # FZF shell integration
 ###############################################
 # https://github.com/junegunn/fzf#setting-up-shell-integration
-  source <(fzf --zsh)
+_init_fzf_shell_integration() {
+  command -v fzf >/dev/null 2>&1 && source <(fzf --zsh)
+}
+_defer_or_run _init_fzf_shell_integration
