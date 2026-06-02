@@ -239,7 +239,20 @@ do
   -- Split management, tmux-like.
   vim.keymap.set('n', '<M-|>', '<cmd>vsplit<CR>', { desc = 'Vertical split' })
   vim.keymap.set('n', '<M-->', '<cmd>split<CR>', { desc = 'Horizontal split' })
-  vim.keymap.set('n', '<M-x>', '<cmd>close<CR>', { desc = 'Close split' })
+
+  local close_split_or_buffer = function()
+    local normal_windows = vim.tbl_filter(function(win)
+      return vim.api.nvim_win_get_config(win).relative == ''
+    end, vim.api.nvim_tabpage_list_wins(0))
+
+    if #normal_windows > 1 then
+      vim.cmd.close()
+    else
+      vim.cmd.bdelete()
+    end
+  end
+
+  vim.keymap.set('n', '<M-x>', close_split_or_buffer, { desc = 'Close split or buffer' })
   vim.keymap.set('n', '<M-=>', '<C-w>=', { desc = 'Equalize splits' })
 
   -- Resize splits with Alt+hjkl.
@@ -260,11 +273,11 @@ do
   -- Buffer manipulation
   vim.keymap.set('n', '<leader>n', '<cmd>bnext<CR>', { desc = 'Move to [N]ext buffer' })
   vim.keymap.set('n', '<leader>p', '<cmd>bprevious<CR>', { desc = 'Move to [P]revious buffer' })
-  vim.keymap.set('n', '<leader>x', '<cmd>bdelete<CR>', { desc = '[X] Close buffer' })
+  vim.keymap.set('n', '<leader>x', close_split_or_buffer, { desc = '[X] Close split or buffer' })
   vim.keymap.set('n', '<leader>w', '<cmd>write<CR>', { desc = '[W]rite buffer' })
   vim.keymap.set('n', '<leader>!', ':!', { desc = 'Run shell command' })
   vim.keymap.set('n', '<leader>br', '<cmd>bufdo edit<CR>', { desc = '[B]uffer [R]eload all from disk' })
-  vim.keymap.set('n', '<leader>br!', '<cmd>bufdo edit!<CR>', { desc = '[B]uffer [R]eload all from disk [!] forcibly' })
+  vim.keymap.set('n', '<leader>bR', '<cmd>bufdo edit!<CR>', { desc = '[B]uffer [R]eload all from disk forcibly' })
 
   -- Highlight when yanking (copying) text
   --  Try it with `yap` in normal mode
