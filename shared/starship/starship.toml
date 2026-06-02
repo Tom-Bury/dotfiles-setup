@@ -1,6 +1,10 @@
 # Move the directory to the second line
 format = '$all$directory$character'
 
+# Keep prompt responsive in large repos / tmux pane startup.
+command_timeout = 100
+scan_timeout = 10
+
 [aws]
 symbol = " "
 format = "[$symbol]($style)"
@@ -51,6 +55,7 @@ symbol = " "
 format = "[$symbol]($style)"
 
 [git_status]
+disabled = true
 ahead = '⇡${count}'
 diverged = '⇡${ahead_count}⇣${behind_count}'
 behind = '⇣${count}'
@@ -239,7 +244,7 @@ jj log --revisions @ --no-graph --ignore-working-copy --color always --limit 1 -
 [git_branch]
 symbol = "  "
 format = "[$symbol$branch]($style) "
-disabled = true
+disabled = false
 
 [git_state]
 disabled = true
@@ -250,8 +255,5 @@ disabled = true
 [git_metrics]
 disabled = true
 
-# re-enable git_branch as long as we're not in a jj repo
-[custom.git_branch]
-when = true
-command = "jj root >/dev/null 2>&1 || starship module git_branch"
-description = "Only show git_branch if we're not in a jj repo"
+# Built-in git_branch is much faster than spawning `jj root` + `starship module git_branch`
+# for every prompt. In jj repos, custom.jj above still shows jj status.

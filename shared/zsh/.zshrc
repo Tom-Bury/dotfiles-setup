@@ -12,6 +12,12 @@ export XDG_STATE_HOME="$HOME/.local/state"
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME=""
 
+# Startup speed: avoid Oh My Zsh checks on every new shell/tmux pane.
+ZSH_DISABLE_COMPFIX=true
+DISABLE_AUTO_UPDATE=true
+zstyle ':omz:update' mode disabled
+zstyle ':omz:compinit' mtime-based yes
+
 # https://github.com/zsh-users/zsh-completions#manual-installation
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 # Oh My Zsh runs compinit. Do not run it here too: double compinit slows every new shell/tmux pane.
@@ -149,8 +155,10 @@ export PATH="$HOME/bin:$HOME/.docker/bin:$PATH"
 # Load extra scripts
 ###############################################
 
-for file in "$HOME"/zshrc-scripts/.zshrc_*(N); do
-  _defer_or_run source "$file"
+# These are mostly aliases/functions. Source them directly; deferring them can cause
+# post-prompt stalls while typing in freshly opened panes.
+for file in "$HOME"/zshrc-scripts/.zshrc_*.sh(N); do
+  source "$file"
 done
 unset file
 
