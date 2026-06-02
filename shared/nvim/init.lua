@@ -212,6 +212,13 @@ do
   -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
   -- or just use <C-\><C-n> to exit terminal mode
   vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+  vim.api.nvim_create_autocmd('TermOpen', {
+    pattern = '*',
+    callback = function()
+      vim.opt_local.number = false
+      vim.opt_local.relativenumber = false
+    end,
+  })
 
   -- TIP: Disable arrow keys in normal mode
   vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
@@ -238,9 +245,11 @@ do
   --  See `:help lua-guide-autocommands`
 
   -- Buffer manipulation
-  vim.keymap.set('n', '<leader>n', '<cmd>bnext<CR>', { desc = 'Move to [N]ext buffer'})
-  vim.keymap.set('n', '<leader>p', '<cmd>bprevious<CR>', { desc = 'Move to [P]revious buffer'})
-  vim.keymap.set('n', '<leader>x', '<cmd>bdelete<CR>', { desc = '[X] Close buffer'})
+  vim.keymap.set('n', '<leader>n', '<cmd>bnext<CR>', { desc = 'Move to [N]ext buffer' })
+  vim.keymap.set('n', '<leader>p', '<cmd>bprevious<CR>', { desc = 'Move to [P]revious buffer' })
+  vim.keymap.set('n', '<leader>x', '<cmd>bdelete<CR>', { desc = '[X] Close buffer' })
+  vim.keymap.set('n', '<leader>w', '<cmd>write<CR>', { desc = '[W]rite buffer' })
+  vim.keymap.set('n', '<leader>!', ':!', { desc = 'Run shell command' })
 
   -- Highlight when yanking (copying) text
   --  Try it with `yap` in normal mode
@@ -359,26 +368,26 @@ do
   vim.pack.add { gh 'lewis6991/gitsigns.nvim' }
   require('gitsigns').setup {
     signs = {
-      add          = { text = '┃' },
-      change       = { text = '┃' },
-      delete       = { text = '_' },
-      topdelete    = { text = '‾' },
+      add = { text = '┃' },
+      change = { text = '┃' },
+      delete = { text = '_' },
+      topdelete = { text = '‾' },
       changedelete = { text = '~' },
-      untracked    = { text = '┆' },
+      untracked = { text = '┆' },
     },
     signs_staged = {
-      add          = { text = '┃' },
-      change       = { text = '┃' },
-      delete       = { text = '_' },
-      topdelete    = { text = '‾' },
+      add = { text = '┃' },
+      change = { text = '┃' },
+      delete = { text = '_' },
+      topdelete = { text = '‾' },
       changedelete = { text = '~' },
-      untracked    = { text = '┆' },
+      untracked = { text = '┆' },
     },
-    signs_staged_enable = true
+    signs_staged_enable = true,
   }
 
   vim.pack.add { gh 'kdheepak/lazygit.nvim' }
-  vim.keymap.set('n', '<leader>lg', "<cmd>LazyGit<cr>", { desc = 'Open [L]azy[G]it' })
+  vim.keymap.set('n', '<leader>lg', '<cmd>LazyGit<cr>', { desc = 'Open [L]azy[G]it' })
 
   -- Useful plugin to show you pending keybinds.
   vim.pack.add { gh 'folke/which-key.nvim' }
@@ -410,16 +419,16 @@ do
     },
   }
 
-  vim.pack.add { { src = "https://github.com/catppuccin/nvim", name = "catppuccin" } }
+  vim.pack.add { { src = 'https://github.com/catppuccin/nvim', name = 'catppuccin' } }
 
-  require("catppuccin").setup({
-    flavour = "mocha", -- latte, frappe, macchiato, mocha
+  require('catppuccin').setup {
+    flavour = 'mocha', -- latte, frappe, macchiato, mocha
     transparent_background = true, -- disables setting the background color.
     float = {
-        transparent = true, -- enable transparent floating windows
-        solid = true -- use solid styling for floating windows, see |winborder|
+      transparent = true, -- enable transparent floating windows
+      solid = true, -- use solid styling for floating windows, see |winborder|
     },
-  })
+  }
   -- Load the colorscheme here.
   -- Like many other themes, this one has different styles, and you could load
   -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
@@ -433,15 +442,15 @@ do
   --  A collection of various small independent plugins/modules
   vim.pack.add { gh 'nvim-mini/mini.nvim' }
 
-  local animate = require('mini.animate')
-  animate.setup({
+  local animate = require 'mini.animate'
+  animate.setup {
     cursor = {
-      enable = false
+      enable = false,
     },
     scroll = {
-       timing = animate.gen_timing.linear({ duration = 100, unit = "total" }),
-    }
-  })
+      timing = animate.gen_timing.linear { duration = 100, unit = 'total' },
+    },
+  }
 
   -- Better Around/Inside textobjects
   --
@@ -471,34 +480,34 @@ do
   --  and try some other statusline plugin
   local statusline = require 'mini.statusline'
 
-  require('mini.statusline').setup({
+  require('mini.statusline').setup {
     use_icons = vim.g.have_nerd_font,
     content = {
       active = function()
-        local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
-        local git           = MiniStatusline.section_git({ trunc_width = 75 })
-        local diagnostics   = MiniStatusline.section_diagnostics({
+        local mode, mode_hl = MiniStatusline.section_mode { trunc_width = 120 }
+        local git = MiniStatusline.section_git { trunc_width = 75 }
+        local diagnostics = MiniStatusline.section_diagnostics {
           trunc_width = 75,
-          signs = { ERROR = '󰅚 ', WARN = '󰀪 ', INFO = '󰋽 ', HINT = '󰌶' }
-        })
-        local filename      = MiniStatusline.section_filename({ trunc_width = 140 })
-        local location      = MiniStatusline.section_location({ trunc_width = 90 })
-        local search        = MiniStatusline.section_searchcount({ trunc_width = 75 })
+          signs = { ERROR = '󰅚 ', WARN = '󰀪 ', INFO = '󰋽 ', HINT = '󰌶' },
+        }
+        local filename = MiniStatusline.section_filename { trunc_width = 140 }
+        local location = MiniStatusline.section_location { trunc_width = 90 }
+        local search = MiniStatusline.section_searchcount { trunc_width = 75 }
 
         -- Stitch them together in whatever layout order you prefer!
-        return MiniStatusline.combine_groups({
-          { hl = mode_hl,                  strings = { mode } },
-          { hl = 'MiniStatuslineDevinfo',  strings = { git } },
+        return MiniStatusline.combine_groups {
+          { hl = mode_hl, strings = { mode } },
+          { hl = 'MiniStatuslineDevinfo', strings = { git } },
           '%<', -- Truncate here if everything doesn't fit
           -- 2. Add the diagnostics section to the layout
           { hl = 'MiniStatuslineFilename', strings = { filename } },
           '%=', -- Push everything past this point to the right side
-          { hl = 'MiniStatuslineDevinfo',  strings = { diagnostics } },
-          { hl = mode_hl,                  strings = { location, search } },
-        })
-      end
-    }
-  })
+          { hl = 'MiniStatuslineDevinfo', strings = { diagnostics } },
+          { hl = mode_hl, strings = { location, search } },
+        }
+      end,
+    },
+  }
   -- You can configure sections in the statusline by overriding their
   -- default behavior. For example, here we set the section for
   -- cursor location to LINE:COLUMN
@@ -514,6 +523,16 @@ end
 -- Telescope setup, keymaps, LSP picker mappings
 -- ============================================================
 do
+  -- FLASH: quick jump/search navigation
+  vim.pack.add { gh 'folke/flash.nvim' }
+  require('flash').setup {}
+
+  vim.keymap.set({ 'n', 'x', 'o' }, 'fj', function() require('flash').jump() end, { desc = '[F]lash [J]ump to target' })
+  vim.keymap.set({ 'n', 'x', 'o' }, 'ft', function() require('flash').treesitter() end, { desc = '[F]lash jump in [T]ree' })
+  vim.keymap.set('o', 'f', function() require('flash').remote() end, { desc = '[F]lash [J]ump (eg yfj to flash during yank)' })
+  vim.keymap.set({ 'o', 't' }, 'R', function() require('flash').treesitter_search() end, { desc = '[F]lash jump in [T]ree' })
+  vim.keymap.set('c', '<C-s>', function() require('flash').toggle() end, { desc = 'Toggle Flash Search' })
+
   -- [[ Fuzzy Finder (files, lsp, etc) ]]
   --
   -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -570,10 +589,12 @@ do
         hidden = true,
         find_command = {
           'fd',
-          '--type', 'f',
+          '--type',
+          'f',
           '--hidden',
-          '--exclude', '.git',
-        }
+          '--exclude',
+          '.git',
+        },
       },
     },
     extensions = {
@@ -664,64 +685,56 @@ do
 
   require('oil').setup {
     view_options = {
-      show_hidden = true
-    }
+      show_hidden = true,
+    },
   }
 
-  vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+  vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
 
   -- HARPOON: quick navigation between marked buffers
   vim.pack.add {
     {
       src = gh 'ThePrimeagen/harpoon',
       version = 'harpoon2',
-      dependencies = { "nvim-lua/plenary.nvim" }
+      dependencies = { 'nvim-lua/plenary.nvim' },
     },
-
   }
 
-  local harpoon = require('harpoon')
+  local harpoon = require 'harpoon'
   harpoon:setup {}
 
-  vim.keymap.set('n', '<leader>ha', function() harpoon:list():add() end, { desc =
-    '[H]arpoon [A]dd file' })
-  vim.keymap.set('n', '<leader>hm', function()
-    harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = '[H]arpoon [M]enu' })
+  vim.keymap.set('n', '<leader>ha', function() harpoon:list():add() end, { desc = '[H]arpoon [A]dd file' })
+  vim.keymap.set('n', '<leader>hm', function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = '[H]arpoon [M]enu' })
 
-  vim.keymap.set('n', '<leader>h1', function() harpoon:list():select(1) end, { desc =
-    '[H]arpoon file 1' })
-  vim.keymap.set('n', '<leader>h2', function() harpoon:list():select(2) end, { desc =
-    '[H]arpoon file 2' })
-  vim.keymap.set('n', '<leader>h3', function() harpoon:list():select(3) end, { desc =
-    '[H]arpoon file 3' })
-  vim.keymap.set('n', '<leader>h4', function() harpoon:list():select(4) end, { desc =
-    '[H]arpoon file 4' })
+  vim.keymap.set('n', '<leader>h1', function() harpoon:list():select(1) end, { desc = '[H]arpoon file 1' })
+  vim.keymap.set('n', '<leader>h2', function() harpoon:list():select(2) end, { desc = '[H]arpoon file 2' })
+  vim.keymap.set('n', '<leader>h3', function() harpoon:list():select(3) end, { desc = '[H]arpoon file 3' })
+  vim.keymap.set('n', '<leader>h4', function() harpoon:list():select(4) end, { desc = '[H]arpoon file 4' })
 
-  vim.keymap.set('n', '<leader>hp', function() harpoon:list():prev() end, { desc =
-    '[H]arpoon [P]rev' })
-  vim.keymap.set('n', '<leader>hn', function() harpoon:list():next() end, { desc =
-    '[H]arpoon [N]ext' })
+  vim.keymap.set('n', '<leader>hp', function() harpoon:list():prev() end, { desc = '[H]arpoon [P]rev' })
+  vim.keymap.set('n', '<leader>hn', function() harpoon:list():next() end, { desc = '[H]arpoon [N]ext' })
 
   -- basic telescope configuration
-  local telescopeConf = require("telescope.config").values
+  local telescopeConf = require('telescope.config').values
   local function toggle_telescope(harpoon_files)
     local file_paths = {}
     for _, item in ipairs(harpoon_files.items) do
       table.insert(file_paths, item.value)
     end
 
-    require("telescope.pickers").new({}, {
-      prompt_title = "Harpoon",
-      finder = require("telescope.finders").new_table({
-        results = file_paths,
-      }),
-      previewer = telescopeConf.file_previewer({}),
-      sorter = telescopeConf.generic_sorter({}),
-    }):find()
+    require('telescope.pickers')
+      .new({}, {
+        prompt_title = 'Harpoon',
+        finder = require('telescope.finders').new_table {
+          results = file_paths,
+        },
+        previewer = telescopeConf.file_previewer {},
+        sorter = telescopeConf.generic_sorter {},
+      })
+      :find()
   end
 
-  vim.keymap.set("n", "<leader>ht", function() toggle_telescope(harpoon:list()) end,
-    { desc = "[H]arpoon [T]elescope menu" })
+  vim.keymap.set('n', '<leader>ht', function() toggle_telescope(harpoon:list()) end, { desc = '[H]arpoon [T]elescope menu' })
 end
 
 -- ============================================================
@@ -989,8 +1002,8 @@ do
   --    See the README about individual language/framework/plugin snippets:
   --    https://github.com/rafamadriz/friendly-snippets
   --
-  -- vim.pack.add { gh 'rafamadriz/friendly-snippets' }
-  -- require('luasnip.loaders.from_vscode').lazy_load()
+  vim.pack.add { gh 'rafamadriz/friendly-snippets' }
+  require('luasnip.loaders.from_vscode').lazy_load()
 
   -- [[ Autocomplete Engine ]]
   vim.pack.add { { src = gh 'saghen/blink.cmp', version = vim.version.range '1.*' } }
