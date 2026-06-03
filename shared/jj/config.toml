@@ -3,7 +3,7 @@ name = "Tom Bury"
 email = "tom.bury@hotmail.com"
 
 [ui]
-editor = "micro"
+editor = "nvim"
 default-command = "log"
 pager = ["sh", "-c", "diff-so-fancy | less --tabs=4 -RF"]
 

@@ -50,10 +50,11 @@ The setup scripts are split in a common and os specific part:
 
 - Run `./main.sh docker` or `docker/main.sh` which performs a barebones setup:
   - Runs `apt update` and `apt upgrade`
-  - Installs a limited set of apt tools, currently `ca-certificates`, `curl`, `git`, `micro`, and `yazi` when available
+  - Installs a limited set of apt tools, currently `ca-certificates`, `curl`, `git`, `micro`, `neovim`, and `yazi` when available
   - Syncs `shared/.agents` to `/root/.agents`
   - Syncs `shared/.pi/agent` to `/root/.pi/agent`
   - Syncs `shared/yazi/yazi.toml` to `/root/.config/yazi/yazi.toml`, configured to show hidden files
+  - Sets terminal default editor env vars (`EDITOR`, `VISUAL`, `SUDO_EDITOR`) to `nvim`
   - Installs `nodejs` and `npm` through apt only when either command is missing
   - Installs global npm packages, currently `@earendil-works/pi-coding-agent`
 
