@@ -382,6 +382,9 @@ do
   vim.pack.add { gh 'NMAC427/guess-indent.nvim' }
   require('guess-indent').setup {}
 
+  vim.pack.add { gh 'brenoprata10/nvim-highlight-colors' }
+  require('nvim-highlight-colors').setup({})
+
   -- Because lua is a real programming language, you can also have some logic to your installation -
   -- like only installing a plugin if a condition is met.
   --
