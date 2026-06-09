@@ -540,8 +540,8 @@ git:
 # # view the output of the subprocess before returning to Lazygit.
 # promptToReturnFromSubprocess: true
 
-# # Keybindings
-# keybinding:
+# Keybindings
+keybinding:
 #   universal:
 #     quit: q
 #     quit-alt1: <c-c>
@@ -673,7 +673,7 @@ git:
 #     sortOrder: s
 #   worktrees:
 #     viewWorktreeOptions: w
-#   commits:
+  commits:
 #     squashDown: s
 #     renameCommit: r
 #     renameCommitWithEditor: R
@@ -681,8 +681,8 @@ git:
 #     markCommitAsFixup: f
 #     createFixupCommit: F
 #     squashAboveCommits: S
-#     moveDownCommit: <c-j>
-#     moveUpCommit: <c-k>
+    moveDownCommit: <c-s-j>
+    moveUpCommit: <c-s-k>
 #     amendToCommit: A
 #     resetCommitAuthor: a
 #     pickCommit: p

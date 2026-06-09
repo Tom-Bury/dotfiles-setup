@@ -22,7 +22,8 @@ APT_PACKAGES=(
   "curl"
   "git"
   "micro"
-  "unzip",
+  "neovim"
+  "unzip"
   "file"
 )
 
@@ -162,6 +163,30 @@ sync_yazi() {
   print_footer "yazi config synced to $HOME/.config/yazi"
 }
 
+sync_default_editor() {
+  local bashrc="$HOME/.bashrc"
+  local marker_begin="# >>> dotfiles-setup default editor >>>"
+  local marker_end="# <<< dotfiles-setup default editor <<<"
+
+  print_header "Setting default editor to nvim 📝"
+  touch "$bashrc"
+
+  if grep -Fq "$marker_begin" "$bashrc"; then
+    echo "default editor already managed in $bashrc"
+  else
+    {
+      printf '\n%s\n' "$marker_begin"
+      printf '%s\n' 'export EDITOR="nvim"'
+      printf '%s\n' 'export VISUAL="nvim"'
+      printf '%s\n' 'export SUDO_EDITOR="nvim"'
+      printf '%s\n' "$marker_end"
+    } >> "$bashrc"
+    echo "default editor added to $bashrc"
+  fi
+
+  print_footer "Default editor synced to $bashrc"
+}
+
 sync_yazi_shell_wrapper() {
   local bashrc="$HOME/.bashrc"
   local yazi_shell="$ROOT_DIR/shared/yazi/.zshrc_yazi.sh"
@@ -192,6 +217,7 @@ main() {
   install_yazi_if_needed
   sync_yazi
   sync_yazi_shell_wrapper
+  sync_default_editor
   sync_agents
   sync_pi
   install_nvm

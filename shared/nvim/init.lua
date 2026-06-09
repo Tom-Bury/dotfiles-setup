@@ -252,6 +252,16 @@ do
     end
   end
 
+  local close_buffer_keep_window = function()
+    local buf = vim.api.nvim_get_current_buf()
+
+    vim.cmd 'buffer #'
+
+    if vim.api.nvim_get_current_buf() == buf then vim.cmd.enew() end
+
+    vim.cmd.bdelete(buf)
+  end
+
   vim.keymap.set('n', '<M-x>', close_split_or_buffer, { desc = 'Close split or buffer' })
   vim.keymap.set('n', '<M-=>', '<C-w>=', { desc = 'Equalize splits' })
 
@@ -273,7 +283,7 @@ do
   -- Buffer manipulation
   vim.keymap.set('n', '<leader>n', '<cmd>bnext<CR>', { desc = 'Move to [N]ext buffer' })
   vim.keymap.set('n', '<leader>p', '<cmd>bprevious<CR>', { desc = 'Move to [P]revious buffer' })
-  vim.keymap.set('n', '<leader>x', close_split_or_buffer, { desc = '[X] Close split or buffer' })
+  vim.keymap.set('n', '<leader>x', close_buffer_keep_window, { desc = '[X] Close buffer, keep split' })
   vim.keymap.set('n', '<leader>w', '<cmd>write<CR>', { desc = '[W]rite buffer' })
   vim.keymap.set('n', '<leader>!', ':!', { desc = 'Run shell command' })
   vim.keymap.set('n', '<leader>br', '<cmd>bufdo edit<CR>', { desc = '[B]uffer [R]eload all from disk' })
