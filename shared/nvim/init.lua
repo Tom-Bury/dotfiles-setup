@@ -127,6 +127,9 @@ do
   -- Enable break indent
   vim.o.breakindent = true
 
+  -- Show tabs as 3 columns
+  vim.o.tabstop = 3
+
   -- Enable undo/redo changes even after closing and reopening a file
   vim.o.undofile = true
 
@@ -156,7 +159,7 @@ do
   --   See `:help lua-options`
   --   and `:help lua-guide-options`
   vim.o.list = true
-  vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+  vim.opt.listchars = { tab = '  ', trail = '·', nbsp = '␣' }
 
   -- Preview substitutions live, as you type!
   vim.o.inccommand = 'split'
@@ -1089,14 +1092,17 @@ do
       -- No, but seriously. Please read `:help ins-completion`, it is really good!
       --
       -- All presets have the following mappings:
-      -- <tab>/<s-tab>: move to right/left of your snippet expansion
       -- <c-space>: Open menu or open docs if already open
       -- <c-n>/<c-p> or <up>/<down>: Select next/previous item
       -- <c-e>: Hide menu
       -- <c-k>: Toggle signature help
       --
+      -- Keep Tab/Shift-Tab as normal indentation keys instead of snippet-jump keys.
+      -- Use <c-n>/<c-p> for completion selection and <c-y> to accept.
       -- See `:help blink-cmp-config-keymap` for defining your own keymap
       preset = 'default',
+      ['<Tab>'] = {},
+      ['<S-Tab>'] = {},
 
       -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
       --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
