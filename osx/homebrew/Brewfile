@@ -54,6 +54,7 @@ brew "tmux"
 brew "lazygit"
 brew "jesseduffield/lazydocker/lazydocker"
 brew "yazi"
+brew "tabiew"
 # brew "ollama"
 
 # React-Native
