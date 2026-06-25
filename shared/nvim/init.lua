@@ -173,7 +173,6 @@ do
   -- Set rounded borders to popups
   vim.o.winborder = 'rounded'
 
-
   -- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
   -- instead raise a dialog asking if you wish to save the current file(s)
   -- See `:help 'confirm'`
@@ -244,9 +243,7 @@ do
   vim.keymap.set('n', '<M-->', '<cmd>split<CR>', { desc = 'Horizontal split' })
 
   local close_split_or_buffer = function()
-    local normal_windows = vim.tbl_filter(function(win)
-      return vim.api.nvim_win_get_config(win).relative == ''
-    end, vim.api.nvim_tabpage_list_wins(0))
+    local normal_windows = vim.tbl_filter(function(win) return vim.api.nvim_win_get_config(win).relative == '' end, vim.api.nvim_tabpage_list_wins(0))
 
     if #normal_windows > 1 then
       vim.cmd.close()
@@ -396,7 +393,7 @@ do
   require('guess-indent').setup {}
 
   vim.pack.add { gh 'brenoprata10/nvim-highlight-colors' }
-  require('nvim-highlight-colors').setup({})
+  require('nvim-highlight-colors').setup {}
 
   -- Because lua is a real programming language, you can also have some logic to your installation -
   -- like only installing a plugin if a condition is met.
@@ -430,9 +427,26 @@ do
     signs_staged_enable = true,
   }
 
+  -- Open a searchable list of all uncommitted files in your project
+  vim.keymap.set('n', '<leader>gs', '<cmd>Telescope git_status<CR>', { desc = 'Search [G]it [S]tatus' })
+
   vim.pack.add { gh 'kdheepak/lazygit.nvim' }
   vim.keymap.set('n', '<leader>lg', '<cmd>LazyGit<cr>', { desc = 'Open [L]azy[G]it' })
 
+  vim.pack.add { gh 'sindrets/diffview.nvim' }
+  require('diffview').setup {
+    keymaps = {
+      file_panel = {
+        -- This completely frees up <leader>w globally and inside diffview
+        { 'n', '<C-w><C-f>', false },
+        { 'n', '<C-w>gf', false },
+      },
+    },
+  }
+  vim.keymap.set('n', '<leader>gdo', '<cmd>DiffviewOpen<CR>', { desc = '[G]it [D]iff [O]pen' })
+  vim.keymap.set('n', '<leader>gdc', '<cmd>DiffviewClose<CR>', { desc = '[G]it [D]iff [C]lose' })
+
+  --
   -- Useful plugin to show you pending keybinds.
   vim.pack.add { gh 'folke/which-key.nvim' }
   require('which-key').setup {
@@ -443,10 +457,12 @@ do
     spec = {
       { '<leader>s', group = '[S]earch', mode = { 'n', 'v' } },
       { '<leader>t', group = '[T]oggle' },
-      { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } }, -- Enable gitsigns recommended keymaps first
-      { 'gr', group = 'LSP Actions', mode = { 'n' } },
+      { '<leader>g', group = '[G]it', mode = { 'n', 'v' } },
+      { 'gt', group = 'LSP Actions', mode = { 'n' } },
     },
   }
+  vim.keymap.set('n', ']h', '<cmd>Gitsigns next_hunk<CR>', { desc = 'Next Git hunk' })
+  vim.keymap.set('n', '[h', '<cmd>Gitsigns prev_hunk<CR>', { desc = 'Previous Git hunk' })
 
   -- [[ Colorscheme ]]
   -- You can easily change to a different colorscheme.
@@ -468,8 +484,8 @@ do
   require('catppuccin').setup {
     flavour = 'auto', -- latte, frappe, macchiato, mocha
     background = { -- :h background
-        light = "latte",
-        dark = "mocha",
+      light = 'latte',
+      dark = 'mocha',
     },
     transparent_background = true, -- disables setting the background color.
     float = {
@@ -509,7 +525,7 @@ do
   --  - va)  - [V]isually select [A]round [)]paren
   --  - yiiq - [Y]ank [I]nside [I]+1 [Q]uote
   --  - ci'  - [C]hange [I]nside [']quote
-  local ai = require('mini.ai')
+  local ai = require 'mini.ai'
   ai.setup {
     -- NOTE: Avoid conflicts with the built-in incremental selection mappings on Neovim>=0.12 (see `:help treesitter-incremental-selection`)
     mappings = {
@@ -520,7 +536,7 @@ do
       F = ai.gen_spec.treesitter {
         a = '@function.outer',
         i = '@function.inner',
-      }
+      },
     },
     n_lines = 500,
   }
@@ -582,10 +598,10 @@ end
 -- ============================================================
 do
   vim.pack.add { gh 'christoomey/vim-tmux-navigator' }
-  vim.keymap.set({ 'n' }, "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>", { desc = '← [H] left pane' })
-  vim.keymap.set({ 'n' }, "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>", { desc = '↓ [J] down pane' })
-  vim.keymap.set({ 'n' }, "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>", { desc = '↑ [K] up pane' })
-  vim.keymap.set({ 'n' }, "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>", { desc = '→ [L] right pane' })
+  vim.keymap.set({ 'n' }, '<c-h>', '<cmd><C-U>TmuxNavigateLeft<cr>', { desc = '← [H] left pane' })
+  vim.keymap.set({ 'n' }, '<c-j>', '<cmd><C-U>TmuxNavigateDown<cr>', { desc = '↓ [J] down pane' })
+  vim.keymap.set({ 'n' }, '<c-k>', '<cmd><C-U>TmuxNavigateUp<cr>', { desc = '↑ [K] up pane' })
+  vim.keymap.set({ 'n' }, '<c-l>', '<cmd><C-U>TmuxNavigateRight<cr>', { desc = '→ [L] right pane' })
 
   -- FLASH: quick jump/search navigation
   vim.pack.add { gh 'folke/flash.nvim' }
@@ -692,29 +708,29 @@ do
       local buf = event.buf
 
       -- Find references for the word under your cursor.
-      vim.keymap.set('n', 'grr', builtin.lsp_references, { buffer = buf, desc = '[G]oto [R]eferences' })
+      vim.keymap.set('n', 'gtr', builtin.lsp_references, { buffer = buf, desc = '[G]o[T]o [R]eferences' })
 
       -- Jump to the implementation of the word under your cursor.
       -- Useful when your language has ways of declaring types without an actual implementation.
-      vim.keymap.set('n', 'gri', builtin.lsp_implementations, { buffer = buf, desc = '[G]oto [I]mplementation' })
+      vim.keymap.set('n', 'gti', builtin.lsp_implementations, { buffer = buf, desc = '[d]o[T]o [I]mplementation' })
 
       -- Jump to the definition of the word under your cursor.
       -- This is where a variable was first declared, or where a function is defined, etc.
       -- To jump back, press <C-t>.
-      vim.keymap.set('n', 'grd', builtin.lsp_definitions, { buffer = buf, desc = '[G]oto [D]efinition' })
+      vim.keymap.set('n', 'gtd', builtin.lsp_definitions, { buffer = buf, desc = '[G]o[T]o [D]efinition' })
 
       -- Fuzzy find all the symbols in your current document.
       -- Symbols are things like variables, functions, types, etc.
-      vim.keymap.set('n', 'gO', builtin.lsp_document_symbols, { buffer = buf, desc = 'Open Document Symbols' })
+      vim.keymap.set('n', 'gtds', builtin.lsp_document_symbols, { buffer = buf, desc = '[G]o[T]o [D]ocument [S]ymbols' })
 
       -- Fuzzy find all the symbols in your current workspace.
       -- Similar to document symbols, except searches over your entire project.
-      vim.keymap.set('n', 'gW', builtin.lsp_dynamic_workspace_symbols, { buffer = buf, desc = 'Open Workspace Symbols' })
+      vim.keymap.set('n', 'gtws', builtin.lsp_dynamic_workspace_symbols, { buffer = buf, desc = '[G]o[T]o [W]orkspace [S]ymbols' })
 
       -- Jump to the type of the word under your cursor.
       -- Useful when you're not sure what type a variable is and you want to see
       -- the definition of its *type*, not where it was *defined*.
-      vim.keymap.set('n', 'grt', builtin.lsp_type_definitions, { buffer = buf, desc = '[G]oto [T]ype Definition' })
+      vim.keymap.set('n', 'gttd', builtin.lsp_type_definitions, { buffer = buf, desc = '[G]o[T]o [T]ype [D]efinition' })
     end,
   })
 
@@ -836,8 +852,6 @@ do
   vim.pack.add { gh 'j-hui/fidget.nvim' }
   require('fidget').setup {}
 
-
-
   --  This function gets run when an LSP attaches to a particular buffer.
   --    That is to say, every time a new file is opened that is associated with
   --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
@@ -860,15 +874,15 @@ do
 
       -- Rename the variable under your cursor.
       --  Most Language Servers support renaming across files, etc.
-      map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
+      map('<leader>r', vim.lsp.buf.rename, '[R]ename')
 
       -- Execute a code action, usually your cursor needs to be on top of an error
       -- or a suggestion from your LSP for this to activate.
-      map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
+      map('<leader>a', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
 
       -- WARN: This is not Goto Definition, this is Goto Declaration.
       --  For example, in C this would take you to the header.
-      map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+      map('gtD', vim.lsp.buf.declaration, '[G]o[T]o [D]eclaration')
 
       -- The following two autocommands are used to highlight references of the
       -- word under your cursor when your cursor rests there for a little while.
@@ -1153,7 +1167,7 @@ do
   -- NOTE: You can also specify a branch or a specific commit
   vim.pack.add {
     { src = gh 'nvim-treesitter/nvim-treesitter', version = 'main' },
-    { src = gh 'nvim-treesitter/nvim-treesitter-textobjects', }
+    { src = gh 'nvim-treesitter/nvim-treesitter-textobjects' },
   }
 
   -- Ensure basic parsers are installed
