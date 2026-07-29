@@ -51,6 +51,10 @@
       "rev": "a04ad0dbc725134edbee3a5eea29290976695357",
       "src": "https://github.com/kdheepak/lazygit.nvim"
     },
+    "llama.vim": {
+      "rev": "77db2afe488a7f700a2027527f17ab771988e358",
+      "src": "https://github.com/ggml-org/llama.vim"
+    },
     "mason-lspconfig.nvim": {
       "rev": "7b01e2974a47d489bb92f47a41e4c0088ea8f86e",
       "src": "https://github.com/mason-org/mason-lspconfig.nvim"
@@ -87,6 +91,14 @@
     "nvim-web-devicons": {
       "rev": "dfbfaa967a6f7ec50789bead7ef87e336c1fa63c",
       "src": "https://github.com/nvim-tree/nvim-web-devicons"
+    },
+    "oil-git.nvim": {
+      "rev": "54de208323d00c519e26280f8b5b4b821d32f955",
+      "src": "https://github.com/malewicz1337/oil-git.nvim"
+    },
+    "oil-lsp-diagnostics.nvim": {
+      "rev": "282308383d8d8485937aaf3c28b44fa1cb26007a",
+      "src": "https://github.com/JezerM/oil-lsp-diagnostics.nvim"
     },
     "oil.nvim": {
       "rev": "b91ee5a77a6a9605d9c1aaf4fda74b66082c8297",

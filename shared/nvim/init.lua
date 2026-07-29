@@ -795,6 +795,48 @@ do
 
   vim.keymap.set('n', '-', '<CMD>Oil --float<CR>', { desc = 'Open parent directory' })
 
+  -- Adds LSP diagnostics info to files in oil
+  vim.pack.add { gh 'JezerM/oil-lsp-diagnostics.nvim'}
+  require("oil-lsp-diagnostics").setup({
+    count = true,
+    parent_dirs = true,
+    diagnostic_colors = {
+      error = "DiagnosticError",
+      warn  = "DiagnosticWarn",
+      info  = "DiagnosticInfo",
+      hint  = "DiagnosticHint",
+    },
+    diagnostic_symbols = {
+      error = "",
+      warn = "",
+      info = "",
+      hint = "󰌶",
+    }
+  })
+
+
+  -- Adds Git Signs to files and directories in oil
+  vim.pack.add { gh 'malewicz1337/oil-git.nvim' }
+
+  require('oil-git').setup {
+    symbol_position = 'signcolumn',
+    can_use_signcolumn = function ()
+      return 'yes:1'
+    end,
+    highlights = {
+       OilGitAdded = { fg = '#008000', bold = true },
+       OilGitModifiedStaged = { fg = '#9a6700', bold = true },
+       OilGitModifiedUnstaged = { fg = '#b26a00', bold = true },
+       OilGitBranch = { fg = '#0969da', bold = true },
+       OilGitRenamed = { fg = '#8250df', bold = true },
+       OilGitDeleted = { fg = '#cf222e', bold = true },
+       OilGitCopied = { fg = '#8250df', bold = true },
+       OilGitConflict = { fg = '#bc4c00', bold = true },
+       OilGitUntracked = { fg = '#0969da', bold = true },
+       OilGitIgnored = { fg = '#6e7781' },
+     },
+  }
+
   -- HARPOON: quick navigation between marked buffers
   vim.pack.add {
     {
@@ -1094,7 +1136,7 @@ do
 end
 
 -- ============================================================
--- SECTION 7: AUTOCOMPLETE & SNIPPETS
+-- SECTION 7: AUTOCOMPLETE & SNIPPETS & LLM
 -- blink.cmp and luasnip setup
 -- ============================================================
 do
@@ -1111,6 +1153,8 @@ do
   --
   vim.pack.add { gh 'rafamadriz/friendly-snippets' }
   require('luasnip.loaders.from_vscode').lazy_load()
+
+  vim.pack.add { gh 'ggml-org/llama.vim' }
 
   -- [[ Autocomplete Engine ]]
   vim.pack.add { { src = gh 'saghen/blink.cmp', version = vim.version.range '1.*' } }
