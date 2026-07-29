@@ -455,6 +455,7 @@ do
     icons = { mappings = vim.g.have_nerd_font },
     -- Document existing key chains
     spec = {
+      { '<leader>a', group = '[A]I' },
       { '<leader>s', group = '[S]earch', mode = { 'n', 'v' } },
       { '<leader>t', group = '[T]oggle' },
       { '<leader>g', group = '[G]it', mode = { 'n', 'v' } },
@@ -944,7 +945,7 @@ do
 
       -- Execute a code action, usually your cursor needs to be on top of an error
       -- or a suggestion from your LSP for this to activate.
-      map('<leader>a', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
+      map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
 
       -- WARN: This is not Goto Definition, this is Goto Declaration.
       --  For example, in C this would take you to the header.
@@ -1154,7 +1155,34 @@ do
   vim.pack.add { gh 'rafamadriz/friendly-snippets' }
   require('luasnip.loaders.from_vscode').lazy_load()
 
-  vim.pack.add { gh 'ggml-org/llama.vim' }
+  vim.g.llama_config = {
+    show_info = 0,
+    n_cmpl = 3,
+
+    -- Autocomplete engine
+    -- Keep plugin trigger private; user-facing <leader>ai maps below.
+    keymap_fim_trigger     = "<M-i>",
+    -- Keep llama.vim on a private key so blink.cmp can own <C-y>.
+    -- blink's <C-y> mapping below falls back to this when the completion menu is closed.
+    keymap_fim_accept_full = "<M-y>",
+    keymap_fim_accept_line = "<C-j>",
+    keymap_fim_accept_word = "<C-l>",
+    -- Avoid <C-n>/<C-p>: blink.cmp uses those for menu selection.
+    keymap_fim_next        = "<M-n>",
+    keymap_fim_prev        = "<M-N>",
+    auto_fim_debounce_ms  = 150,
+   }
+   vim.pack.add { { src = gh 'Tom-Bury/llama.vim', version = 'feat/debounce' } }
+
+  local trigger_llama_fim = function()
+    vim.cmd.startinsert()
+    vim.schedule(function() vim.api.nvim_feedkeys(vim.keycode '<M-i>', 'i', false) end)
+  end
+
+  vim.keymap.set('n', '<leader>ai', trigger_llama_fim, { desc = '[A]I completion' })
+  vim.keymap.set('i', '<M-i>', function()
+    vim.api.nvim_feedkeys(vim.keycode '<M-i>', 'i', false)
+  end, { desc = '[A]I completion' })
 
   -- [[ Autocomplete Engine ]]
   vim.pack.add { { src = gh 'saghen/blink.cmp', version = vim.version.range '1.*' } }
@@ -1185,6 +1213,14 @@ do
       preset = 'default',
       ['<Tab>'] = {},
       ['<S-Tab>'] = {},
+      ['<C-y>'] = {
+        function(cmp)
+          if cmp.is_visible() then return cmp.accept() end
+
+          vim.api.nvim_feedkeys(vim.keycode '<M-y>', 'i', false)
+          return true
+        end,
+      },
 
       -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
       --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps

@@ -52,8 +52,9 @@
       "src": "https://github.com/kdheepak/lazygit.nvim"
     },
     "llama.vim": {
-      "rev": "77db2afe488a7f700a2027527f17ab771988e358",
-      "src": "https://github.com/ggml-org/llama.vim"
+      "rev": "87b08f69d122f8526433fb730b82a7d8e2c09085",
+      "src": "https://github.com/Tom-Bury/llama.vim",
+      "version": "'feat/debounce'"
     },
     "mason-lspconfig.nvim": {
       "rev": "7b01e2974a47d489bb92f47a41e4c0088ea8f86e",
