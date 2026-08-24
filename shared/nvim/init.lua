@@ -92,6 +92,13 @@ do
   -- Enable faster startup by caching compiled Lua modules
   vim.loader.enable()
 
+  -- Overwrite c to go to black hole register iso overwriting clipboard
+  vim.keymap.set('n', 'c', '"_c', { noremap = true })
+  vim.keymap.set('x', 'c', '"_c', { noremap = true })
+  vim.keymap.set('n', 'C', '"_C', { noremap = true })
+  vim.keymap.set('x', 'C', '"_C', { noremap = true })
+
+
   -- Set <space> as the leader key
   -- See `:help mapleader`
   --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -181,9 +188,15 @@ do
   -- [[ Basic Keymaps ]]
   --  See `:help vim.keymap.set()`
 
-  -- Clear highlights on search when pressing <Esc> in normal mode
+  -- Clear search highlights when pressing <Esc> in normal mode, or after leaving / or ? search
   --  See `:help hlsearch`
   vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+  vim.api.nvim_create_autocmd('CmdlineLeave', {
+    pattern = { '/', '?' },
+    callback = function()
+      vim.schedule(function() vim.cmd.nohlsearch() end)
+    end,
+  })
 
   -- Diagnostic Config & Keymaps
   --  See `:help vim.diagnostic.Opts`
@@ -288,6 +301,18 @@ do
   vim.keymap.set('n', '<leader>!', ':!', { desc = 'Run shell command' })
   vim.keymap.set('n', '<leader>br', '<cmd>bufdo edit<CR>', { desc = '[B]uffer [R]eload all from disk' })
   vim.keymap.set('n', '<leader>bR', '<cmd>bufdo edit!<CR>', { desc = '[B]uffer [R]eload all from disk forcibly' })
+
+  vim.keymap.set('n', '<leader>yp', function()
+    local path = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':.')
+    vim.fn.setreg('+', path)
+    vim.notify('Copied path: ' .. path)
+  end, { desc = '[Y]ank relative file [P]ath' })
+
+  vim.keymap.set('n', '<leader>yP', function()
+    local path = vim.api.nvim_buf_get_name(0)
+    vim.fn.setreg('+', path)
+    vim.notify('Copied path: ' .. path)
+  end, { desc = '[Y]ank absolute file [P]ath' })
 
   -- Highlight when yanking (copying) text
   --  Try it with `yap` in normal mode
