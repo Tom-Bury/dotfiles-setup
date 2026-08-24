@@ -40,7 +40,6 @@ gui:
 
   # If true, do not show a warning when amending a commit.
   skipAmendWarning: true
-
   # # If true, do not show a warning when discarding changes in the staging view.
   # skipDiscardChangeWarning: false
 
@@ -206,11 +205,9 @@ gui:
   # One of: '2' | '3' | empty string (default)
   # If empty, do not show icons.
   nerdFontsVersion: "3"
-
   # If true (default), file icons are shown in the file views. Only relevant if
   # NerdFontsVersion is not empty.
   showFileIcons: true
-
   # # Length of author name in (non-expanded) commits view. 2 means show initials
   # # only.
   # commitAuthorShortLength: 2
@@ -220,14 +217,12 @@ gui:
 
   # Length of commit hash in commits view. 0 shows '*' if NF icons aren't on.
   commitHashLength: 0
-
   # # If true, show commit hashes alongside branch names in the branches view.
   # showBranchCommitHash: false
 
   # Whether to show the divergence from the base branch in the branches view.
   # One of: 'none' | 'onlyArrow'  | 'arrowAndNumber'
   showDivergenceFromBaseBranch: arrowAndNumber
-
   # # Height of the command log view
   # commandLogSize: 8
 
@@ -268,24 +263,22 @@ gui:
       - '⠾'
       - '⠽'
       - '⠻'
-    # The "speed" of the spinner in milliseconds.
+      # The "speed" of the spinner in milliseconds.
     rate: 50
+    # # Status panel view.
+    # # One of 'dashboard' (default) | 'allBranchesLog'
+    # statusPanelView: dashboard
 
-  # # Status panel view.
-  # # One of 'dashboard' (default) | 'allBranchesLog'
-  # statusPanelView: dashboard
+    # # If true, jump to the Files panel after popping a stash
+    # switchToFilesAfterStashPop: true
 
-  # # If true, jump to the Files panel after popping a stash
-  # switchToFilesAfterStashPop: true
+    # # If true, jump to the Files panel after applying a stash
+    # switchToFilesAfterStashApply: true
 
-  # # If true, jump to the Files panel after applying a stash
-  # switchToFilesAfterStashApply: true
-
-  # # If true, when using the panel jump keys (default 1 through 5) and target panel
-  # # is already active, go to next tab instead
-  # switchTabsWithPanelJumpKeys: false
-
-# Config relating to git
+    # # If true, when using the panel jump keys (default 1 through 5) and target panel
+    # # is already active, go to next tab instead
+    # switchTabsWithPanelJumpKeys: false
+    # Config relating to git
 git:
   # # Array of pagers. Each entry has the following format:
   # #
@@ -310,108 +303,106 @@ git:
   # #
   # # See https://github.com/jesseduffield/lazygit/blob/master/docs/Custom_Pagers.md
   # # for more information.
-  pagers:
-  - pager: diff-so-fancy
-    colorArg: always
+  diffRenderers:
+    - command: diff-so-fancy
+      colorArg: always
+      # # Config relating to committing
+      # commit:
+      #   # If true, pass '--signoff' flag when committing
+      #   signOff: false
 
-  # # Config relating to committing
-  # commit:
-  #   # If true, pass '--signoff' flag when committing
-  #   signOff: false
+      #   # Automatic WYSIWYG wrapping of the commit message as you type
+      #   autoWrapCommitMessage: true
 
-  #   # Automatic WYSIWYG wrapping of the commit message as you type
-  #   autoWrapCommitMessage: true
+      #   # If autoWrapCommitMessage is true, the width to wrap to
+      #   autoWrapWidth: 72
 
-  #   # If autoWrapCommitMessage is true, the width to wrap to
-  #   autoWrapWidth: 72
+      # # Config relating to merging
+      # merging:
+      #   # If true, run merges in a subprocess so that if a commit message is required,
+      #   # Lazygit will not hang
+      #   # Only applicable to unix users.
+      #   manualCommit: false
 
-  # # Config relating to merging
-  # merging:
-  #   # If true, run merges in a subprocess so that if a commit message is required,
-  #   # Lazygit will not hang
-  #   # Only applicable to unix users.
-  #   manualCommit: false
+      #   # Extra args passed to `git merge`, e.g. --no-ff
+      #   args: ""
 
-  #   # Extra args passed to `git merge`, e.g. --no-ff
-  #   args: ""
+      #   # The commit message to use for a squash merge commit. Can contain
+      #   # "{{selectedRef}}" and "{{currentBranch}}" placeholders.
+      #   squashMergeMessage: Squash merge {{selectedRef}} into {{currentBranch}}
 
-  #   # The commit message to use for a squash merge commit. Can contain
-  #   # "{{selectedRef}}" and "{{currentBranch}}" placeholders.
-  #   squashMergeMessage: Squash merge {{selectedRef}} into {{currentBranch}}
+      # # list of branches that are considered 'main' branches, used when displaying
+      # # commits
+      # mainBranches:
+      #   - master
+      #   - main
 
-  # # list of branches that are considered 'main' branches, used when displaying
-  # # commits
-  # mainBranches:
-  #   - master
-  #   - main
+      # # Prefix to use when skipping hooks. E.g. if set to 'WIP', then pre-commit hooks
+      # # will be skipped when the commit message starts with 'WIP'
+      # skipHookPrefix: WIP
 
-  # # Prefix to use when skipping hooks. E.g. if set to 'WIP', then pre-commit hooks
-  # # will be skipped when the commit message starts with 'WIP'
-  # skipHookPrefix: WIP
+      # # If true, periodically fetch from remote
+      # autoFetch: true
 
-  # # If true, periodically fetch from remote
-  # autoFetch: true
+      # # If true, periodically refresh files and submodules
+      # autoRefresh: true
 
-  # # If true, periodically refresh files and submodules
-  # autoRefresh: true
+      # # If not "none", lazygit will automatically fast-forward local branches to match
+      # # their upstream after fetching. Applies to branches that are not the currently
+      # # checked out branch, and only to those that are strictly behind their upstream
+      # # (as opposed to diverged).
+      # # Possible values: 'none' | 'onlyMainBranches' | 'allBranches'
+      # autoForwardBranches: onlyMainBranches
 
-  # # If not "none", lazygit will automatically fast-forward local branches to match
-  # # their upstream after fetching. Applies to branches that are not the currently
-  # # checked out branch, and only to those that are strictly behind their upstream
-  # # (as opposed to diverged).
-  # # Possible values: 'none' | 'onlyMainBranches' | 'allBranches'
-  # autoForwardBranches: onlyMainBranches
+      # # If true, pass the --all arg to git fetch
+      # fetchAll: true
 
-  # # If true, pass the --all arg to git fetch
-  # fetchAll: true
+      # # If true, lazygit will automatically stage files that used to have merge
+      # # conflicts but no longer do; and it will also ask you if you want to continue a
+      # # merge or rebase if you've resolved all conflicts. If false, it won't do either
+      # # of these things.
+      # autoStageResolvedConflicts: true
 
-  # # If true, lazygit will automatically stage files that used to have merge
-  # # conflicts but no longer do; and it will also ask you if you want to continue a
-  # # merge or rebase if you've resolved all conflicts. If false, it won't do either
-  # # of these things.
-  # autoStageResolvedConflicts: true
+      # Command used when displaying the current branch git log in the main window
+      # branchLogCmd: git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=medium {{branchName}} --
 
-  # Command used when displaying the current branch git log in the main window
-  # branchLogCmd: git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=medium {{branchName}} --
-
-  # # Commands used to display git log of all branches in the main window, they will
-  # # be cycled in order of appearance (array of strings)
+      # # Commands used to display git log of all branches in the main window, they will
+      # # be cycled in order of appearance (array of strings)
   allBranchesLogCmds:
     # - git log --graph --all --color=always --abbrev-commit --decorate --date=relative --pretty=medium --perl-regexp --author='^(?!.*git-spice).*'
     - git log --graph --all --color=always --abbrev-commit --decorate --date=relative --perl-regexp --author='^(?!.*git-spice).*' --pretty=simple
+    # # If true, git diffs are rendered with the `--ignore-all-space` flag, which
+    # # ignores whitespace changes. Can be toggled from within Lazygit with `<c-w>`.
+    # ignoreWhitespaceInDiffView: false
 
-  # # If true, git diffs are rendered with the `--ignore-all-space` flag, which
-  # # ignores whitespace changes. Can be toggled from within Lazygit with `<c-w>`.
-  # ignoreWhitespaceInDiffView: false
+    # # The number of lines of context to show around each diff hunk. Can be changed
+    # # from within Lazygit with the `{` and `}` keys.
+    # diffContextSize: 3
 
-  # # The number of lines of context to show around each diff hunk. Can be changed
-  # # from within Lazygit with the `{` and `}` keys.
-  # diffContextSize: 3
+    # # The threshold for considering a file to be renamed, in percent. Can be changed
+    # # from within Lazygit with the `(` and `)` keys.
+    # renameSimilarityThreshold: 50
 
-  # # The threshold for considering a file to be renamed, in percent. Can be changed
-  # # from within Lazygit with the `(` and `)` keys.
-  # renameSimilarityThreshold: 50
+    # # If true, do not spawn a separate process when using GPG
+    # overrideGpg: false
 
-  # # If true, do not spawn a separate process when using GPG
-  # overrideGpg: false
+    # # If true, do not allow force pushes
+    # disableForcePushing: false
 
-  # # If true, do not allow force pushes
-  # disableForcePushing: false
+    # # See https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#predefined-commit-message-prefix
+    # commitPrefix: []
 
-  # # See https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#predefined-commit-message-prefix
-  # commitPrefix: []
+    # # See https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#predefined-commit-message-prefix
+    # commitPrefixes: {}
 
-  # # See https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#predefined-commit-message-prefix
-  # commitPrefixes: {}
+    # # See https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#predefined-branch-name-prefix
+    # branchPrefix: ""
 
-  # # See https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#predefined-branch-name-prefix
-  # branchPrefix: ""
+    # # If true, parse emoji strings in commit messages e.g. render :rocket: as 🚀
+    # # (This should really be under 'gui', not 'git')
+    # parseEmoji: false
 
-  # # If true, parse emoji strings in commit messages e.g. render :rocket: as 🚀
-  # # (This should really be under 'gui', not 'git')
-  # parseEmoji: false
-
-  # Config for showing the log in the commits view
+    # Config for showing the log in the commits view
   log:
     # One of: 'date-order' | 'author-date-order' | 'topo-order' | 'default'
     # 'topo-order' makes it easier to read the git log graph, but commits may not
@@ -420,301 +411,297 @@ git:
     # Can be changed from within Lazygit with `Log menu -> Commit sort order`
     # (`<c-l>` in the commits window by default).
     order: topo-order
-
     # This determines whether the git graph is rendered in the commits panel
     # One of 'always' | 'never' | 'when-maximised'
     #
     # Can be toggled from within lazygit with `Log menu -> Show git graph` (`<c-l>`
     # in the commits window by default).
     showGraph: always
-
     # displays the whole git graph by default in the commits view (equivalent to
     # passing the `--all` argument to `git log`)
     showWholeGraph: false
+    # # How branches are sorted in the local branches view.
+    # # One of: 'date' (default) | 'recency' | 'alphabetical'
+    # # Can be changed from within Lazygit with the Sort Order menu (`s`) in the
+    # # branches panel.
+    # localBranchSortOrder: date
 
-  # # How branches are sorted in the local branches view.
-  # # One of: 'date' (default) | 'recency' | 'alphabetical'
-  # # Can be changed from within Lazygit with the Sort Order menu (`s`) in the
-  # # branches panel.
-  # localBranchSortOrder: date
+    # # How branches are sorted in the remote branches view.
+    # # One of: 'date' (default) | 'alphabetical'
+    # # Can be changed from within Lazygit with the Sort Order menu (`s`) in the
+    # # remote branches panel.
+    # remoteBranchSortOrder: date
 
-  # # How branches are sorted in the remote branches view.
-  # # One of: 'date' (default) | 'alphabetical'
-  # # Can be changed from within Lazygit with the Sort Order menu (`s`) in the
-  # # remote branches panel.
-  # remoteBranchSortOrder: date
+    # # When copying commit hashes to the clipboard, truncate them to this length. Set
+    # # to 40 to disable truncation.
+    # truncateCopiedCommitHashesTo: 12
+    # # Periodic update checks
+    # update:
+    #   # One of: 'prompt' (default) | 'background' | 'never'
+    #   method: prompt
 
-  # # When copying commit hashes to the clipboard, truncate them to this length. Set
-  # # to 40 to disable truncation.
-  # truncateCopiedCommitHashesTo: 12
+    #   # Period in days between update checks
+    #   days: 14
 
-# # Periodic update checks
-# update:
-#   # One of: 'prompt' (default) | 'background' | 'never'
-#   method: prompt
+    # # Background refreshes
+    # refresher:
+    #   # File/submodule refresh interval in seconds.
+    #   # Auto-refresh can be disabled via option 'git.autoRefresh'.
+    #   refreshInterval: 10
 
-#   # Period in days between update checks
-#   days: 14
+    #   # Re-fetch interval in seconds.
+    #   # Auto-fetch can be disabled via option 'git.autoFetch'.
+    #   fetchInterval: 60
 
-# # Background refreshes
-# refresher:
-#   # File/submodule refresh interval in seconds.
-#   # Auto-refresh can be disabled via option 'git.autoRefresh'.
-#   refreshInterval: 10
+    # # If true, show a confirmation popup before quitting Lazygit
+    # confirmOnQuit: false
 
-#   # Re-fetch interval in seconds.
-#   # Auto-fetch can be disabled via option 'git.autoFetch'.
-#   fetchInterval: 60
+    # # If true, exit Lazygit when the user presses escape in a context where there is
+    # # nothing to cancel/close
+    # quitOnTopLevelReturn: false
 
-# # If true, show a confirmation popup before quitting Lazygit
-# confirmOnQuit: false
+    # # Config relating to things outside of Lazygit like how files are opened,
+    # # copying to clipboard, etc
+    # os:
+    #   # Command for editing a file. Should contain "{{filename}}".
+    #   edit: ""
 
-# # If true, exit Lazygit when the user presses escape in a context where there is
-# # nothing to cancel/close
-# quitOnTopLevelReturn: false
+    #   # Command for editing a file at a given line number. Should contain
+    #   # "{{filename}}", and may optionally contain "{{line}}".
+    #   editAtLine: ""
 
-# # Config relating to things outside of Lazygit like how files are opened,
-# # copying to clipboard, etc
-# os:
-#   # Command for editing a file. Should contain "{{filename}}".
-#   edit: ""
+    #   # Same as EditAtLine, except that the command needs to wait until the window is
+    #   # closed.
+    #   editAtLineAndWait: ""
 
-#   # Command for editing a file at a given line number. Should contain
-#   # "{{filename}}", and may optionally contain "{{line}}".
-#   editAtLine: ""
+    #   # Whether lazygit suspends until an edit process returns
+    #   editInTerminal: false
 
-#   # Same as EditAtLine, except that the command needs to wait until the window is
-#   # closed.
-#   editAtLineAndWait: ""
+    #   # For opening a directory in an editor
+    #   openDirInEditor: ""
 
-#   # Whether lazygit suspends until an edit process returns
-#   editInTerminal: false
+    #   # A built-in preset that sets all of the above settings. Supported presets are
+    #   # defined in the getPreset function in editor_presets.go.
+    #   editPreset: ""
 
-#   # For opening a directory in an editor
-#   openDirInEditor: ""
+    #   # Command for opening a file, as if the file is double-clicked. Should contain
+    #   # "{{filename}}", but doesn't support "{{line}}".
+    #   open: ""
 
-#   # A built-in preset that sets all of the above settings. Supported presets are
-#   # defined in the getPreset function in editor_presets.go.
-#   editPreset: ""
+    #   # Command for opening a link. Should contain "{{link}}".
+    #   openLink: ""
 
-#   # Command for opening a file, as if the file is double-clicked. Should contain
-#   # "{{filename}}", but doesn't support "{{line}}".
-#   open: ""
+    #   # CopyToClipboardCmd is the command for copying to clipboard.
+    #   # See https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#custom-command-for-copying-to-and-pasting-from-clipboard
+    #   copyToClipboardCmd: ""
 
-#   # Command for opening a link. Should contain "{{link}}".
-#   openLink: ""
+    #   # ReadFromClipboardCmd is the command for reading the clipboard.
+    #   # See https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#custom-command-for-copying-to-and-pasting-from-clipboard
+    #   readFromClipboardCmd: ""
 
-#   # CopyToClipboardCmd is the command for copying to clipboard.
-#   # See https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#custom-command-for-copying-to-and-pasting-from-clipboard
-#   copyToClipboardCmd: ""
+    #   # A shell startup file containing shell aliases or shell functions. This will be
+    #   # sourced before running any shell commands, so that shell functions are
+    #   # available in the `:` command prompt or even in custom commands.
+    #   # See https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#using-aliases-or-functions-in-shell-commands
+    #   shellFunctionsFile: ""
 
-#   # ReadFromClipboardCmd is the command for reading the clipboard.
-#   # See https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#custom-command-for-copying-to-and-pasting-from-clipboard
-#   readFromClipboardCmd: ""
+    # # If true, don't display introductory popups upon opening Lazygit.
+    # disableStartupPopups: false
 
-#   # A shell startup file containing shell aliases or shell functions. This will be
-#   # sourced before running any shell commands, so that shell functions are
-#   # available in the `:` command prompt or even in custom commands.
-#   # See https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#using-aliases-or-functions-in-shell-commands
-#   shellFunctionsFile: ""
+    # # User-configured commands that can be invoked from within Lazygit
+    # # See https://github.com/jesseduffield/lazygit/blob/master/docs/Custom_Command_Keybindings.md
+    # customCommands: []
 
-# # If true, don't display introductory popups upon opening Lazygit.
-# disableStartupPopups: false
+    # # See https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#custom-pull-request-urls
+    # services: {}
 
-# # User-configured commands that can be invoked from within Lazygit
-# # See https://github.com/jesseduffield/lazygit/blob/master/docs/Custom_Command_Keybindings.md
-# customCommands: []
+    # # What to do when opening Lazygit outside of a git repo.
+    # # - 'prompt': (default) ask whether to initialize a new repo or open in the most
+    # # recent repo
+    # # - 'create': initialize a new repo
+    # # - 'skip': open most recent repo
+    # # - 'quit': exit Lazygit
+    # notARepository: prompt
 
-# # See https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#custom-pull-request-urls
-# services: {}
+    # # If true, display a confirmation when subprocess terminates. This allows you to
+    # # view the output of the subprocess before returning to Lazygit.
+    # promptToReturnFromSubprocess: true
 
-# # What to do when opening Lazygit outside of a git repo.
-# # - 'prompt': (default) ask whether to initialize a new repo or open in the most
-# # recent repo
-# # - 'create': initialize a new repo
-# # - 'skip': open most recent repo
-# # - 'quit': exit Lazygit
-# notARepository: prompt
-
-# # If true, display a confirmation when subprocess terminates. This allows you to
-# # view the output of the subprocess before returning to Lazygit.
-# promptToReturnFromSubprocess: true
-
-# Keybindings
+    # Keybindings
 keybinding:
-#   universal:
-#     quit: q
-#     quit-alt1: <c-c>
-#     suspendApp: <c-z>
-#     return: <esc>
-#     quitWithoutChangingDirectory: Q
-#     togglePanel: <tab>
-#     prevItem: <up>
-#     nextItem: <down>
-#     prevItem-alt: k
-#     nextItem-alt: j
-#     prevPage: ','
-#     nextPage: .
-#     scrollLeft: H
-#     scrollRight: L
-#     gotoTop: <
-#     gotoBottom: '>'
-#     gotoTop-alt: <home>
-#     gotoBottom-alt: <end>
-#     toggleRangeSelect: v
-#     rangeSelectDown: <s-down>
-#     rangeSelectUp: <s-up>
-#     prevBlock: <left>
-#     nextBlock: <right>
-#     prevBlock-alt: h
-#     nextBlock-alt: l
-#     nextBlock-alt2: <tab>
-#     prevBlock-alt2: <backtab>
-#     jumpToBlock:
-#       - "1"
-#       - "2"
-#       - "3"
-#       - "4"
-#       - "5"
-#     focusMainView: "0"
-#     nextMatch: "n"
-#     prevMatch: "N"
-#     startSearch: /
-#     optionMenu: <disabled>
-#     optionMenu-alt1: '?'
-#     select: <space>
-#     goInto: <enter>
-#     confirm: <enter>
-#     confirmMenu: <enter>
-#     confirmSuggestion: <enter>
-#     confirmInEditor: <a-enter>
-#     confirmInEditor-alt: <c-s>
-#     remove: d
-#     new: "n"
-#     edit: e
-#     openFile: o
-#     scrollUpMain: <pgup>
-#     scrollDownMain: <pgdown>
-#     scrollUpMain-alt1: K
-#     scrollDownMain-alt1: J
-#     scrollUpMain-alt2: <c-u>
-#     scrollDownMain-alt2: <c-d>
-#     executeShellCommand: ':'
-#     createRebaseOptionsMenu: m
+  #   universal:
+  #     quit: q
+  #     quit-alt1: <c-c>
+  #     suspendApp: <c-z>
+  #     return: <esc>
+  #     quitWithoutChangingDirectory: Q
+  #     togglePanel: <tab>
+  #     prevItem: <up>
+  #     nextItem: <down>
+  #     prevItem-alt: k
+  #     nextItem-alt: j
+  #     prevPage: ','
+  #     nextPage: .
+  #     scrollLeft: H
+  #     scrollRight: L
+  #     gotoTop: <
+  #     gotoBottom: '>'
+  #     gotoTop-alt: <home>
+  #     gotoBottom-alt: <end>
+  #     toggleRangeSelect: v
+  #     rangeSelectDown: <s-down>
+  #     rangeSelectUp: <s-up>
+  #     prevBlock: <left>
+  #     nextBlock: <right>
+  #     prevBlock-alt: h
+  #     nextBlock-alt: l
+  #     nextBlock-alt2: <tab>
+  #     prevBlock-alt2: <backtab>
+  #     jumpToBlock:
+  #       - "1"
+  #       - "2"
+  #       - "3"
+  #       - "4"
+  #       - "5"
+  #     focusMainView: "0"
+  #     nextMatch: "n"
+  #     prevMatch: "N"
+  #     startSearch: /
+  #     optionMenu: <disabled>
+  #     optionMenu-alt1: '?'
+  #     select: <space>
+  #     goInto: <enter>
+  #     confirm: <enter>
+  #     confirmMenu: <enter>
+  #     confirmSuggestion: <enter>
+  #     confirmInEditor: <a-enter>
+  #     confirmInEditor-alt: <c-s>
+  #     remove: d
+  #     new: "n"
+  #     edit: e
+  #     openFile: o
+  #     scrollUpMain: <pgup>
+  #     scrollDownMain: <pgdown>
+  #     scrollUpMain-alt1: K
+  #     scrollDownMain-alt1: J
+  #     scrollUpMain-alt2: <c-u>
+  #     scrollDownMain-alt2: <c-d>
+  #     executeShellCommand: ':'
+  #     createRebaseOptionsMenu: m
 
-#     # 'Files' appended for legacy reasons
-#     pushFiles: P
+  #     # 'Files' appended for legacy reasons
+  #     pushFiles: P
 
-#     # 'Files' appended for legacy reasons
-#     pullFiles: p
-#     refresh: R
-#     createPatchOptionsMenu: <c-p>
-#     nextTab: ']'
-#     prevTab: '['
-#     nextScreenMode: +
-#     prevScreenMode: _
-#     cyclePagers: '|'
-#     undo: z
-#     redo: Z
-#     filteringMenu: <c-s>
-#     diffingMenu: W
-#     diffingMenu-alt: <c-e>
-#     copyToClipboard: <c-o>
-#     openRecentRepos: <c-r>
-#     submitEditorText: <enter>
-#     extrasMenu: '@'
-#     toggleWhitespaceInDiffView: <c-w>
-#     increaseContextInDiffView: '}'
-#     decreaseContextInDiffView: '{'
-#     increaseRenameSimilarityThreshold: )
-#     decreaseRenameSimilarityThreshold: (
-#     openDiffTool: <c-t>
-#   status:
-#     checkForUpdate: u
-#     recentRepos: <enter>
-#     allBranchesLogGraph: a
-#   files:
-#     commitChanges: c
-#     commitChangesWithoutHook: w
-#     amendLastCommit: A
-#     commitChangesWithEditor: C
-#     findBaseCommitForFixup: <c-f>
-#     confirmDiscard: x
-#     ignoreFile: i
-#     refreshFiles: r
-#     stashAllChanges: s
-#     viewStashOptions: S
-#     toggleStagedAll: a
-#     viewResetOptions: D
-#     fetch: f
-#     toggleTreeView: '`'
-#     openMergeOptions: M
-#     openStatusFilter: <c-b>
-#     copyFileInfoToClipboard: "y"
-#     collapseAll: '-'
-#     expandAll: =
-#   branches:
-#     createPullRequest: o
-#     viewPullRequestOptions: O
-#     copyPullRequestURL: <c-y>
-#     checkoutBranchByName: c
-#     forceCheckoutBranch: F
-#     checkoutPreviousBranch: '-'
-#     rebaseBranch: r
-#     renameBranch: R
-#     mergeIntoCurrentBranch: M
-#     moveCommitsToNewBranch: "N"
-#     viewGitFlowOptions: i
-#     fastForward: f
-#     createTag: T
-#     pushTag: P
-#     setUpstream: u
-#     fetchRemote: f
-#     sortOrder: s
-#   worktrees:
-#     viewWorktreeOptions: w
+  #     # 'Files' appended for legacy reasons
+  #     pullFiles: p
+  #     refresh: R
+  #     createPatchOptionsMenu: <c-p>
+  #     nextTab: ']'
+  #     prevTab: '['
+  #     nextScreenMode: +
+  #     prevScreenMode: _
+  #     cyclePagers: '|'
+  #     undo: z
+  #     redo: Z
+  #     filteringMenu: <c-s>
+  #     diffingMenu: W
+  #     diffingMenu-alt: <c-e>
+  #     copyToClipboard: <c-o>
+  #     openRecentRepos: <c-r>
+  #     submitEditorText: <enter>
+  #     extrasMenu: '@'
+  #     toggleWhitespaceInDiffView: <c-w>
+  #     increaseContextInDiffView: '}'
+  #     decreaseContextInDiffView: '{'
+  #     increaseRenameSimilarityThreshold: )
+  #     decreaseRenameSimilarityThreshold: (
+  #     openDiffTool: <c-t>
+  #   status:
+  #     checkForUpdate: u
+  #     recentRepos: <enter>
+  #     allBranchesLogGraph: a
+  #   files:
+  #     commitChanges: c
+  #     commitChangesWithoutHook: w
+  #     amendLastCommit: A
+  #     commitChangesWithEditor: C
+  #     findBaseCommitForFixup: <c-f>
+  #     confirmDiscard: x
+  #     ignoreFile: i
+  #     refreshFiles: r
+  #     stashAllChanges: s
+  #     viewStashOptions: S
+  #     toggleStagedAll: a
+  #     viewResetOptions: D
+  #     fetch: f
+  #     toggleTreeView: '`'
+  #     openMergeOptions: M
+  #     openStatusFilter: <c-b>
+  #     copyFileInfoToClipboard: "y"
+  #     collapseAll: '-'
+  #     expandAll: =
+  #   branches:
+  #     createPullRequest: o
+  #     viewPullRequestOptions: O
+  #     copyPullRequestURL: <c-y>
+  #     checkoutBranchByName: c
+  #     forceCheckoutBranch: F
+  #     checkoutPreviousBranch: '-'
+  #     rebaseBranch: r
+  #     renameBranch: R
+  #     mergeIntoCurrentBranch: M
+  #     moveCommitsToNewBranch: "N"
+  #     viewGitFlowOptions: i
+  #     fastForward: f
+  #     createTag: T
+  #     pushTag: P
+  #     setUpstream: u
+  #     fetchRemote: f
+  #     sortOrder: s
+  #   worktrees:
+  #     viewWorktreeOptions: w
   commits:
-#     squashDown: s
-#     renameCommit: r
-#     renameCommitWithEditor: R
-#     viewResetOptions: g
-#     markCommitAsFixup: f
-#     createFixupCommit: F
-#     squashAboveCommits: S
+    #     squashDown: s
+    #     renameCommit: r
+    #     renameCommitWithEditor: R
+    #     viewResetOptions: g
+    #     markCommitAsFixup: f
+    #     createFixupCommit: F
+    #     squashAboveCommits: S
     moveDownCommit: D
     moveUpCommit: U
-#     amendToCommit: A
-#     resetCommitAuthor: a
-#     pickCommit: p
-#     revertCommit: t
-#     cherryPickCopy: C
-#     pasteCommits: V
-#     markCommitAsBaseForRebase: B
-#     tagCommit: T
-#     checkoutCommit: <space>
-#     resetCherryPick: <c-R>
-#     copyCommitAttributeToClipboard: "y"
-#     openLogMenu: <c-l>
-#     openInBrowser: o
-#     viewBisectOptions: b
-#     startInteractiveRebase: i
-#     selectCommitsOfCurrentBranch: '*'
-#   amendAttribute:
-#     resetAuthor: a
-#     setAuthor: A
-#     addCoAuthor: c
-#   stash:
-#     popStash: g
-#     renameStash: r
-#   commitFiles:
-#     checkoutCommitFile: c
-#   main:
-#     toggleSelectHunk: a
-#     pickBothHunks: b
-#     editSelectHunk: E
-#   submodules:
-#     init: i
-#     update: u
-#     bulkMenu: b
-#   commitMessage:
-#     commitMenu: <c-o>
+    #     amendToCommit: A
+    #     resetCommitAuthor: a
+    #     pickCommit: p
+    #     revertCommit: t
+    #     cherryPickCopy: C
+    #     pasteCommits: V
+    #     markCommitAsBaseForRebase: B
+    #     tagCommit: T
+    #     checkoutCommit: <space>
+    #     resetCherryPick: <c-R>
+    #     copyCommitAttributeToClipboard: "y"
+    #     openLogMenu: <c-l>
+    #     openInBrowser: o
+    #     viewBisectOptions: b
+    #     startInteractiveRebase: i
+    #     selectCommitsOfCurrentBranch: '*'
+    #   amendAttribute:
+    #     resetAuthor: a
+    #     setAuthor: A
+    #     addCoAuthor: c
+    #   stash:
+    #     popStash: g
+    #     renameStash: r
+    #   commitFiles:
+    #     checkoutCommitFile: c
+    #   main:
+    #     toggleSelectHunk: a
+    #     pickBothHunks: b
+    #     editSelectHunk: E
+    #   submodules:
+    #     init: i
+    #     update: u
+    #     bulkMenu: b
+    #   commitMessage:
+    #     commitMenu: <c-o>
