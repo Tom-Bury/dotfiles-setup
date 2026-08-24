@@ -81,7 +81,10 @@ alias cdwc="cd $HOME/work/code"
 alias cdd="cd $HOME/Desktop"
 
 alias pbc='pbcopy'
+alias pbp='pbpaste'
+
 alias pbc-branch='git rev-parse --abbrev-ref HEAD | pbcopy'
+alias pbp-patch='pbpaste | git apply'
 alias pbcd='pwd | pbcopy'
 
 alias t1='tree -L 1'
