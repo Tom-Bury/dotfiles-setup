@@ -95,6 +95,142 @@ alias t4='tree -L 4'
 alias lg='lazygit'
 alias ld='lazydocker'
 
+# Search DuckDuckGo HTML in terminal: ? hello world
+# `?` is also a zsh glob, so expose the implementation as `ddg` and make `?` a
+# noglob shortcut for interactive use.
+alias '?'='noglob ddg'
+ddg() {
+  if [ "$#" -eq 0 ]; then
+    echo "Usage: ddg <search terms>" >&2
+    return 1
+  fi
+
+  local input query char i code
+  input="$*"
+  query=""
+
+  for (( i = 0; i < ${#input}; i++ )); do
+    char="${input:$i:1}"
+    case "$char" in
+      [a-zA-Z0-9.~_-]) query="$query$char" ;;
+      ' ') query="$query+" ;;
+      *)
+        code="$(printf '%d' "'$char")"
+        query="$query$(printf '%%%02X' "$code")"
+        ;;
+    esac
+  done
+
+  w3m "https://html.duckduckgo.com/html/?q=$query"
+}
+
+alias '??'='noglob ask_codex'
+ask_codex() {
+  setopt local_options no_monitor
+
+  local model system_prompt prompt output exit_status glow_style use_formatting debug quiet tmp pid i
+  local -a prompt_parts spinner_chars
+
+  model="${ASK_CODEX_MODEL:-gpt-5.6-luna}"
+  system_prompt="Answer concise. Give practical commands/examples when useful. Use Markdown."
+  use_formatting=1
+  debug=0
+  quiet=0
+  prompt_parts=()
+
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --no-format|--plain)
+        use_formatting=0
+        shift
+        ;;
+      --debug|--no-stderr-silence)
+        debug=1
+        shift
+        ;;
+      --quiet)
+        quiet=1
+        shift
+        ;;
+      -m|--model)
+        if [ "$#" -lt 2 ]; then
+          echo "Usage: ask_codex [--quiet] [--debug|--no-stderr-silence] [--no-format|--plain] [--model MODEL] <prompt>" >&2
+          return 1
+        fi
+        model="$2"
+        shift 2
+        ;;
+      --model=*)
+        model="${1#--model=}"
+        shift
+        ;;
+      --)
+        shift
+        prompt_parts+=("$@")
+        break
+        ;;
+      *)
+        prompt_parts+=("$1")
+        shift
+        ;;
+    esac
+  done
+
+  if [ "${#prompt_parts[@]}" -eq 0 ]; then
+    echo "Usage: ask_codex [--quiet] [--debug|--no-stderr-silence] [--no-format|--plain] [--model MODEL] <prompt>" >&2
+    return 1
+  fi
+
+  prompt="${(j: :)prompt_parts}"
+  prompt="$system_prompt
+
+User question:
+$prompt"
+
+  tmp="$(mktemp -t ask_codex.XXXXXX)" || return 1
+
+  if [ "$debug" -eq 1 ]; then
+    { codex exec --ephemeral --sandbox read-only  --config 'model_reasoning_effort="none"' --model "$model" "$prompt" > "$tmp"; } &
+  else
+    { codex exec --ephemeral --sandbox read-only  --config 'model_reasoning_effort="none"' --model "$model" "$prompt" > "$tmp" 2>/dev/null; } &
+  fi
+  pid=$!
+
+  if [ "$quiet" -eq 0 ]; then
+    spinner_chars=("⠙" "⠹" "⠸" "⠼" "⠴" "⠦" "⠧" "⠇")
+    i=1
+    while kill -0 "$pid" 2>/dev/null; do
+      printf '\r%s thinking...' "${spinner_chars[$i]}" >&2
+      i=$(( (i % ${#spinner_chars[@]}) + 1 ))
+      sleep 0.1
+    done
+  fi
+  wait "$pid"
+  exit_status=$?
+  if [ "$quiet" -eq 0 ]; then
+    printf '\r%*s\r' 20 '' >&2
+  fi
+
+  output="$(<"$tmp")"
+  rm -f "$tmp"
+
+  if [ "$exit_status" -ne 0 ]; then
+    return "$exit_status"
+  fi
+
+  if [ "$use_formatting" -eq 1 ] && command -v glow >/dev/null 2>&1; then
+    if [[ "$(defaults read -g AppleInterfaceStyle 2>/dev/null)" == "Dark" ]]; then
+      glow_style="dark"
+    else
+      glow_style="light"
+    fi
+
+    printf '%s\n' "$output" | glow -s "$glow_style"
+  else
+    printf '%s\n' "$output"
+  fi
+}
+
 # Starts a Docker Sandbox in the current directory, or if one already exists, opens it.
 sbx_here() {
   local dir name matches count picked

@@ -55,6 +55,9 @@ brew "lazygit"
 brew "jesseduffield/lazydocker/lazydocker"
 brew "yazi"
 brew "tabiew"
+brew "w3m"
+brew "codex"
+brew "glow"
 # brew "ollama"
 
 # React-Native
