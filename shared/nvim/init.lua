@@ -733,6 +733,24 @@ do
   vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
   vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
   vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+  vim.keymap.set('n', '<leader>sF', function()
+    builtin.find_files {
+      hidden = true,
+      find_command = {
+        'fd',
+        '--type',
+        'f',
+        '--hidden',
+        '--no-ignore',
+        '--exclude',
+        '.git',
+        '--exclude',
+        'node_modules',
+        '--exclude',
+        '.next',
+      },
+    }
+  end, { desc = '[S]earch all [F]iles (incl. gitignored)' })
   vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
   vim.keymap.set({ 'n', 'v' }, '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
   vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
@@ -1220,6 +1238,7 @@ do
     -- Avoid <C-n>/<C-p>: blink.cmp uses those for menu selection.
     keymap_fim_next        = "<M-n>",
     keymap_fim_prev        = "<M-N>",
+
     auto_fim_debounce_ms  = 150,
    }
    vim.pack.add { { src = gh 'Tom-Bury/llama.vim', version = 'feat/debounce' } }
@@ -1229,10 +1248,34 @@ do
     vim.schedule(function() vim.api.nvim_feedkeys(vim.keycode '<M-i>', 'i', false) end)
   end
 
-  vim.keymap.set('n', '<leader>ai', trigger_llama_fim, { desc = '[A]I completion' })
+  vim.keymap.set('n', '<leader>aic', function() vim.fn['llama#toggle_auto_fim']() end, { desc = '[AI] Toggle [C]ompletion' })
+  vim.keymap.set('n', '<leader>aif', trigger_llama_fim, { desc = '[AI] Trigger [F]IM completion' })
   vim.keymap.set('i', '<M-i>', function()
     vim.api.nvim_feedkeys(vim.keycode '<M-i>', 'i', false)
   end, { desc = '[A]I completion' })
+
+  vim.keymap.set('n', '<leader>aii', function()
+    local line = vim.api.nvim_get_current_line()
+    if line == '' then
+      vim.notify('Current line is empty', vim.log.levels.WARN)
+      return
+    end
+
+    vim.notify('Asking Codex...', vim.log.levels.INFO)
+    local output = vim.fn.systemlist({ 'zsh', '-ic', 'ask_codex --quiet --plain -- ' .. vim.fn.shellescape(line) })
+
+    if vim.v.shell_error ~= 0 then
+      vim.notify(table.concat(output, '\n'), vim.log.levels.ERROR)
+      return
+    end
+
+    if #output == 0 then
+      vim.notify('Codex returned no output', vim.log.levels.WARN)
+      return
+    end
+
+    vim.api.nvim_buf_set_lines(0, vim.fn.line('.') - 1, vim.fn.line('.'), false, output)
+  end, { desc = '[AI] [I]nsert Codex output of current line' })
 
   -- [[ Autocomplete Engine ]]
   vim.pack.add { { src = gh 'saghen/blink.cmp', version = vim.version.range '1.*' } }
