@@ -121,7 +121,13 @@ ddg() {
     esac
   done
 
-  w3m "https://html.duckduckgo.com/html/?q=$query"
+  w3m -num -X -graph \
+    -o confirm_qq=0 \
+    -o retry_http=1 \
+    -o editor=nvim \
+    -o vi_prec_num=1 \
+    -o meta_refresh=1 \
+    "https://html.duckduckgo.com/html/?q=$query"
 }
 
 alias '??'='noglob ask_codex'
@@ -132,7 +138,7 @@ ask_codex() {
   local -a prompt_parts spinner_chars
 
   model="${ASK_CODEX_MODEL:-gpt-5.6-luna}"
-  system_prompt="Answer concise. Give practical commands/examples when useful. Use Markdown."
+  system_prompt="Answer concise. Give practical commands/examples when useful. Use Markdown. No thinking or reasoning - be quick. Answer with the obvious first correct answer. When asked for code - give JUST the code."
   use_formatting=1
   debug=0
   quiet=0
@@ -190,9 +196,9 @@ $prompt"
   tmp="$(mktemp -t ask_codex.XXXXXX)" || return 1
 
   if [ "$debug" -eq 1 ]; then
-    { codex exec --ephemeral --sandbox read-only  --config 'model_reasoning_effort="none"' --model "$model" "$prompt" > "$tmp"; } &
+    { codex exec --skip-git-repo-check --ephemeral --sandbox read-only --config 'model_reasoning_effort="none"' --config 'service_tier="fast"' --model "$model" "$prompt" > "$tmp"; } &
   else
-    { codex exec --ephemeral --sandbox read-only  --config 'model_reasoning_effort="none"' --model "$model" "$prompt" > "$tmp" 2>/dev/null; } &
+    { codex exec --skip-git-repo-check --ephemeral --sandbox read-only  --config 'model_reasoning_effort="none"' --config 'service_tier="fast"' --model "$model" "$prompt" > "$tmp" 2>/dev/null; } &
   fi
   pid=$!
 
