@@ -325,7 +325,7 @@ do
     end
 
     -- ref is what ends up in the clipboard; start with just the path
-    local ref = path
+    local ref = "@" .. path
 
     if opts.visual then
       -- '< and '> are only set after leaving visual mode, so read the live selection:
@@ -338,7 +338,7 @@ do
         start_line, end_line = end_line, start_line
       end
       -- append the range, e.g. "lua/config/keymaps.lua:1:23"
-      ref = path .. ":" .. start_line .. ":" .. end_line
+      ref = ref .. ":" .. start_line .. ":" .. end_line
     end
 
     -- ask for an optional free-text note on the command line (Enter to skip)
