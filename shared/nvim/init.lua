@@ -948,50 +948,11 @@ do
      },
   }
 
-  -- HARPOON: quick navigation between marked buffers
-  vim.pack.add {
-    {
-      src = gh 'ThePrimeagen/harpoon',
-      version = 'harpoon2',
-      dependencies = { 'nvim-lua/plenary.nvim' },
-    },
+  vim.pack.add { gh 'rachartier/tiny-inline-diagnostic.nvim' }
+  vim.diagnostic.config({ virtual_text = false }) -- Disable Neovim's default virtual text diagnostics
+  require('tiny-inline-diagnostic').setup {
+    preset= 'powerline'
   }
-
-  local harpoon = require 'harpoon'
-  harpoon:setup {}
-
-  vim.keymap.set('n', '<leader>ha', function() harpoon:list():add() end, { desc = '[H]arpoon [A]dd file' })
-  vim.keymap.set('n', '<leader>hm', function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = '[H]arpoon [M]enu' })
-
-  vim.keymap.set('n', '<leader>h1', function() harpoon:list():select(1) end, { desc = '[H]arpoon file 1' })
-  vim.keymap.set('n', '<leader>h2', function() harpoon:list():select(2) end, { desc = '[H]arpoon file 2' })
-  vim.keymap.set('n', '<leader>h3', function() harpoon:list():select(3) end, { desc = '[H]arpoon file 3' })
-  vim.keymap.set('n', '<leader>h4', function() harpoon:list():select(4) end, { desc = '[H]arpoon file 4' })
-
-  vim.keymap.set('n', '<leader>hp', function() harpoon:list():prev() end, { desc = '[H]arpoon [P]rev' })
-  vim.keymap.set('n', '<leader>hn', function() harpoon:list():next() end, { desc = '[H]arpoon [N]ext' })
-
-  -- -- basic telescope configuration
-  -- local telescopeConf = require('telescope.config').values
-  -- local function toggle_telescope(harpoon_files)
-  --   local file_paths = {}
-  --   for _, item in ipairs(harpoon_files.items) do
-  --     table.insert(file_paths, item.value)
-  --   end
-  --
-  --   require('telescope.pickers')
-  --     .new({}, {
-  --       prompt_title = 'Harpoon',
-  --       finder = require('telescope.finders').new_table {
-  --         results = file_paths,
-  --       },
-  --       previewer = telescopeConf.file_previewer {},
-  --       sorter = telescopeConf.generic_sorter {},
-  --     })
-  --     :find()
-  -- end
-  --
-  -- vim.keymap.set('n', '<leader>ht', function() toggle_telescope(harpoon:list()) end, { desc = '[H]arpoon [T]elescope menu' })
 end
 
 -- ============================================================
