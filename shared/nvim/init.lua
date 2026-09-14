@@ -352,6 +352,8 @@ do
     vim.fn.setreg("+", ref)
     -- show a confirmation message with what was copied
     vim.notify("Copied: " .. ref)
+    -- back to normal mode
+    vim.api.nvim_input("<Esc>")
   end
 
   -- normal mode: copy just the file path
