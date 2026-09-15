@@ -51,6 +51,10 @@
       "src": "https://github.com/Tom-Bury/llama.vim",
       "version": "'feat/debounce'"
     },
+    "markdown-table-wrap.nvim": {
+      "rev": "a5b676360946c7bce48c0b717ab05929761b88c8",
+      "src": "https://github.com/ice345/markdown-table-wrap.nvim"
+    },
     "mason-lspconfig.nvim": {
       "rev": "7b01e2974a47d489bb92f47a41e4c0088ea8f86e",
       "src": "https://github.com/mason-org/mason-lspconfig.nvim"

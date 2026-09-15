@@ -134,17 +134,6 @@ do
   -- Enable break indent
   vim.o.breakindent = true
 
-  -- Scroll markdown horizontally instead of wrapping long lines
-  vim.api.nvim_create_autocmd('FileType', {
-    pattern = 'markdown',
-    callback = function()
-      vim.opt_local.wrap = false
-      vim.opt_local.linebreak = false
-      vim.opt_local.sidescroll = 5
-      vim.opt_local.sidescrolloff = 8
-    end,
-  })
-
   -- Show tabs as 3 columns
   vim.o.tabstop = 3
 
@@ -1210,6 +1199,7 @@ do
 
   vim.pack.add { gh 'MeanderingProgrammer/render-markdown.nvim'}
   require('render-markdown').setup({
+    pipe_table = { enabled = false },
     heading = {
       sign = false,
       border = true,
@@ -1220,6 +1210,9 @@ do
       left_pad = 2,
     },
   })
+
+  vim.pack.add { gh 'ice345/markdown-table-wrap.nvim' }
+  require('markdown-table-wrap').setup({})
 
 end
 
