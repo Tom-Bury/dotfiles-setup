@@ -131,8 +131,23 @@ do
   --  See `:help 'clipboard'`
   vim.schedule(function() vim.o.clipboard = 'unnamedplus' end)
 
-  -- Enable break indent
+  -- Read long lines as soft-wrapped prose: only break at word boundaries.
+  vim.o.wrap = true
+  vim.o.linebreak = true
+  vim.o.breakat = ' \t' -- Wrap only at whitespace, not punctuation inside words.
   vim.o.breakindent = true
+
+  -- Markdown prose: wrap at words and align list continuations after their marker.
+  vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'markdown',
+    callback = function()
+      vim.wo.wrap = true
+      vim.wo.linebreak = true
+      vim.wo.breakindent = true
+      vim.wo.breakindentopt = 'list:-1'
+      vim.bo.formatlistpat = [[^\s*\%(\d\+[\]:.)}\t ]\s*\|[-*+]\s\+\)]]
+    end,
+  })
 
   -- Show tabs as 3 columns
   vim.o.tabstop = 3
