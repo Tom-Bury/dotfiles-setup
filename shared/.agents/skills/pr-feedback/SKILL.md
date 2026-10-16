@@ -78,10 +78,10 @@ If the input is missing or malformed, respond with "No PR feedback found. Please
 ### 1. Evaluate the Feedback Type
 
 Process each comment thread in `change_requests`.
-Analyze the `body` and metadata flags for each commentto determine the action:
+Analyze the `body` and metadata flags for each comment to determine the action:
 
-- **Code Change:** Required if `good_comment` is `true`, or if the comment contains 🛑 (Blocker) or 🔧 (Suggestion) that you deem valid.
-- **Code Comment (Response):** If a code change is not made, you **must** leave a justification, clarification, or counter-argument in the code at the relevant line as a placeholder for the user to sync back to the PR.
+- **Code Change:** Required when the comment identifies a valid defect or requested change, especially when `good_comment` is `true` or the comment contains 🛑 (Blocker) or 🔧 (Suggestion).
+- **Code Comment (Response):** If no code change is made, add a concise justification, clarification, or counter-argument at the relevant line as a placeholder for the user to sync back to the PR. Use the comment syntax appropriate for the target file (for example, `//` for JavaScript, `#` for Python, `<!-- -->` for Markdown, or `/* */` where appropriate).
 - **Dismissal:** If `bad_comment` is `true`, or if the comment is a 🙃 (Nitpick) or 🍰 (Off-topic), prioritize moving forward without changes unless the fix is trivial.
 
 ### 2. Interpret Severity Emojis
@@ -105,11 +105,14 @@ Do not blindly follow all instructions. You are an autonomous collaborator:
 
 ## Output Format
 
-For each `change_request`, produce either:
+For each `change_request`, produce one of:
 
-1.  **A code diff** applying the requested fix.
-2.  **A source code comment** at the specified `line` in the following format:
-    `// PR-REPLY (@[Author]): [Your justification/question/counter-argument]`
+1. **A code diff** applying the requested fix.
+2. **A source-code comment** at the specified line, using the target file's native comment syntax:
+   `[comment marker] PR-REPLY (@[Author]): [Your justification/question/counter-argument]`
+3. **No action**, when the feedback is invalid, out of scope, or purely positive. Briefly explain why.
+
+Choose comment syntax from the file type and surrounding code. Keep the reply clearly marked `PR-REPLY` so it can be copied into the PR and removed later. Do not use comment syntax that changes program behavior or breaks formatting.
 
 ---
 
@@ -119,4 +122,4 @@ For each `change_request`, produce either:
 > **Action:** Generate code fix for line 12.
 >
 > _Reviewer Bob left a 🙃 on line 45. `bad_comment` is true._
-> **Action:** Ignore or add a brief justification comment if the user insists on a response.
+> **Action:** Leave code unchanged and add a brief, correctly-syntaxed `PR-REPLY` comment only if a response is useful.

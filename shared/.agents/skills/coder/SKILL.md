@@ -1,29 +1,35 @@
 ---
 name: coder
 description: >
-  Mandatory workflow for preserving context window space during data analysis. 
-  Instructs the agent to compute, count, filter, and analyze data by writing 
-  and executing standalone Node.js scripts, returning ONLY the final parsed 
-  output or summaries to stdout. Prevents context bloat from raw data dumping 
-  (e.g., large files, raw HTTP responses, or heavy shell command outputs).
+  Workflow for preserving context window space when analyzing large datasets,
+  logs, raw HTTP responses, or command output. Instructs the agent to compute,
+  count, filter, and summarize data with standalone Node.js scripts, returning
+  only final parsed output or summaries. Does not require scripts for ordinary
+  source-code inspection or small files.
 ---
 
 ## Purpose
 
-To strictly preserve the LLM context window.
-You must **PROGRAM** your analysis rather than reading raw data into your context and using internal reasoning to compute, count, filter, or analyze it.
+To preserve the LLM context window when raw data would be large.
+Program analysis of large datasets, logs, HTTP responses, and command output rather
+than loading them into context. Ordinary source-code inspection may use file-reading
+tools directly.
 
 ---
 
 ## Core directive: compute, don't read
 
-When faced with large datasets, logs, codebases, or web pages, you must write and execute Node.js scripts to process the information and extract only what you need.
+When faced with large datasets, logs, raw web responses, or command output, write
+and execute a Node.js script to process the information and extract only what you
+need. Do not use this workflow mechanically for ordinary source-code inspection or
+small files.
 
 ### The Standard Workflow:
 
-1. **Write:** Create a temporary JavaScript file (e.g., `analyze_data.js`) using your file-writing tool.
-2. **Execute:** Run the script via your shell tool (`node analyze_data.js`).
+1. **Write:** Create a temporary JavaScript file outside the repository when possible (for example, `/tmp/analyze_data.js`).
+2. **Execute:** Run the script via your shell tool (`node /tmp/analyze_data.js`).
 3. **Output:** The script must use `console.log()` to output ONLY the final answer, summary, or strictly filtered data.
+4. **Clean up:** Remove temporary scripts after execution when practical.
 
 ### Environment & Constraints:
 
@@ -54,14 +60,13 @@ If the output will be large, you must programmatic redirect.
 
 ### 1. `bash` / Shell Commands
 
-- **WHEN TO USE RAW SHELL:** ONLY for standard, low-output file system or environment operations (`git`, `mkdir`, `rm`, `mv`, `cd`, `ls`).
-- **IF OUTPUT > 20 LINES:** Do not run it directly.
-  Write a Node.js script using `child_process.execSync`, capture the output, filter it inside the script, and log only the relevant lines.
+- **WHEN TO USE RAW SHELL:** Use directly for low-output file-system or environment operations (`git`, `mkdir`, `rm`, `mv`, `cd`, `ls`) and commands with small, bounded output.
+- **WHEN OUTPUT MAY BE LARGE:** Capture and summarize it with a Node.js script using `child_process.execSync`; log only relevant lines, counts, or fields. Do not apply this mechanically to commands whose output is known to be small.
 
 ### 2. Search Utilities (`grep` / `find`)
 
-- **IF LARGE RESULTS ARE EXPECTED:** Do NOT run these directly in the shell tool.
-  Write a Node script to execute the grep/find command, parse the output string, and return a summarized count or the top 5 matches.
+- **IF LARGE RESULTS ARE EXPECTED:** Do not run these directly in the shell tool.
+  Write a Node script to execute the search, parse the output, and return a summarized count or the most relevant matches. For a small, bounded search, run the command directly.
 
 ---
 
