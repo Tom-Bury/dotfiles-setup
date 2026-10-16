@@ -1,4 +1,15 @@
 {
+  "$schema": "https://pi.dev/schemas/keybindings.schema.json",
   "tui.input.newLine": ["enter"],
-  "tui.input.submit": ["ctrl+s", "alt+enter"]
+  "tui.input.submit": ["ctrl+s", "alt+enter"],
+  "tui.altScreen.halfPageUp": "ctrl+u",
+  "tui.altScreen.halfPageDown": "ctrl+d",
+  "app.editor.external": "ctrl+e",
+  "tui.altScreen.bottom": "shift+g",
+  "tui.altScreen.previousPrompt": "alt+k",
+  "tui.altScreen.nextPrompt": "alt+j",
+  "app.session.tree": "alt+t",
+  "app.session.new": "alt+n",
+  "app.session.resume": "alt+r",
+  "app.model.select": "alt+m"
 }
