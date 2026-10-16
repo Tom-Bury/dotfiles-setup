@@ -891,7 +891,6 @@ do
       ["g?"] = { "actions.show_help", mode = "n" },
       ["<CR>"] = "actions.select",
       ["<C-v>"] = { "actions.select", opts = { vertical = true } },
-      ["<C-h>"] = { "actions.select", opts = { horizontal = true } },
       ["<C-t>"] = { "actions.select", opts = { tab = true } },
       ["<C-p>"] = "actions.preview",
       ["<C-c>"] = { "actions.close", mode = "n" },
@@ -1408,8 +1407,13 @@ do
 
     -- Enable treesitter based folds
     -- For more info on folds see `:help folds`
-    -- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-    -- vim.wo.foldmethod = 'expr'
+    vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+    vim.wo.foldmethod = 'expr'
+    vim.opt.foldtext = '' -- folded-line label
+    -- vim.opt.foldtext = 'v:lua.vim.treesitter.foldtext()' -- folded-line label
+    -- Don't start a file fully folded
+    vim.wo.foldlevel = 99
+    vim.opt.foldcolumn = '0'
 
     -- Check if treesitter indentation is available for this language, and if so enable it
     -- in case there is no indent query, the indentexpr will fallback to the vim's built in one
