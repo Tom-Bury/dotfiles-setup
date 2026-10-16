@@ -56,3 +56,61 @@ function 2gif() {
     echo "GIF size: $(du -k $output_file | awk '{print $1/1024 " MB"}')"
     echo "$output_file"
 }
+
+function 2mp4() {
+    input_file=$1
+
+    if [ -z "$input_file" ]; then
+        input_file=$(ls | fzf)
+    fi
+
+    while true; do
+        echo "Enter scale value (e.g., 0.75 for 75% size. Default 0.75):"
+        read scale_value
+        if [[ -z "$scale_value" ]]; then
+            scale_value=0.75
+            break
+        elif [[ $scale_value =~ ^[0-9]+([.][0-9]+)?$ ]]; then
+            break
+        fi
+    done
+
+    while true; do
+        echo "Enter frame rate (e.g. 30. Default 30):"
+        read frame_rate
+        if [[ -z "$frame_rate" ]]; then
+            frame_rate=24
+            break
+        elif [[ $frame_rate =~ ^[0-9]+$ ]]; then
+            break
+        fi
+    done
+
+    while true; do
+        echo "Enter CRF quality (lower = better/larger; 23-32 typical. Default 28):"
+        read crf
+        if [[ -z "$crf" ]]; then
+            crf=28
+            break
+        elif [[ $crf =~ ^[0-9]+([.][0-9]+)?$ ]]; then
+            break
+        fi
+    done
+
+    output_file="${input_file%.*}.mp4"
+    if [[ "$output_file" == "$input_file" ]]; then
+        output_file="${input_file%.*}.h264.mp4"
+    fi
+
+    ffmpeg -i "$input_file" \
+        -vf "setpts=PTS-STARTPTS,fps=${frame_rate},scale=trunc(iw*${scale_value}/2)*2:trunc(ih*${scale_value}/2)*2:flags=lanczos" \
+        -r "$frame_rate" -fps_mode cfr \
+        -c:v libx264 -crf "$crf" -preset slow -pix_fmt yuv420p \
+        -g "$frame_rate" -keyint_min "$frame_rate" -sc_threshold 0 -bf 0 \
+        -c:a aac -b:a 128k -movflags +faststart \
+        "$output_file"
+
+    echo "\n✅ Done!"
+    echo "MP4 size: $(du -k "$output_file" | awk '{print $1/1024 " MB"}')"
+    echo "$output_file"
+}
