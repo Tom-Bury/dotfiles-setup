@@ -237,6 +237,39 @@ do
     },
   }
 
+  -- Yank diagnostic message(s) under the cursor to the system clipboard.
+  local function yank_diagnostic()
+    local line = vim.api.nvim_win_get_cursor(0)[1] - 1
+    local col = vim.api.nvim_win_get_cursor(0)[2]
+    local diagnostics = vim.diagnostic.get(0, { lnum = line })
+    local messages = {}
+
+    for _, diagnostic in ipairs(diagnostics) do
+      local start_col = diagnostic.col or 0
+      local end_col = diagnostic.end_col
+      local on_diagnostic = col >= start_col and (not end_col or end_col <= start_col or col < end_col)
+
+      if on_diagnostic then
+        local message = diagnostic.message
+        if diagnostic.source then message = ('[%s] %s'):format(diagnostic.source, message) end
+        if diagnostic.code then message = ('%s (%s)'):format(message, diagnostic.code) end
+        table.insert(messages, message)
+      end
+    end
+
+    if #messages == 0 then
+      vim.notify('No diagnostic under cursor', vim.log.levels.WARN)
+      return
+    end
+
+    local path = vim.fn.expand('%:.')
+    if path == '' then path = '[No Name]' end
+    local text = ('@%s:%d %s'):format(path, line + 1, table.concat(messages, '\n\n'))
+    vim.fn.setreg('+', text)
+    vim.notify('Copied diagnostic reference: ' .. text)
+  end
+
+  vim.keymap.set('n', '<leader>ye', yank_diagnostic, { desc = '[Y]ank diagnostic [E]rror' })
   vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
   -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
@@ -528,8 +561,25 @@ do
   -- Open a searchable list of all uncommitted files in your project
   vim.keymap.set('n', '<leader>gs', '<cmd>Telescope git_status<CR>', { desc = 'Search [G]it [S]tatus' })
 
-  vim.pack.add { gh 'kdheepak/lazygit.nvim' }
-  vim.keymap.set('n', '<leader>lg', '<cmd>LazyGit<cr>', { desc = 'Open [L]azy[G]it' })
+  -- LazyGit needs a real TTY, so run it in a temporary terminal buffer.
+  local function open_lazygit()
+    vim.cmd 'update'
+    vim.cmd 'botright new'
+    vim.cmd 'resize 100%'
+
+    local buf = vim.api.nvim_get_current_buf()
+    vim.bo[buf].bufhidden = 'wipe'
+    vim.fn.termopen('lazygit', {
+      on_exit = function()
+        vim.schedule(function()
+          if vim.api.nvim_buf_is_valid(buf) then vim.api.nvim_buf_delete(buf, { force = true }) end
+        end)
+      end,
+    })
+    vim.cmd 'startinsert'
+  end
+
+  vim.keymap.set('n', '<leader>lg', open_lazygit, { desc = 'Open [L]azy[G]it' })
 
   vim.pack.add { gh 'sindrets/diffview.nvim' }
   require('diffview').setup {
