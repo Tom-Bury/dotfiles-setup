@@ -98,6 +98,20 @@ do
   vim.keymap.set('n', 'C', '"_C', { noremap = true })
   vim.keymap.set('x', 'C', '"_C', { noremap = true })
 
+  -- Keep small/whitespace-only line deletions from replacing the clipboard.
+  vim.keymap.set('n', 'dd', function()
+    local count = vim.v.count1
+    local first = vim.fn.line('.') - 1
+    local last = math.min(first + count, vim.api.nvim_buf_line_count(0))
+    local lines = vim.api.nvim_buf_get_lines(0, first, last, false)
+    local only_small_lines = #lines > 0
+      and vim.iter(lines):all(function(line)
+        return vim.fn.strchars(vim.trim(line)) <= 1
+      end)
+
+    vim.cmd.normal { bang = true, args = { count .. (only_small_lines and '"_dd' or 'dd') } }
+  end, { noremap = true })
+
 
   -- Set <space> as the leader key
   -- See `:help mapleader`
