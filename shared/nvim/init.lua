@@ -361,8 +361,8 @@ do
   vim.keymap.set('n', '<leader>x', close_buffer_keep_window, { desc = '[X] Close buffer, keep split' })
   vim.keymap.set('n', '<leader>w', '<cmd>write<CR>', { desc = '[W]rite buffer' })
   vim.keymap.set('n', '<leader>!', ':!', { desc = 'Run shell command' })
-  vim.keymap.set('n', '<leader>br', '<cmd>bufdo edit<CR>', { desc = '[B]uffer [R]eload all from disk' })
-  vim.keymap.set('n', '<leader>bR', '<cmd>bufdo edit!<CR>', { desc = '[B]uffer [R]eload all from disk forcibly' })
+  vim.keymap.set('n', '<leader>br', '<cmd>edit<CR>', { desc = '[B]uffer [R]eload from disk' })
+  vim.keymap.set('n', '<leader>bR', '<cmd>edit!<CR>', { desc = '[B]uffer [R]eload from disk forcibly' })
 
   -- Copy file path / selection reference for pasting into AI chats
   local function copy_ref(opts)
@@ -570,10 +570,14 @@ do
       untracked = { text = '┆' },
     },
     signs_staged_enable = true,
+    current_line_blame_opts = {
+      delay = 0,
+    },
   }
 
   -- Open a searchable list of all uncommitted files in your project
   vim.keymap.set('n', '<leader>gs', '<cmd>Telescope git_status<CR>', { desc = 'Search [G]it [S]tatus' })
+  vim.keymap.set('n', '<leader>gb', '<cmd>Gitsigns toggle_current_line_blame<CR>', { desc = '[G]it [B]lame current line toggle' })
 
   -- LazyGit needs a real TTY, so run it in a temporary terminal buffer.
   local function open_lazygit()
