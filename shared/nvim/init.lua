@@ -1153,6 +1153,9 @@ do
     html = {},
     jsonls = {},
 
+    -- Terraform
+    terraformls = {},
+
     -- LUA
     stylua = {}, -- Used to format Lua code
     lua_ls = {
@@ -1216,6 +1219,9 @@ do
 
     -- JS ecosystem
     'prettierd',
+
+    -- Terraform / OpenTofu
+    'terraform',
   })
 
   require('mason-tool-installer').setup { ensure_installed = ensure_installed }
