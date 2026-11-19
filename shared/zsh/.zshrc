@@ -279,8 +279,11 @@ docker_sbx_here() {
     return 1
   fi
 
+  local current_dir
+  current_dir="$(pwd -P)"
+  
   local name
-  name="$(basename "$(pwd -P)")"
+  name="$(basename "$current_dir")"
 
   if _docker_sbx_exists "$name"; then
     if (( $# > 0 )); then
@@ -295,11 +298,23 @@ docker_sbx_here() {
     echo "Dotfiles directory not found: $DOCKER_SBX_DOTFILES_DIR" >&2
     return 1
   fi
+  
+  # Resolve actual path to handle symlinks and relative path weirdness safely
+  local dotfiles_real
+  dotfiles_real="$(cd "$DOCKER_SBX_DOTFILES_DIR" >/dev/null 2>&1 && pwd -P)"
+  
   mkdir -p "$DOCKER_SBX_SHARED_DIR"
+  
+  local mounts=()
+  # Only mount dotfiles separately if we aren't currently inside the dotfiles root
+  if [[ "$current_dir" != "$dotfiles_real" ]]; then
+    mounts+=("$DOCKER_SBX_DOTFILES_DIR:/mnt/dotfiles:ro")
+  fi
+  mounts+=("$DOCKER_SBX_SHARED_DIR:/mnt/shared")
+
   echo "Creating Docker sandbox: $name (template: $DOCKER_SBX_TEMPLATE)"
   sbx create --name "$name" --template "$DOCKER_SBX_TEMPLATE" shell . \
-    "$DOCKER_SBX_DOTFILES_DIR:/mnt/dotfiles:ro" \
-    "$DOCKER_SBX_SHARED_DIR:/mnt/shared" \
+    "${mounts[@]}" \
     "$@"
   sbx run --name "$name"
 }

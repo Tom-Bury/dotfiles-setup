@@ -59,6 +59,17 @@ install_apt_packages() {
   print_footer "Barebones tools installed"
 }
 
+install_fd() {
+  print_header "Installing fd"
+  if ! command -v fd >/dev/null 2>&1; then
+    run_sudo apt install -y fd-find
+    # Debian names the binary fdfind. Expose the standard name for other tools.
+    run_sudo ln -sfn "$(command -v fdfind)" /usr/local/bin/fd
+  fi
+  fd --version
+  print_footer "fd is ready"
+}
+
 install_yazi_if_needed() {
   if command -v yazi >/dev/null 2>&1 && command -v ya >/dev/null 2>&1; then
     echo "yazi and ya are already installed"
@@ -253,6 +264,17 @@ sync_default_editor() {
   print_footer "Default editor synced to $bashrc"
 }
 
+configure_pi_clipboard() {
+  local persistent_file="/etc/sandbox-persistent.sh"
+  local setting='export PI_CLIPBOARD_OSC52=1'
+
+  # Send copies to the host terminal, even if the sandbox advertises Wayland.
+  if ! run_sudo grep -Fxq "$setting" "$persistent_file" 2>/dev/null; then
+    printf '\n%s\n' "$setting" | run_sudo tee -a "$persistent_file" >/dev/null
+  fi
+  export PI_CLIPBOARD_OSC52=1
+}
+
 install_sandbox_mount_init() {
   local persistent_file="/etc/sandbox-persistent.sh"
   local marker_begin="# >>> dotfiles-setup sandbox mounts >>>"
@@ -304,12 +326,14 @@ sync_yazi_shell_wrapper() {
 
 main() {
   install_apt_packages
+  install_fd
   install_yazi_if_needed
   install_go
   sync_yazi
   sync_yazi_shell_wrapper
   sync_default_editor
   install_sandbox_mount_init
+  configure_pi_clipboard
   sync_agents
   install_nvm
   uninstall_npm_pi
