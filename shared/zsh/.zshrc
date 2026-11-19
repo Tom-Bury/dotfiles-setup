@@ -237,44 +237,76 @@ $prompt"
   fi
 }
 
-docker_sbx_here() {
+# Base sandbox/template used by Docker Sandboxes. Override before sourcing this file
+# to test another template, e.g. DOCKER_SBX_TEMPLATE=tom-dev:v2.
+: "${DOCKER_SBX_BASE_NAME:=tom-base}"
+: "${DOCKER_SBX_TEMPLATE:=tom-dev:v1}"
+: "${DOCKER_SBX_DOTFILES_DIR:=$HOME/personal/code/dotfiles-setup}"
+: "${DOCKER_SBX_SHARED_DIR:=$HOME/.dsb-shared}"
+
+_docker_sbx_exists() {
+  sbx ls 2>/dev/null | awk -v name="$1" 'NR > 1 && $1 == name { found = 1 } END { exit !found }'
+}
+
+docker_sbx_base() {
   if ! command -v sbx >/dev/null 2>&1; then
-    echo "sbx not found. Install Docker sandboxes first." >&2
+    echo "sbx not found. Install Docker Sandboxes first." >&2
     return 1
   fi
-  local dir name matches count picked
 
-  dir="$(pwd -P)"
-  name="$(basename "$dir")"
-  matches="$(
-    sbx ls 2>/dev/null | awk -v dir="$dir" '
-      NR > 1 && $NF == dir { print $1 }
-    '
-  )"
-  count="$(printf '%s\n' "$matches" | sed '/^$/d' | wc -l | tr -d ' ')"
-
-  case "$count" in
-    0)
-      echo "No Docker sandbox for $dir. Creating: $name"
-      sbx create shell . --name="$name"
-      sbx run "$name"
-      ;;
-    1)
-      sbx run "$matches"
-      ;;
-    *)
-      if ! command -v fzf >/dev/null 2>&1; then
-        echo "Multiple Docker sandboxes found, but fzf not installed:" >&2
-        printf '%s\n' "$matches" >&2
-        return 1
-      fi
-      picked="$(printf '%s\n' "$matches" | fzf --prompt="Pick Docker sandbox: ")"
-      [ -n "$picked" ] || return 1
-      sbx run "$picked"
-      ;;
-  esac
+  if ! _docker_sbx_exists "$DOCKER_SBX_BASE_NAME"; then
+    echo "Creating mountless base sandbox: $DOCKER_SBX_BASE_NAME"
+    sbx create --name "$DOCKER_SBX_BASE_NAME" shell
+  fi
+  sbx run --name "$DOCKER_SBX_BASE_NAME"
 }
+
+docker_sbx_template_save() {
+  if ! command -v sbx >/dev/null 2>&1; then
+    echo "sbx not found. Install Docker Sandboxes first." >&2
+    return 1
+  fi
+  if ! _docker_sbx_exists "$DOCKER_SBX_BASE_NAME"; then
+    echo "Base sandbox not found: $DOCKER_SBX_BASE_NAME" >&2
+    return 1
+  fi
+  sbx template save "$DOCKER_SBX_BASE_NAME" "$DOCKER_SBX_TEMPLATE"
+}
+
+docker_sbx_here() {
+  if ! command -v sbx >/dev/null 2>&1; then
+    echo "sbx not found. Install Docker Sandboxes first." >&2
+    return 1
+  fi
+
+  local name
+  name="$(basename "$(pwd -P)")"
+
+  if _docker_sbx_exists "$name"; then
+    if (( $# > 0 )); then
+      echo "Sandbox already exists: $name. Extra mounts are create-time only; remove and recreate it." >&2
+      return 1
+    fi
+    sbx run --name "$name"
+    return
+  fi
+
+  if [[ ! -d "$DOCKER_SBX_DOTFILES_DIR" ]]; then
+    echo "Dotfiles directory not found: $DOCKER_SBX_DOTFILES_DIR" >&2
+    return 1
+  fi
+  mkdir -p "$DOCKER_SBX_SHARED_DIR"
+  echo "Creating Docker sandbox: $name (template: $DOCKER_SBX_TEMPLATE)"
+  sbx create --name "$name" --template "$DOCKER_SBX_TEMPLATE" shell . \
+    "$DOCKER_SBX_DOTFILES_DIR:/mnt/dotfiles:ro" \
+    "$DOCKER_SBX_SHARED_DIR:/mnt/shared" \
+    "$@"
+  sbx run --name "$name"
+}
+
 alias dsb='docker_sbx_here'
+alias dsb-base='docker_sbx_base'
+alias dsb-template-save='docker_sbx_template_save'
 
 # https://stackoverflow.com/questions/19331497/set-environment-variables-from-file-of-key-value-pairs
 # alias sourceenv="export $(grep -v '^#' .env | xargs)"

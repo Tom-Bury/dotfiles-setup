@@ -23,7 +23,7 @@ brew "git-spice"
 brew "diff-so-fancy"
 brew "micro"
 # cask "docker"
-cask "visual-studio-code"
+# cask "visual-studio-code"
 cask "fork"
 cask "ghostty"
 brew "starship"
@@ -92,68 +92,68 @@ cask "whatsapp"
 cask "font-fira-code-nerd-font"
 
 
-##############################################
-# VSCode plugins
-###############################################
-
-# Background / IDE utilities
-vscode "asciidoctor.asciidoctor-vscode"
-vscode "EditorConfig.EditorConfig"
-vscode "streetsidesoftware.code-spell-checker"
-vscode "naumovs.color-highlight"
-vscode "artdiniz.quitcontrol-vscode"
-vscode "mechatroner.rainbow-csv"
-vscode "ionutvmi.path-autocomplete"
-
-# Frontend development
-vscode "formulahendry.auto-close-tag"
-vscode "YoavBls.pretty-ts-errors"
-vscode "codeandstuff.package-json-upgrade"
-vscode "dbaeumer.vscode-eslint"
-vscode "firsttris.vscode-jest-runner" # running or debugging a specific test or test-suite
-vscode "Orta.vscode-jest" # running your current test-suite everytime you change it.
-vscode "1YiB.svelte-bundle"
-
-# Go
-vscode "golang.Go"
-
-# Infrastructure
-vscode "hashicorp.terraform"
-vscode "redhat.vscode-yaml"
-
-# DB
-vscode "mtxr.sqltools"
-vscode "mtxr.sqltools-driver-pg"
-vscode "mongodb.mongodb-vscode"
-
-# Tools
-vscode "adpyke.codesnap"
-vscode "pomdtr.excalidraw-editor"
-vscode "ctcuff.font-preview"
-vscode "tomoki1207.pdf"
-vscode "jock.svg"
-vscode "george-alisson.html-preview-vscode"
-vscode "eriklynd.json-tools"
-vscode "ryu1kn.partial-diff"
-vscode "rangav.vscode-thunder-client"
-vscode "ms-vsliveshare.vsliveshare"
-vscode "YevhenCherkes.object-dumper"
-vscode "sleistner.vscode-fileutils"
-vscode "GitHub.vscode-pull-request-github"
-vscode "cardinal90.multi-cursor-case-preserve"
-
-# AI / Copilot
-# vscode "GitHub.copilot"
-# vscode "GitHub.copilot-chat"
-vscode "Continue.continue"
-
-# Markdown
-vscode "yzhang.markdown-all-in-one"
-vscode "yzane.markdown-pdf"
-vscode "bierner.markdown-preview-github-styles"
-
-# Themes
-vscode "zhuangtongfa.material-theme"
-vscode "PKief.material-icon-theme"
-vscode "johnpapa.vscode-peacock"
-vscode "BeardedBear.beardedtheme"
+# ##############################################
+# # VSCode plugins
+# ###############################################
+#
+# # Background / IDE utilities
+# vscode "asciidoctor.asciidoctor-vscode"
+# vscode "EditorConfig.EditorConfig"
+# vscode "streetsidesoftware.code-spell-checker"
+# vscode "naumovs.color-highlight"
+# vscode "artdiniz.quitcontrol-vscode"
+# vscode "mechatroner.rainbow-csv"
+# vscode "ionutvmi.path-autocomplete"
+#
+# # Frontend development
+# vscode "formulahendry.auto-close-tag"
+# vscode "YoavBls.pretty-ts-errors"
+# vscode "codeandstuff.package-json-upgrade"
+# vscode "dbaeumer.vscode-eslint"
+# vscode "firsttris.vscode-jest-runner" # running or debugging a specific test or test-suite
+# vscode "Orta.vscode-jest" # running your current test-suite everytime you change it.
+# vscode "1YiB.svelte-bundle"
+#
+# # Go
+# vscode "golang.Go"
+#
+# # Infrastructure
+# vscode "hashicorp.terraform"
+# vscode "redhat.vscode-yaml"
+#
+# # DB
+# vscode "mtxr.sqltools"
+# vscode "mtxr.sqltools-driver-pg"
+# vscode "mongodb.mongodb-vscode"
+#
+# # Tools
+# vscode "adpyke.codesnap"
+# vscode "pomdtr.excalidraw-editor"
+# vscode "ctcuff.font-preview"
+# vscode "tomoki1207.pdf"
+# vscode "jock.svg"
+# vscode "george-alisson.html-preview-vscode"
+# vscode "eriklynd.json-tools"
+# vscode "ryu1kn.partial-diff"
+# vscode "rangav.vscode-thunder-client"
+# vscode "ms-vsliveshare.vsliveshare"
+# vscode "YevhenCherkes.object-dumper"
+# vscode "sleistner.vscode-fileutils"
+# vscode "GitHub.vscode-pull-request-github"
+# vscode "cardinal90.multi-cursor-case-preserve"
+#
+# # AI / Copilot
+# # vscode "GitHub.copilot"
+# # vscode "GitHub.copilot-chat"
+# vscode "Continue.continue"
+#
+# # Markdown
+# vscode "yzhang.markdown-all-in-one"
+# vscode "yzane.markdown-pdf"
+# vscode "bierner.markdown-preview-github-styles"
+#
+# # Themes
+# vscode "zhuangtongfa.material-theme"
+# vscode "PKief.material-icon-theme"
+# vscode "johnpapa.vscode-peacock"
+# vscode "BeardedBear.beardedtheme"

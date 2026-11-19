@@ -1,12 +1,14 @@
 {
   "$schema": "https://pi.dev/schemas/settings.schema.json",
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.6-terra",
+  "defaultModel": "gpt-6-luna",
   "enabledModels": ["openai-codex/*"],
   "defaultThinkingLevel": "minimal",
   "modelThinkingLevels": {
-    "openai-codex/gpt-5.6-terra": "minimal",
-    "openai-codex/gpt-5.6-luna": "medium"
+    "openai-codex/gpt-6.1-terra": "medium",
+    "openai-codex/gpt-6-luna": "medium",
+    "openai-codex/gpt-6.2-sol": "medium",
+    "openai-codex/gpt-6.2-astra": "medium"
   },
   "editorPaddingX": 1,
   "enableInstallTelemetry": false,

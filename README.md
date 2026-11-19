@@ -52,11 +52,10 @@ The setup scripts are split in a common and os specific part:
   - Runs `apt update` and `apt upgrade`
   - Installs a limited set of apt tools, currently `ca-certificates`, `curl`, `git`, `micro`, `neovim`, and `yazi` when available
   - Syncs `shared/.agents` to `/root/.agents`
-  - Syncs `shared/.pi/agent` to `/root/.pi/agent`
+  - Installs Pi with its managed curl installer (`~/.pi/agent/install`, launcher at `~/.local/bin/pi`) and syncs `shared/.pi/agent` to `/root/.pi/agent`
   - Syncs `shared/yazi/yazi.toml` to `/root/.config/yazi/yazi.toml`, configured to show hidden files
   - Sets terminal default editor env vars (`EDITOR`, `VISUAL`, `SUDO_EDITOR`) to `nvim`
-  - Installs `nodejs` and `npm` through apt only when either command is missing
-  - Installs global npm packages, currently `@earendil-works/pi-coding-agent`
+  - Installs Node.js through NVM for other tooling; Pi is not installed through npm
 
 ## Extra info
 

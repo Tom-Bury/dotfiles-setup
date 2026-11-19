@@ -21,6 +21,7 @@ APT_PACKAGES=(
   "ca-certificates"
   "curl"
   "git"
+  "libatomic1"
   "micro"
   "neovim"
   "unzip"
@@ -28,7 +29,6 @@ APT_PACKAGES=(
 )
 
 NPM_PACKAGES=(
-  "@earendil-works/pi-coding-agent"
 )
 
 apt_package_available() {
@@ -93,6 +93,44 @@ install_yazi_if_needed() {
   print_footer "yazi installed"
 }
 
+install_go() {
+  local version="1.27.4"
+  local arch archive tmpdir installed_version
+
+  if command -v go >/dev/null 2>&1; then
+    installed_version="$(go version | awk '{print $3}')"
+    if [[ "$installed_version" == "go$version" ]]; then
+      echo "Go $version is already installed"
+      return
+    fi
+  fi
+
+  case "$(uname -m)" in
+    x86_64|amd64)
+      arch="amd64"
+      ;;
+    aarch64|arm64)
+      arch="arm64"
+      ;;
+    *)
+      echo "Error: unsupported architecture for Go: $(uname -m)" >&2
+      exit 1
+      ;;
+  esac
+
+  archive="go${version}.linux-${arch}.tar.gz"
+  tmpdir="$(mktemp -d)"
+
+  print_header "Installing Go $version 🐹"
+  curl -fsSL "https://go.dev/dl/$archive" -o "$tmpdir/$archive"
+  run_sudo rm -rf /usr/local/go
+  run_sudo tar -C /usr/local -xzf "$tmpdir/$archive"
+  run_sudo ln -sf /usr/local/go/bin/go /usr/local/bin/go
+  run_sudo ln -sf /usr/local/go/bin/gofmt /usr/local/bin/gofmt
+  rm -rf "$tmpdir"
+  print_footer "Go $version installed"
+}
+
 install_nvm() {
   unset NPM_CONFIG_PREFIX
   
@@ -124,6 +162,16 @@ install_nvm() {
   set -u
 }
 
+uninstall_npm_pi() {
+  local package="@earendil-works/pi-coding-agent"
+
+  if npm list -g --depth=0 "$package" >/dev/null 2>&1; then
+    print_header "Removing npm-installed Pi 🥧"
+    npm uninstall -g "$package"
+    print_footer "npm-installed Pi removed"
+  fi
+}
+
 install_global_npm_packages() {
   print_header "Installing global npm packages 🤖"
   set +u
@@ -148,8 +196,26 @@ sync_agents() {
   print_footer ".agents synced to $HOME/.agents"
 }
 
+managed_pi_installed() {
+  local install_root="$HOME/.pi/agent/install"
+  local launcher="$HOME/.local/bin/pi"
+
+  [[ -x "$launcher" ]] \
+    && [[ -f "$install_root/managed-install.json" ]] \
+    && grep -Fq '"kind": "pi-managed-install"' "$install_root/managed-install.json"
+}
+
 sync_pi() {
   print_header "Syncing .pi 🥧"
+
+  # The curl installer owns ~/.pi/agent/install and ~/.local/bin/pi. Re-running
+  # it after migration can rediscover an old npm installation and prompt again.
+  if managed_pi_installed; then
+    echo "Pi managed installation already present"
+  else
+    curl -fsSL https://pi.dev/install.sh | sh
+  fi
+
   run_sudo mkdir -p "$HOME/.pi/agent"
   run_sudo cp -a "$ROOT_DIR/shared/.pi/agent/." "$HOME/.pi/agent/"
   run_sudo chown -R "$(id -un):$(id -gn)" "$HOME/.pi"
@@ -187,6 +253,30 @@ sync_default_editor() {
   print_footer "Default editor synced to $bashrc"
 }
 
+install_sandbox_mount_init() {
+  local persistent_file="/etc/sandbox-persistent.sh"
+  local marker_begin="# >>> dotfiles-setup sandbox mounts >>>"
+  local marker_end="# <<< dotfiles-setup sandbox mounts <<<"
+  local tmpfile
+
+  if run_sudo grep -Fq "$marker_begin" "$persistent_file" 2>/dev/null; then
+    echo "sandbox mount init already registered"
+    return
+  fi
+
+  tmpfile="$(mktemp)"
+  {
+    printf '\n%s\n' "$marker_begin"
+    printf '%s\n' 'if [[ -r /mnt/dotfiles/shared/sandbox/init.sh ]]; then'
+    printf '%s\n' '  source /mnt/dotfiles/shared/sandbox/init.sh'
+    printf '%s\n' 'fi'
+    printf '%s\n' "$marker_end"
+  } > "$tmpfile"
+  run_sudo tee -a "$persistent_file" < "$tmpfile" >/dev/null
+  rm -f "$tmpfile"
+  echo "sandbox mount init registered"
+}
+
 sync_yazi_shell_wrapper() {
   local bashrc="$HOME/.bashrc"
   local yazi_shell="$ROOT_DIR/shared/yazi/.zshrc_yazi.sh"
@@ -215,17 +305,17 @@ sync_yazi_shell_wrapper() {
 main() {
   install_apt_packages
   install_yazi_if_needed
+  install_go
   sync_yazi
   sync_yazi_shell_wrapper
   sync_default_editor
+  install_sandbox_mount_init
   sync_agents
-  sync_pi
   install_nvm
+  uninstall_npm_pi
+  sync_pi
   install_global_npm_packages
 
-  set +u
-  source "$HOME/.bashrc"
-  set -u
 }
 
 main
