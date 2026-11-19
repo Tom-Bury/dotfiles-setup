@@ -258,6 +258,7 @@ docker_sbx_base() {
     echo "Creating mountless base sandbox: $DOCKER_SBX_BASE_NAME"
     sbx create --name "$DOCKER_SBX_BASE_NAME" shell
   fi
+  sbx policy allow network --sandbox "$DOCKER_SBX_BASE_NAME" auth.openai.com || return
   sbx run --name "$DOCKER_SBX_BASE_NAME"
 }
 
@@ -290,6 +291,7 @@ docker_sbx_here() {
       echo "Sandbox already exists: $name. Extra mounts are create-time only; remove and recreate it." >&2
       return 1
     fi
+    sbx policy allow network --sandbox "$name" auth.openai.com || return
     sbx run --name "$name"
     return
   fi
@@ -315,7 +317,8 @@ docker_sbx_here() {
   echo "Creating Docker sandbox: $name (template: $DOCKER_SBX_TEMPLATE)"
   sbx create --name "$name" --template "$DOCKER_SBX_TEMPLATE" shell . \
     "${mounts[@]}" \
-    "$@"
+    "$@" || return
+  sbx policy allow network --sandbox "$name" auth.openai.com || return
   sbx run --name "$name"
 }
 
