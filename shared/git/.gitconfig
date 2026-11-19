@@ -6,10 +6,10 @@
     editor = nvim
     whitespace = error
     preloadindex = true
-    pager = diff-so-fancy | less --tabs=4 -RFX
+    pager = delta
 
 [interactive]
-    diffFilter = diff-so-fancy --patch --color
+    diffFilter = delta --color-only
 
 [push]
     autoSetupRemote = true
@@ -32,6 +32,9 @@
 [merge]
     # Provides more context in merge conflicts than standard diff3
     conflictstyle = zdiff3
+
+[delta]
+    navigate = true
 
 [diff]
     context = 3

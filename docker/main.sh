@@ -173,16 +173,6 @@ install_nvm() {
   set -u
 }
 
-uninstall_npm_pi() {
-  local package="@earendil-works/pi-coding-agent"
-
-  if npm list -g --depth=0 "$package" >/dev/null 2>&1; then
-    print_header "Removing npm-installed Pi 🥧"
-    npm uninstall -g "$package"
-    print_footer "npm-installed Pi removed"
-  fi
-}
-
 install_global_npm_packages() {
   print_header "Installing global npm packages 🤖"
   set +u
@@ -237,6 +227,7 @@ sync_yazi() {
   print_header "Syncing yazi config 📁"
   run_sudo mkdir -p "$HOME/.config/yazi"
   run_sudo cp "$ROOT_DIR/shared/yazi/yazi.toml" "$HOME/.config/yazi/yazi.toml"
+  run_sudo chown -R "$(id -un):$(id -gn)" "$HOME/.config/yazi"
   print_footer "yazi config synced to $HOME/.config/yazi"
 }
 
@@ -336,10 +327,8 @@ main() {
   configure_pi_clipboard
   sync_agents
   install_nvm
-  uninstall_npm_pi
   sync_pi
   install_global_npm_packages
-
 }
 
 main

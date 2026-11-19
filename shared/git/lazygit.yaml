@@ -304,7 +304,7 @@ git:
   # # See https://github.com/jesseduffield/lazygit/blob/master/docs/Custom_Pagers.md
   # # for more information.
   diffRenderers:
-    - command: diff-so-fancy
+    - command: delta --paging=never
       colorArg: always
       # # Config relating to committing
       # commit:

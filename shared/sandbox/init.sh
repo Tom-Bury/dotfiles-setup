@@ -1,25 +1,50 @@
-# Sourced by /etc/sandbox-persistent.sh when a Docker Sandbox has the
-# dotfiles repository mounted at /mnt/dotfiles. Keep this safe to run for
-# every interactive shell and agent session.
+# Sourced by /etc/sandbox-persistent.sh when /mnt/dotfiles is mounted.
+# Keep installed tools and writable state outside the read-only mount.
 
 _dsb_link() {
   local source="$1"
   local target="$2"
 
-  [[ -d "$source" ]] || return 0
+  [[ -e "$source" ]] || return 0
   if [[ -L "$target" && "$(readlink "$target")" == "$source" ]]; then
     return 0
   fi
 
-  rm -rf "$target"
-  mkdir -p "$(dirname "$target")"
-  ln -s "$source" "$target"
+  # Never delete a directory from a shell startup hook.
+  if [[ -d "$target" && ! -L "$target" ]]; then
+    return 0
+  fi
+  mkdir -p "$(dirname "$target")" || return
+  ln -sfnT "$source" "$target"
 }
 
-# Add more _dsb_link calls here when sandbox configuration should come from
-# the read-only mounted dotfiles repository rather than the base template.
-_dsb_link /mnt/dotfiles/shared/.agents "$HOME/.agents"
-_dsb_link /mnt/dotfiles/shared/.pi/agent "$HOME/.pi/agent"
-_dsb_link /mnt/dotfiles/shared/yazi "$HOME/.config/yazi"
+_dsb_init() {
+  local config
+  local pi_source=/mnt/dotfiles/shared/.pi/agent
 
-unset -f _dsb_link
+  _dsb_link /mnt/dotfiles/shared/.agents/skills "$HOME/.agents/skills" || return
+
+  # Repair the old directory link. It hides Pi's runtime and writable state.
+  if [[ -L "$HOME/.pi/agent" && "$(readlink "$HOME/.pi/agent")" == "$pi_source" ]]; then
+    rm "$HOME/.pi/agent" || return
+  fi
+  mkdir -p "$HOME/.pi/agent" || return
+
+  # Share config through the read-only mount. Keep runtime state local.
+  for config in AGENTS.md APPEND_SYSTEM.md settings.json keybindings.json; do
+    _dsb_link "$pi_source/$config" "$HOME/.pi/agent/$config" || return
+  done
+
+  # Use the mounted config without changing root-owned template files.
+  if [[ -d /mnt/dotfiles/shared/yazi ]]; then
+    export YAZI_CONFIG_HOME=/mnt/dotfiles/shared/yazi
+  fi
+
+  case ":$PATH:" in
+    *":$HOME/.local/bin:"*) ;;
+    *) export PATH="$HOME/.local/bin:$PATH" ;;
+  esac
+}
+
+_dsb_init
+unset -f _dsb_init _dsb_link

@@ -5,6 +5,7 @@
   "tui.altScreen.halfPageUp": "ctrl+u",
   "tui.altScreen.halfPageDown": "ctrl+d",
   "app.editor.external": "ctrl+e",
+  "app.exit": "alt+q",
   "tui.altScreen.bottom": "shift+g",
   "tui.altScreen.previousPrompt": "alt+k",
   "tui.altScreen.nextPrompt": "alt+j",

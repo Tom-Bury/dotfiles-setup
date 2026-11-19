@@ -17,6 +17,7 @@ brew "syncthing", restart_service: true
 
 # Core apps
 brew "git"
+brew "git-delta"
 # brew "jj"
 # brew "lazyjj"
 brew "git-spice"

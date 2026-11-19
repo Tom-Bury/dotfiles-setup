@@ -255,8 +255,13 @@ docker_sbx_base() {
   fi
 
   if ! _docker_sbx_exists "$DOCKER_SBX_BASE_NAME"; then
-    echo "Creating mountless base sandbox: $DOCKER_SBX_BASE_NAME"
-    sbx create --name "$DOCKER_SBX_BASE_NAME" shell
+    if [[ ! -d "$DOCKER_SBX_DOTFILES_DIR" ]]; then
+      echo "Dotfiles directory not found: $DOCKER_SBX_DOTFILES_DIR" >&2
+      return 1
+    fi
+    echo "Creating base sandbox: $DOCKER_SBX_BASE_NAME (dotfiles: /mnt/dotfiles)"
+    sbx create --name "$DOCKER_SBX_BASE_NAME" shell \
+      "$DOCKER_SBX_DOTFILES_DIR" || return
   fi
   sbx policy allow network --sandbox "$DOCKER_SBX_BASE_NAME" auth.openai.com || return
   sbx run --name "$DOCKER_SBX_BASE_NAME"
