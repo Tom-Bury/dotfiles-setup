@@ -255,39 +255,21 @@ sync_default_editor() {
   print_footer "Default editor synced to $bashrc"
 }
 
-configure_pi_clipboard() {
+install_dsb_startup() {
   local persistent_file="/etc/sandbox-persistent.sh"
-  local setting='export PI_CLIPBOARD_OSC52=1'
+  local marker="# >>> dotfiles-setup dsb startup >>>"
 
-  # Send copies to the host terminal, even if the sandbox advertises Wayland.
-  if ! run_sudo grep -Fxq "$setting" "$persistent_file" 2>/dev/null; then
-    printf '\n%s\n' "$setting" | run_sudo tee -a "$persistent_file" >/dev/null
-  fi
-  export PI_CLIPBOARD_OSC52=1
-}
-
-install_sandbox_mount_init() {
-  local persistent_file="/etc/sandbox-persistent.sh"
-  local marker_begin="# >>> dotfiles-setup sandbox mounts >>>"
-  local marker_end="# <<< dotfiles-setup sandbox mounts <<<"
-  local tmpfile
-
-  if run_sudo grep -Fq "$marker_begin" "$persistent_file" 2>/dev/null; then
-    echo "sandbox mount init already registered"
-    return
+  if run_sudo grep -Fxq "$marker" "$persistent_file" 2>/dev/null; then
+    return 0
   fi
 
-  tmpfile="$(mktemp)"
   {
-    printf '\n%s\n' "$marker_begin"
-    printf '%s\n' 'if [[ -r /mnt/dotfiles/shared/sandbox/init.sh ]]; then'
-    printf '%s\n' '  source /mnt/dotfiles/shared/sandbox/init.sh'
+    printf '\n%s\n' "$marker"
+    printf '%s\n' 'if [[ -r /mnt/dsb/startup.sh ]]; then'
+    printf '%s\n' '  source /mnt/dsb/startup.sh'
     printf '%s\n' 'fi'
-    printf '%s\n' "$marker_end"
-  } > "$tmpfile"
-  run_sudo tee -a "$persistent_file" < "$tmpfile" >/dev/null
-  rm -f "$tmpfile"
-  echo "sandbox mount init registered"
+    printf '%s\n' '# <<< dotfiles-setup dsb startup <<<'
+  } | run_sudo tee -a "$persistent_file" >/dev/null
 }
 
 sync_yazi_shell_wrapper() {
@@ -323,8 +305,7 @@ main() {
   sync_yazi
   sync_yazi_shell_wrapper
   sync_default_editor
-  install_sandbox_mount_init
-  configure_pi_clipboard
+  install_dsb_startup
   sync_agents
   install_nvm
   sync_pi

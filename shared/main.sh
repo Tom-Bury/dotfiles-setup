@@ -48,6 +48,12 @@ main() {
     print_footer "Go set up"
   fi
 
+  if command -v go >/dev/null 2>&1; then
+    GOBIN="$HOME/bin" go -C "$ROOT_DIR/dsb" install ./cmd/dsb || return 1
+  else
+    echo "To install dsb later, install Go and follow dsb/README.md."
+  fi
+
   print_header "Setting up K8s"
   source "$ROOT_DIR/shared/k8s/setup-k8s.sh"
   setup_k8s $ROOT_DIR
