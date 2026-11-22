@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: Send repo-addressed work through Docker Sandbox shared storage and pick it up in another Pi session. Use when the user asks to hand off work, send work to another workspace, check mail, or says "youve got mail", "you've got mail", or "you’ve got mail".
+description: Send repo-addressed work through Docker Sandbox shared storage and pick it up in another Pi session. Use when the user asks to hand off work, send work to another workspace or agent, check mail, or says "youve got mail", "you've got mail", or "you’ve got mail".
 ---
 
 # Repo handoffs
