@@ -161,14 +161,13 @@ func (app launcher) finishTask(name string, logFile io.Writer, runErr error) err
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	if runErr == nil {
-		runErr = taskCommand(ctx, logFile, logFile, "sbx", "--no-input", "rm", "--force", name)
-		if runErr == nil {
-			return os.RemoveAll(sandbox.StartupDir(app.runtimeDir, name))
-		}
+	if err := taskCommand(ctx, logFile, logFile, "sbx", "--no-input", "rm", "--force", name); err != nil {
+		return errors.Join(runErr, fmt.Errorf("remove task sandbox %s: %w", name, err))
 	}
-	stopErr := taskCommand(ctx, logFile, logFile, "sbx", "--no-input", "stop", name)
-	return errors.Join(runErr, stopErr)
+	if err := os.RemoveAll(sandbox.StartupDir(app.runtimeDir, name)); err != nil {
+		return errors.Join(runErr, fmt.Errorf("remove task startup files: %w", err))
+	}
+	return runErr
 }
 
 type sandboxExec func(io.Writer, ...string) error
